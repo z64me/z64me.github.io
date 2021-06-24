@@ -1,0 +1,629 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on z64me</title>
+    <link>https://z64.me/post/</link>
+    <description>Recent content in Posts on z64me</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 23 Jun 2021 23:13:06 -0400</lastBuildDate><atom:link href="https://z64.me/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>new website</title>
+      <link>https://z64.me/post/new-website/</link>
+      <pubDate>Wed, 23 Jun 2021 23:13:06 -0400</pubDate>
+      
+      <guid>https://z64.me/post/new-website/</guid>
+      
+        <description>&lt;p&gt;My website is no longer powered by Google Sites. If you&amp;rsquo;re looking for deprecated software or for a nostalgia trip, the old site can still be found at &lt;a href=&#34;https://old.z64.me&#34;&gt;old.z64.me&lt;/a&gt;. It is no longer receiving updates.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>RIP in peace, Google Sites</title>
+      <link>https://z64.me/post/rip-google-sites/</link>
+      <pubDate>Sun, 20 Jun 2021 14:38:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/rip-google-sites/</guid>
+      
+        <description>&lt;p&gt;Legacy Google Sites are being discontinued, so I&amp;rsquo;m mirroring everything over to &lt;a href=&#34;https://old.z64.me&#34;&gt;old.z64.me&lt;/a&gt;. This is a great opportunity to break away from the Web 1.0 meme and do something new with the website.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>z64decompress release</title>
+      <link>https://z64.me/post/z64decompress-release/</link>
+      <pubDate>Mon, 03 May 2021 12:00:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/z64decompress-release/</guid>
+      
+        <description>&lt;p&gt;My Zelda 64 decompressor. &lt;a href=&#34;https://github.com/z64me/z64decompress&#34;&gt;Find it on GitHub.&lt;/a&gt;.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>z64compress release</title>
+      <link>https://z64.me/post/z64compress-release/</link>
+      <pubDate>Thu, 29 Apr 2021 20:48:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/z64compress-release/</guid>
+      
+        <description>&lt;p&gt;My Zelda 64 rom compressor. &lt;a href=&#34;https://github.com/z64me/z64compress&#34;&gt;Find it on GitHub.&lt;/a&gt;.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>new play-as pipeline released</title>
+      <link>https://z64.me/post/new-playas-pipeline-release/</link>
+      <pubDate>Fri, 12 Feb 2021 07:37:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/new-playas-pipeline-release/</guid>
+      
+        <description>&lt;p&gt;It is pretty much final now.&lt;/p&gt;
+&lt;p&gt;The &lt;a href=&#34;https://old.z64.me/guides/new-blender-play-as.html&#34;&gt;new Blender tutorial&lt;/a&gt; explains how to use everything.&lt;/p&gt;
+&lt;p&gt;A huge thank you to everyone who contributed. :)&lt;/p&gt;
+&lt;p&gt;Can&amp;rsquo;t wait for the bug reports. ;(&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>gfxasm source code released</title>
+      <link>https://z64.me/post/gfxasm-source-code-release/</link>
+      <pubDate>Fri, 04 Dec 2020 10:31:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/gfxasm-source-code-release/</guid>
+      
+        <description>&lt;p&gt;Something I&amp;rsquo;ve been meaning to open-source since I wrote it.&lt;/p&gt;
+&lt;p&gt;Find it on &lt;a href=&#34;https://github.com/z64me/gfxasm&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>zzrtl 1.0.4 update</title>
+      <link>https://z64.me/post/zzrtl-1.0.4/</link>
+      <pubDate>Thu, 20 Aug 2020 12:57:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/zzrtl-1.0.4/</guid>
+      
+        <description>&lt;p&gt;Remember this junk from the manual?&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;repack&lt;/code&gt; should always be false (0)
+unless you modify MM&amp;rsquo;s packing functionality;
+this makes it so the re-encoded files fit at
+the offsets of the original files within the
+archives (this is to get around MM&amp;rsquo;s hard-coded
+references to the assets; if you happen to use
+custom code for MM archive parsing, you can use
+true (1)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;It turns out that was dead wrong. The actual problem was, certain parts of a certain (few?) archive(s)&amp;rsquo;s file table(s) were being overwritten thanks to a hiccup in my alignment code. Thankfully, &lt;strong&gt;Aroenai&lt;/strong&gt; was able to pinpoint one of these broken files and the bug was fixed in no time.&lt;/p&gt;
+&lt;p&gt;One less thing to haunt me; thanks again, &lt;strong&gt;Aroenai&lt;/strong&gt;!&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;r4 credits&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Aroenai - MM yaz archive bug report and testing&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;r4 changes&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;relocating yaz files within archives was not
+working properly due to alignment, but now it
+is; thanks for the bug report, Aroenai!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>zztexview 1.0.1 update</title>
+      <link>https://z64.me/post/zztexview-1.0.1/</link>
+      <pubDate>Thu, 30 Apr 2020 16:18:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/zztexview-1.0.1/</guid>
+      
+        <description>&lt;p&gt;Bug fix: could not edit value/text boxes after clicking drop-downs&lt;/p&gt;
+&lt;p&gt;Bug fix: &amp;ldquo;Scale&amp;rdquo; drop-down text now wraps properly when scrolling on it&lt;/p&gt;
+&lt;p&gt;Bug report credits: AriaHiro, Zeldaboy14&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>zztexview released</title>
+      <link>https://z64.me/post/zztexview-release/</link>
+      <pubDate>Wed, 29 Apr 2020 16:33:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/zztexview-release/</guid>
+      
+        <description>&lt;p&gt;&lt;a href=&#34;https://old.z64.me/tools/zztexview.html&#34;&gt;zztexview initial 1.0.0 release&lt;/a&gt;&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>zzrtl 1.0.3 update</title>
+      <link>https://z64.me/post/zzrtl-1.0.3/</link>
+      <pubDate>Mon, 13 Apr 2020 15:14:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/zzrtl-1.0.3/</guid>
+      
+        <description>&lt;p&gt;&lt;a href=&#34;https://github.com/z64me/zzrtl/tree/master/script&#34;&gt;Majora&amp;rsquo;s Mask scripts&lt;/a&gt; are now available.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-plain&#34; data-lang=&#34;plain&#34;&gt;r3 credits
+    - /Zel/ - MM script collaboration
+
+r3 changes
+    - final changes to make MM scripts possible
+    - MM scripts are now available
+    - updated OoT scripts
+    - dump scripts now work on compressed roms
+    - extension assertion: zzrtl now complains if
+      provided with a file not of the extension .rtl
+    - raw data assertion: zzrtl now complains if
+      provided with a file that doesn&amp;#39;t contain some
+      form of &amp;#34;int main&amp;#34; (e.g. an html file saved
+      with the .rtl extension)
+    - added a function file_exists(fn) to check if a
+      file exists (returns 1 if it does, 0 otherwise)
+    - rom.inject_dma() function added for injecting
+      a file over a known existing DMA entry
+      (file-size must match file being overwritten)
+      (rom.inject_raw_dma() also available)
+    - rom.extract_dma() function added for extracting
+      a file of a known DMA index
+    - .next() and .remaining() are now able to be
+      used with conf files of type list, for the
+      purpose of stepping through list items
+    - .name() and .value() functions for retrieving
+      the name and value (as strings) of the
+      selected conf list item have been added
+    - an int_array() function to make up for zzrtl
+      not supporting int array[32]; type declarations
+    - a new_string() function for easy string building
+    - rom version checking to reduce weird errors
+      encountered from using a dump/build script with
+      a rom not supported by it
+    - loadfile() function added
+    - tsv_col_row() function added
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>zzplayas 1.0.3 update</title>
+      <link>https://z64.me/post/zzplayas-1.0.3/</link>
+      <pubDate>Tue, 17 Mar 2020 10:18:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/zzplayas-1.0.3/</guid>
+      
+        <description>&lt;p&gt;This revision eliminates a rare bug that was encountered when an old pointer and a new pointer share the same offset.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;zzrtl&lt;/code&gt; project files are now supported as well. If you used an older dump script to generate your filesystem, you will have to edit your &lt;code&gt;project.zzrpl&lt;/code&gt; file in Notepad++ so that the variables used by &lt;code&gt;zzplayas&lt;/code&gt; are prefixed with &lt;code&gt;ZZPLAYAS_&lt;/code&gt;, like so:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-plain&#34; data-lang=&#34;plain&#34;&gt;zzrtl                   v0.01
+baserom                 &amp;#34;baserom.z64&amp;#34;
+ZZPLAYAS_VROM_CODE      &amp;#34;&amp;#39;baserom.z64&amp;#39;+0x00B3C000&amp;#34;
+ZZPLAYAS_VROM_PLAYER    &amp;#34;&amp;#39;baserom.z64&amp;#39;+0x00CA7F00&amp;#34;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The &lt;a href=&#34;https://github.com/z64me/zzrtl&#34;&gt;scripts on the repo&lt;/a&gt; have been updated to reflect this change.&lt;/p&gt;
+&lt;p&gt;Due to popular demand, the command line utility &lt;code&gt;zzobjman.exe&lt;/code&gt; is included in the win32 folder of this release.&lt;/p&gt;
+&lt;p&gt;As always, you can find the update on the &lt;code&gt;zzplayas&lt;/code&gt; &lt;a href=&#34;https://old.z64.me/tools/zzplayas.html&#34;&gt;download page&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Bug report and testing credits for this version: &lt;strong&gt;CrookedPoe&lt;/strong&gt; and &lt;strong&gt;Skilar&lt;/strong&gt;&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>z64enc: added lzo and aplib support</title>
+      <link>https://z64.me/post/z64enc-lzo-aplib/</link>
+      <pubDate>Mon, 10 Feb 2020 12:44:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/z64enc-lzo-aplib/</guid>
+      
+        <description>&lt;p&gt;&lt;a href=&#34;https://github.com/z64me/z64enc&#34;&gt;LZO and APLIB patches are now available&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;A big thanks to &lt;strong&gt;Mikau6&lt;/strong&gt; for testing these on hardware.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>zzrtl 1.0.2 update</title>
+      <link>https://z64.me/post/zzrtl-1.0.2/</link>
+      <pubDate>Mon, 10 Feb 2020 12:43:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/zzrtl-1.0.2/</guid>
+      
+        <description>&lt;p&gt;r2 changes&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;faster compression&lt;/li&gt;
+&lt;li&gt;compression ratio is now printed afterwards&lt;/li&gt;
+&lt;li&gt;removed zx7 codec (was slower than ucl and
+had a worse compression ratio than ucl)&lt;/li&gt;
+&lt;li&gt;added aplib codec (better ratio than ucl, and
+faster load times than ucl on Wii VC; the only
+downside is roms take a few minutes to compress)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;r2 credits&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Mikau6&lt;/strong&gt; - hardware testing&lt;/li&gt;
+&lt;/ul&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>z64enc release</title>
+      <link>https://z64.me/post/z64enc-release/</link>
+      <pubDate>Sat, 01 Feb 2020 20:30:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/z64enc-release/</guid>
+      
+        <description>&lt;p&gt;&lt;strong&gt;z64enc&lt;/strong&gt; is now available. It lets you change the codec used for decompressing files in OoT and MM. It is described in more detail on &lt;a href=&#34;https://github.com/z64me/z64enc&#34;&gt;the GitHub repo&lt;/a&gt;.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>zzrtl 1.0.1 update</title>
+      <link>https://z64.me/post/zzrtl-1.0.1/</link>
+      <pubDate>Sat, 01 Feb 2020 20:29:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/zzrtl-1.0.1/</guid>
+      
+        <description>&lt;p&gt;&lt;strong&gt;zzrtl&lt;/strong&gt; has received the following updates.&lt;/p&gt;
+&lt;p&gt;r1 changes&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;added compression codecs ucl, xz7, slowyaz&lt;/li&gt;
+&lt;li&gt;added support for deleted files in MM dmadata
+specification (aka pstart == pend == -1)&lt;/li&gt;
+&lt;li&gt;added rearchive(), file_dma(), and cloudpatch()&lt;/li&gt;
+&lt;li&gt;added &lt;code&gt;--compress&lt;/code&gt; command line argument so zzrtl
+can be used as a standalone rom compressor&lt;/li&gt;
+&lt;li&gt;added &lt;code&gt;--nocache&lt;/code&gt; command line argument for doing
+compression without generating a cache folder&lt;/li&gt;
+&lt;li&gt;added &lt;code&gt;--cloudpatch&lt;/code&gt; command line argument for
+easy command line cloudpatching&lt;/li&gt;
+&lt;li&gt;added &lt;code&gt;--help&lt;/code&gt; command line argument so a massive
+wall of documentation doesn&amp;rsquo;t pop up and scare
+double-clickers away&lt;/li&gt;
+&lt;li&gt;stability improvements&lt;/li&gt;
+&lt;li&gt;when compressing a file makes it larger, its
+uncompressed counterpart is used instead&lt;/li&gt;
+&lt;li&gt;better compressed file packing&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;r1 notes&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;individual files compressed with slowyaz are
+byte-identical to those in retail roms; aside
+from weird corner cases, there is no reason
+you should use slowyaz; it is slower than yaz
+and produces files slightly larger than yaz&amp;hellip;&lt;/li&gt;
+&lt;li&gt;it should now contain everything necessary
+to support Majora&amp;rsquo;s Mask&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;r1 credits&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Mikau6&lt;/strong&gt;, &lt;strong&gt;CrookedPoe&lt;/strong&gt; - hardware testing&lt;/li&gt;
+&lt;/ul&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>zzrtl 1.0.0 update</title>
+      <link>https://z64.me/post/zzrtl-1.0.0/</link>
+      <pubDate>Sun, 12 Jan 2020 19:40:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/zzrtl-1.0.0/</guid>
+      
+        <description>&lt;p&gt;Eliminated compression bug. Testing credits go to &lt;strong&gt;AriaHiro&lt;/strong&gt;.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>zzrtl released</title>
+      <link>https://z64.me/post/zzrtl-release/</link>
+      <pubDate>Sun, 12 Jan 2020 02:04:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/zzrtl-release/</guid>
+      
+        <description>&lt;p&gt;finally&lt;/p&gt;
+&lt;p&gt;it is &lt;a href=&#34;https://old.z64.me/tools/zzrtl.html&#34;&gt;here&lt;/a&gt;&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>zzplayas 1.0.2 update</title>
+      <link>https://z64.me/post/zzplayas-1.0.2/</link>
+      <pubDate>Thu, 10 Oct 2019 12:23:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/zzplayas-1.0.2/</guid>
+      
+        <description>&lt;ul&gt;
+&lt;li&gt;Now supports DE and DA opcodes when parsing the bank ZOBJs, like MM Link&amp;rsquo;s object.&lt;/li&gt;
+&lt;li&gt;The &lt;code&gt;OBJECT&lt;/code&gt; section now has a pool feature for aliasing display lists. It will be possible to hot swap all ZOBJs created using the same manifest, so long as this feature is adequately employed.&lt;/li&gt;
+&lt;li&gt;Now supports exporting to ZOBJ (you must select a ZOBJ to overwrite).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;OBJECT&lt;/code&gt; and &lt;code&gt;REPOINT&lt;/code&gt; sections now have a &lt;strong&gt;HexString(x)&lt;/strong&gt; function.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Further details lie in the &lt;a href=&#34;https://old.z64.me/tools/zzplayas/manual.html&#34;&gt;manual&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;And you can grab the latest revision &lt;a href=&#34;https://old.z64.me/tools/zzplayas.html&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>zzconvert 1.0.7 update</title>
+      <link>https://z64.me/post/zzconvert-1.0.7/</link>
+      <pubDate>Sat, 06 Jul 2019 21:07:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/zzconvert-1.0.7/</guid>
+      
+        <description>&lt;p&gt;Hierarchical display lists derived from &lt;code&gt;riggedmesh&lt;/code&gt; were sometimes breaking on some processors due to features introduced in revision 6. This revision fixes that problem.&lt;/p&gt;
+&lt;p&gt;Bug report credits: AriaHiroDKD&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>zzconvert 1.0.6 update</title>
+      <link>https://z64.me/post/zzconvert-1.0.6/</link>
+      <pubDate>Sun, 30 Jun 2019 21:07:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/zzconvert-1.0.6/</guid>
+      
+        <description>&lt;p&gt;&lt;strong&gt;zzconvert improvements&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Can now write ZOBJ as C code for embedding into an actor overlay (like the Arwing, spells, and elemental arrows).&lt;/li&gt;
+&lt;li&gt;C output &lt;code&gt;#define&lt;/code&gt; values are now prefixed with &lt;code&gt;0x&lt;/code&gt; as they should be.&lt;/li&gt;
+&lt;li&gt;Collision (group names ending in &lt;code&gt;_COLLISION&lt;/code&gt; are treated as such) (reference the &lt;a href=&#34;https://old.z64.me/tools/zzconvert/manual.html&#34;&gt;updated manual&lt;/a&gt; for information on collision flags)&lt;/li&gt;
+&lt;li&gt;Smoother animations (bug report credit Zel)&lt;/li&gt;
+&lt;li&gt;Animated texture banks are now indexed to 256 colors to reduce potential errors&lt;/li&gt;
+&lt;li&gt;Group names ending in &lt;code&gt;_OBJECT&lt;/code&gt; or &lt;code&gt;_COLLISION&lt;/code&gt; will be translated such that their Blender origin will be moved to the origin of world space (requires latest OBJEX).&lt;/li&gt;
+&lt;/ul&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>zzromtool 1.0.4 update</title>
+      <link>https://z64.me/post/zzromtool-1.0.4/</link>
+      <pubDate>Sun, 30 Jun 2019 21:07:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/zzromtool-1.0.4/</guid>
+      
+        <description>&lt;p&gt;&lt;strong&gt;zzromtool improvements&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;scene folder and entrance-cutscenes.txt names should now be fixed for good&lt;/li&gt;
+&lt;li&gt;can now use patching system on actor overlays and code1&lt;/li&gt;
+&lt;li&gt;roms dumped with r2 now rebuild with r4 (bug report credit AriaHiroDKD)&lt;/li&gt;
+&lt;/ul&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>zzromtool 1.0.3 update</title>
+      <link>https://z64.me/post/zzromtool-1.0.3/</link>
+      <pubDate>Sat, 01 Jun 2019 12:39:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/zzromtool-1.0.3/</guid>
+      
+        <description>&lt;p&gt;The following changes have been made:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The scene names in &lt;code&gt;entrance-cutscenes.txt&lt;/code&gt; now work properly.&lt;/li&gt;
+&lt;li&gt;In &lt;code&gt;actor/x/conf.txt&lt;/code&gt;, initialization values are no longer written on export. The import functionality still supports them, for those who wish to use them.&lt;/li&gt;
+&lt;li&gt;In &lt;code&gt;actor/x/actor.zovl&lt;/code&gt;, the magic string &lt;code&gt;scubadiver&lt;/code&gt; no longer overwrites the initialization values, in favor of overwriting unused padding bytes with the values &lt;code&gt;0xDEAD&lt;/code&gt; and &lt;code&gt;0xBEEF&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;In &lt;code&gt;actor/x/conf.txt&lt;/code&gt;, the &lt;code&gt;Reserve&lt;/code&gt; feature has been removed, both on export and import.&lt;/li&gt;
+&lt;li&gt;Patch files in the &lt;code&gt;patch&lt;/code&gt; directory that were not applied to any files during the build process will now throw errors so you know they weren&amp;rsquo;t applied.&lt;/li&gt;
+&lt;li&gt;The VRAM address of &lt;code&gt;code1&lt;/code&gt; can now be customized by editing the ZZRP file in a text editor.&lt;/li&gt;
+&lt;/ul&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>zzromtool 1.0.2 update</title>
+      <link>https://z64.me/post/zzromtool-1.0.2/</link>
+      <pubDate>Tue, 02 Apr 2019 12:21:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/zzromtool-1.0.2/</guid>
+      
+        <description>&lt;p&gt;Scuba gear is no longer necessary, as a new initialization data search method is now available for those who wish to use it:&lt;/p&gt;
+&lt;p&gt;In an actor&amp;rsquo;s initialization data, the first two bytes, which normally represent the actor&amp;rsquo;s &lt;strong&gt;number&lt;/strong&gt;, should be replaced with the bytes &lt;strong&gt;0xDEAD&lt;/strong&gt;. Ten bytes later are two unused &lt;strong&gt;padding bytes&lt;/strong&gt;, which we replace with &lt;strong&gt;0xBEEF&lt;/strong&gt;. See &lt;a href=&#34;https://github.com/z64me/z64ovl-samples/blob/master/actor/seagull/seagull.c&#34;&gt;seagull.c&lt;/a&gt; for an example of this applied in C. &lt;strong&gt;You may also omit the Initialization section of conf.txt.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Additionally, two new tutorials are live, geared towards &lt;a href=&#34;https://old.z64.me/guides/overlay-environment-setup-windows.html&#34;&gt;setting up mips64gcc&lt;/a&gt; and &lt;a href=&#34;https://old.z64.me/guides/zzromtool/custom-actor-overlay-workflow.html&#34;&gt;compiling actor overlays written in C&lt;/a&gt;.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>zzromtool 1.0.1 update</title>
+      <link>https://z64.me/post/zzromtool-1.0.1/</link>
+      <pubDate>Mon, 04 Feb 2019 01:28:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/zzromtool-1.0.1/</guid>
+      
+        <description>&lt;p&gt;Apparently I forgot to test dumping a rom with the previous revision before releasing.&lt;/p&gt;
+&lt;p&gt;It should work now. 8)&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>zzromtool 1.0.0 update</title>
+      <link>https://z64.me/post/zzromtool-1.0.0/</link>
+      <pubDate>Sat, 02 Feb 2019 20:00:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/zzromtool-1.0.0/</guid>
+      
+        <description>&lt;p&gt;The following updates have been made&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;repoint.tsv&lt;/code&gt; allows file size specifier.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;patch&lt;/code&gt; directory to make 3Q integration easier&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;More details can be found in the &lt;a href=&#34;https://old.z64.me/tools/zzromtool/manual.html&#34;&gt;manual&lt;/a&gt;.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>zzromtool released</title>
+      <link>https://z64.me/post/zzromtool-release/</link>
+      <pubDate>Thu, 31 Jan 2019 23:40:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/zzromtool-release/</guid>
+      
+        <description>&lt;p&gt;It&amp;rsquo;s finally stable enough for a public release. Please reference the guides and the manual for all the specifics, as it has its fair share of nuances and a thousand-and-one things that could go wrong when using it.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://old.z64.me/tools/zzromtool.html&#34;&gt;zzromtool&lt;/a&gt;&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>zzplayas 1.0.1 update</title>
+      <link>https://z64.me/post/zzplayas-1.0.1/</link>
+      <pubDate>Thu, 31 Jan 2019 23:28:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/zzplayas-1.0.1/</guid>
+      
+        <description>&lt;p&gt;Now supports non-debug OoT as long as you edit your manifest files accordingly, as well as ZZRP files when using in conjunction with zzromtool. Sample manifest files compatible with 1.0 U can be found &lt;a href=&#34;https://github.com/CrookedPoe/zzconvert-Blender-Link-Templates&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>zzplayas 1.0.0 compatibility update</title>
+      <link>https://z64.me/post/zzplayas-1.0.0/</link>
+      <pubDate>Thu, 24 Jan 2019 03:04:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/zzplayas-1.0.0/</guid>
+      
+        <description>&lt;p&gt;Revised to work with zzconvert 1.0.5+&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>zzconvert 1.0.5 update</title>
+      <link>https://z64.me/post/zzconvert-1.0.5/</link>
+      <pubDate>Thu, 24 Jan 2019 03:03:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/zzconvert-1.0.5/</guid>
+      
+        <description>&lt;p&gt;In this revision&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Bone lookup code actually works now, so vertex group ordering should no longer matter.&lt;/li&gt;
+&lt;li&gt;Empty .anim files are dealt with in cases where the Blender exporter fails.&lt;/li&gt;
+&lt;li&gt;RGBA16 texture type now works.&lt;/li&gt;
+&lt;li&gt;Slight differences in exported play-as data, so get zzplayas 1.0.0 compatibility update&lt;/li&gt;
+&lt;/ul&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Cylindrical billboarding woes</title>
+      <link>https://z64.me/post/cylindrical-billboarding-woes/</link>
+      <pubDate>Wed, 09 Jan 2019 17:34:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/cylindrical-billboarding-woes/</guid>
+      
+        <description>&lt;p&gt;In this article, I explain how I hackishly added cylindrical billboarding support to OoT.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>zzconvert 1.0.4 update</title>
+      <link>https://z64.me/post/zzconvert-1.0.4/</link>
+      <pubDate>Sun, 02 Dec 2018 04:33:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/zzconvert-1.0.4/</guid>
+      
+        <description>&lt;p&gt;The following updates are now in place:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Sometimes, textures were being sliced incorrectly during optimization due to conflicting optimization types (or lack thereof). It&amp;rsquo;s working better now.&lt;/li&gt;
+&lt;li&gt;Added an annoying pop-up to notify users of when they&amp;rsquo;re using NPOT textures. In the command line version, a warning is printed.&lt;/li&gt;
+&lt;li&gt;Textures &amp;lt;=16x16 are no longer optimized, eliminating &lt;a href=&#34;https://www.youtube.com/watch?v=ImmPO1YDVGc&amp;amp;t=6m23s&#34;&gt;this bug&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Thanks for all the testing, &lt;strong&gt;Skriller&lt;/strong&gt;!
+&lt;figure class=&#34;center&#34;&gt;&lt;img src=&#34;https://old.z64.me/home/zzconvertv001revision4/zzconvert-warning-win32-npot.png&#34;
+         alt=&#34;win32-npot-warning&#34;/&gt;&lt;figcaption&gt;
+            &lt;p&gt;That&amp;rsquo;ll show &amp;lsquo;em. 8)&lt;/p&gt;
+        &lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>zzconvert 1.0.3 update</title>
+      <link>https://z64.me/post/zzconvert-1.0.3/</link>
+      <pubDate>Tue, 27 Nov 2018 23:17:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/zzconvert-1.0.3/</guid>
+      
+        <description>&lt;p&gt;Remember this feature on the feature page?&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Unsupported texture dimensions are automatically scaled to nearest power-of-two size (ex: 27x65 -&amp;gt; 32x64, 512x512 -&amp;gt; 64x64).&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;It should actually work now. It still hasn&amp;rsquo;t been tested very thoroughly, so the best practice is to use properly-sized textures when possible. Maybe I&amp;rsquo;ll have it print a warning or pop up an annoying message box in the future, but this quick fix will do for now.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>zzconvert 1.0.2 update</title>
+      <link>https://z64.me/post/zzconvert-1.0.2/</link>
+      <pubDate>Wed, 24 Oct 2018 20:15:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/zzconvert-1.0.2/</guid>
+      
+        <description>&lt;p&gt;The following updates have been made to improve stability and conversion quality:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;When you try to disable culling on something, it actually works now.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Thanks for the bug report &lt;strong&gt;Airikita&lt;/strong&gt;!&lt;/p&gt;
+&lt;p&gt;Get the updated version on the &lt;a href=&#34;https://old.z64.me/tools/zzconvert.html&#34;&gt;download page&lt;/a&gt;.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>zzconvert 1.0.1 update</title>
+      <link>https://z64.me/post/zzconvert-1.0.1/</link>
+      <pubDate>Mon, 24 Sep 2018 22:06:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/zzconvert-1.0.1/</guid>
+      
+        <description>&lt;p&gt;The following updates have been made to improve stability and conversion quality:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Added error checking so it won&amp;rsquo;t crash if UVs or normals are missing.&lt;/li&gt;
+&lt;li&gt;MTL color checkbox wasn&amp;rsquo;t working in the win32-gui build, this is now fixed.&lt;/li&gt;
+&lt;li&gt;Now matches by extension when searching for assembly textures (so no mixing eyes.&lt;strong&gt;png&lt;/strong&gt; with eyes_X.&lt;strong&gt;bmp&lt;/strong&gt;, alright?). Read the &lt;a href=&#34;https://old.z64.me/tools/zzconvert/manual.html&#34;&gt;manual&lt;/a&gt; if you don&amp;rsquo;t know what assembly textures are.&lt;/li&gt;
+&lt;li&gt;Added warning for animation data that exceeds the game&amp;rsquo;s limit (see the &lt;a href=&#34;https://old.z64.me/tools/zzconvert/manual.html&#34;&gt;manual&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Label names in C output are now sanitized.&lt;/li&gt;
+&lt;li&gt;obj.h is now exported alongside the new .zobj, in the same directory. Likewise, C style output is now the default. Disable these features by selecting &amp;ldquo;No obj.h nor C output&amp;rdquo; when converting, or use -nh on command line.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Get the updated version on the &lt;a href=&#34;https://old.z64.me/tools/zzconvert.html&#34;&gt;download page&lt;/a&gt;.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>zzconvert 1.0.0 update</title>
+      <link>https://z64.me/post/zzconvert-1.0.0/</link>
+      <pubDate>Fri, 07 Sep 2018 15:37:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/zzconvert-1.0.0/</guid>
+      
+        <description>&lt;p&gt;The following updates have been made to improve stability and conversion quality:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Fixed F5 opcode optimization which was causing texture glitches on back-to-back references to different textures of the same size.&lt;/li&gt;
+&lt;li&gt;Fixed palette generation bug that was causing issues on textures with variable levels of transparency.&lt;/li&gt;
+&lt;li&gt;Skips bone name lookup for unassigned vertices.&lt;/li&gt;
+&lt;li&gt;Now supports file paths referenced by the .obj[ex] files containing the &lt;code&gt;#&lt;/code&gt; character.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Get the updated version on the &lt;a href=&#34;https://old.z64.me/tools/zzconvert.html&#34;&gt;download page&lt;/a&gt;.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>zzconvert and zzplayas are now available</title>
+      <link>https://z64.me/post/playas-pipeline-release/</link>
+      <pubDate>Sun, 26 Aug 2018 22:52:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/playas-pipeline-release/</guid>
+      
+        <description>&lt;p&gt;Everyone&amp;rsquo;s been waiting about half a year for this stuff, so get it while it&amp;rsquo;s hot. 8)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://old.z64.me/tools/zzconvert.html&#34;&gt;zzconvert&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://old.z64.me/tools/zzplayas.html&#34;&gt;zzplayas&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://old.z64.me/guides/blender-play-as.html&#34;&gt;Blender Play-As&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>zzdec and zzdec-gui released</title>
+      <link>https://z64.me/post/zzdec-release/</link>
+      <pubDate>Thu, 15 Feb 2018 01:14:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/zzdec-release/</guid>
+      
+        <description>&lt;p&gt;I edited ZZT32&amp;rsquo;s zdec to have GUI for Windows users. Get it &lt;a href=&#34;https://old.z64.me/tools/zzdec.html&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;</description>
+      
+    </item>
+    
+  </channel>
+</rss>
