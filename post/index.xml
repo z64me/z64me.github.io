@@ -6,7 +6,18 @@
     <description>Recent content in Posts on z64me</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 23 Jun 2021 23:13:06 -0400</lastBuildDate><atom:link href="https://z64.me/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 24 Jun 2021 13:44:32 -0400</lastBuildDate><atom:link href="https://z64.me/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>zzrtl is now open source</title>
+      <link>https://z64.me/post/zzrtl-open-source/</link>
+      <pubDate>Thu, 24 Jun 2021 13:44:32 -0400</pubDate>
+      
+      <guid>https://z64.me/post/zzrtl-open-source/</guid>
+      
+        <description>&lt;p&gt;You can find the source code on &lt;a href=&#34;https://github.com/z64me/zzrtl&#34;&gt;&lt;code&gt;zzrtl&lt;/code&gt;&amp;rsquo;s GitHub repo&lt;/a&gt;. I never got the chance to clean it up, so don&amp;rsquo;t laugh.&lt;/p&gt;</description>
+      
+    </item>
+    
     <item>
       <title>new website</title>
       <link>https://z64.me/post/new-website/</link>
@@ -36,7 +47,7 @@
       
       <guid>https://z64.me/post/z64decompress-release/</guid>
       
-        <description>&lt;p&gt;My Zelda 64 decompressor. &lt;a href=&#34;https://github.com/z64me/z64decompress&#34;&gt;Find it on GitHub.&lt;/a&gt;.&lt;/p&gt;</description>
+        <description>&lt;p&gt;My Zelda 64 decompressor. &lt;a href=&#34;https://github.com/z64me/z64decompress&#34;&gt;Find it on GitHub.&lt;/a&gt;&lt;/p&gt;</description>
       
     </item>
     
@@ -47,7 +58,7 @@
       
       <guid>https://z64.me/post/z64compress-release/</guid>
       
-        <description>&lt;p&gt;My Zelda 64 rom compressor. &lt;a href=&#34;https://github.com/z64me/z64compress&#34;&gt;Find it on GitHub.&lt;/a&gt;.&lt;/p&gt;</description>
+        <description>&lt;p&gt;My Zelda 64 rom compressor. &lt;a href=&#34;https://github.com/z64me/z64compress&#34;&gt;Find it on GitHub.&lt;/a&gt;&lt;/p&gt;</description>
       
     </item>
     

@@ -27,9 +27,9 @@
     crossorigin="anonymous" />
     
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 
     <link rel="canonical" href="/">
 
@@ -211,6 +211,34 @@ Remember that you can also specify a section header for the posts below by confi
         <div class="post  . ">
             
             <div class="post-title">
+                <h3><a href="/post/zzrtl-open-source/">zzrtl is now open source</a>
+                </h3>
+            </div>
+            <div class="post-content">
+                <div class="p_part">
+                    <p><p>You can find the source code on <a href="https://github.com/z64me/zzrtl"><code>zzrtl</code>&rsquo;s GitHub repo</a>. I never got the chance to clean it up, so don&rsquo;t laugh.</p></p>
+                    </div>
+            </div>
+
+            
+            <div class="post-footer">
+                <div class="meta">
+                    <div class="info">
+                        <em class="fas fa-calendar-day"></em>
+                            <span class="date">
+                                                 24/6/2021
+                                             </span>
+                        
+                        <span class="separator"><a class="tag" href="/tags/tools/">tools</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+
+        <div class="post  . ">
+            
+            <div class="post-title">
                 <h3><a href="/post/new-website/">new website</a>
                 </h3>
             </div>
@@ -272,7 +300,7 @@ Remember that you can also specify a section header for the posts below by confi
             </div>
             <div class="post-content">
                 <div class="p_part">
-                    <p><p>My Zelda 64 decompressor. <a href="https://github.com/z64me/z64decompress">Find it on GitHub.</a>.</p></p>
+                    <p><p>My Zelda 64 decompressor. <a href="https://github.com/z64me/z64decompress">Find it on GitHub.</a></p></p>
                     </div>
             </div>
 
@@ -300,7 +328,7 @@ Remember that you can also specify a section header for the posts below by confi
             </div>
             <div class="post-content">
                 <div class="p_part">
-                    <p><p>My Zelda 64 rom compressor. <a href="https://github.com/z64me/z64compress">Find it on GitHub.</a>.</p></p>
+                    <p><p>My Zelda 64 rom compressor. <a href="https://github.com/z64me/z64compress">Find it on GitHub.</a></p></p>
                     </div>
             </div>
 
@@ -481,71 +509,6 @@ is; thanks for the bug report, Aroenai!</li>
                         <em class="fas fa-calendar-day"></em>
                             <span class="date">
                                                  29/4/2020
-                                             </span>
-                        
-                        <span class="separator"><a class="tag" href="/tags/tools/">tools</a></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    
-
-        <div class="post  . ">
-            
-            <div class="post-title">
-                <h3><a href="/post/zzrtl-1.0.3/">zzrtl 1.0.3 update</a>
-                </h3>
-            </div>
-            <div class="post-content">
-                <div class="p_part">
-                    <p><p><a href="https://github.com/z64me/zzrtl/tree/master/script">Majora&rsquo;s Mask scripts</a> are now available.</p>
-<div class="highlight"><pre class="chroma"><code class="language-plain" data-lang="plain">r3 credits
-    - /Zel/ - MM script collaboration
-
-r3 changes
-    - final changes to make MM scripts possible
-    - MM scripts are now available
-    - updated OoT scripts
-    - dump scripts now work on compressed roms
-    - extension assertion: zzrtl now complains if
-      provided with a file not of the extension .rtl
-    - raw data assertion: zzrtl now complains if
-      provided with a file that doesn&#39;t contain some
-      form of &#34;int main&#34; (e.g. an html file saved
-      with the .rtl extension)
-    - added a function file_exists(fn) to check if a
-      file exists (returns 1 if it does, 0 otherwise)
-    - rom.inject_dma() function added for injecting
-      a file over a known existing DMA entry
-      (file-size must match file being overwritten)
-      (rom.inject_raw_dma() also available)
-    - rom.extract_dma() function added for extracting
-      a file of a known DMA index
-    - .next() and .remaining() are now able to be
-      used with conf files of type list, for the
-      purpose of stepping through list items
-    - .name() and .value() functions for retrieving
-      the name and value (as strings) of the
-      selected conf list item have been added
-    - an int_array() function to make up for zzrtl
-      not supporting int array[32]; type declarations
-    - a new_string() function for easy string building
-    - rom version checking to reduce weird errors
-      encountered from using a dump/build script with
-      a rom not supported by it
-    - loadfile() function added
-    - tsv_col_row() function added
-</code></pre></div></p>
-                    </div>
-            </div>
-
-            
-            <div class="post-footer">
-                <div class="meta">
-                    <div class="info">
-                        <em class="fas fa-calendar-day"></em>
-                            <span class="date">
-                                                 13/4/2020
                                              </span>
                         
                         <span class="separator"><a class="tag" href="/tags/tools/">tools</a></span>

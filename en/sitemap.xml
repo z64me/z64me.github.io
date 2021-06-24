@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://z64.me/</loc>
-    <lastmod>2021-06-23T23:13:06-04:00</lastmod>
+    <lastmod>2021-06-24T13:44:32-04:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="ar"
@@ -15,14 +15,11 @@
                 href="https://z64.me/"
                 />
   </url><url>
-    <loc>https://z64.me/post/new-website/</loc>
-    <lastmod>2021-06-23T23:13:06-04:00</lastmod>
-  </url><url>
     <loc>https://z64.me/post/</loc>
-    <lastmod>2021-06-23T23:13:06-04:00</lastmod>
+    <lastmod>2021-06-24T13:44:32-04:00</lastmod>
   </url><url>
     <loc>https://z64.me/tags/</loc>
-    <lastmod>2021-06-23T23:13:06-04:00</lastmod>
+    <lastmod>2021-06-24T13:44:32-04:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="ar"
@@ -34,6 +31,15 @@
                 href="https://z64.me/tags/"
                 />
   </url><url>
+    <loc>https://z64.me/tags/tools/</loc>
+    <lastmod>2021-06-24T13:44:32-04:00</lastmod>
+  </url><url>
+    <loc>https://z64.me/post/zzrtl-open-source/</loc>
+    <lastmod>2021-06-24T13:44:32-04:00</lastmod>
+  </url><url>
+    <loc>https://z64.me/post/new-website/</loc>
+    <lastmod>2021-06-23T23:13:06-04:00</lastmod>
+  </url><url>
     <loc>https://z64.me/tags/website/</loc>
     <lastmod>2021-06-23T23:13:06-04:00</lastmod>
   </url><url>
@@ -42,9 +48,6 @@
   </url><url>
     <loc>https://z64.me/post/rip-google-sites/</loc>
     <lastmod>2021-06-20T14:38:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/tags/tools/</loc>
-    <lastmod>2021-05-03T12:00:00-04:00</lastmod>
   </url><url>
     <loc>https://z64.me/post/z64decompress-release/</loc>
     <lastmod>2021-05-03T12:00:00-04:00</lastmod>
