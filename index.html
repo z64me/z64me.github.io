@@ -211,6 +211,40 @@ Remember that you can also specify a section header for the posts below by confi
         <div class="post  . ">
             
             <div class="post-thumbnail">
+                <a href="/post/writing-minimips64/">
+                <img src="/thumbnails/writing-minimips64.png" alt="Thumbnail image" loading="lazy">
+                </a>
+            </div>
+            
+            <div class="post-title">
+                <h3><a href="/post/writing-minimips64/">Writing a tiny MIPS assembler and disassembler in C</a>
+                </h3>
+            </div>
+            <div class="post-content">
+                <div class="p_part">
+                    <p><p>We are able to do most of our Nintendo 64 development in C nowadays. But things weren&rsquo;t always like that! Long ago, legendary hackers did it all in handwritten assembly. Join me as I write a minimalistic MIPS assembler/disassembler and show you how to compile a rudimentary hack using it.</p></p>
+                    <a href='/post/writing-minimips64/' class="read_more">Read more</a></div>
+            </div>
+
+            
+            <div class="post-footer">
+                <div class="meta">
+                    <div class="info">
+                        <em class="fas fa-calendar-day"></em>
+                            <span class="date">
+                                                 30/7/2021
+                                             </span>
+                        
+                        <span class="separator"><a class="tag" href="/tags/fun/">fun</a><a class="tag" href="/tags/articles/">articles</a><a class="tag" href="/tags/mods/">mods</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+
+        <div class="post  . ">
+            
+            <div class="post-thumbnail">
                 <a href="/post/tp-link-64-deluxe-source/">
                 <img src="/thumbnails/tp-link-64-deluxe-source.png" alt="Thumbnail image" loading="lazy">
                 </a>
@@ -475,58 +509,6 @@ Remember that you can also specify a section header for the posts below by confi
             </div>
         </div>
     
-
-        <div class="post  . ">
-            
-            <div class="post-title">
-                <h3><a href="/post/zzrtl-1.0.4/">zzrtl 1.0.4 update</a>
-                </h3>
-            </div>
-            <div class="post-content">
-                <div class="p_part">
-                    <p><p>Remember this junk from the manual?</p>
-<blockquote>
-<p><code>repack</code> should always be false (0)
-unless you modify MM&rsquo;s packing functionality;
-this makes it so the re-encoded files fit at
-the offsets of the original files within the
-archives (this is to get around MM&rsquo;s hard-coded
-references to the assets; if you happen to use
-custom code for MM archive parsing, you can use
-true (1)</p>
-</blockquote>
-<p>It turns out that was dead wrong. The actual problem was, certain parts of a certain (few?) archive(s)&rsquo;s file table(s) were being overwritten thanks to a hiccup in my alignment code. Thankfully, <strong>Aroenai</strong> was able to pinpoint one of these broken files and the bug was fixed in no time.</p>
-<p>One less thing to haunt me; thanks again, <strong>Aroenai</strong>!</p>
-<blockquote>
-<p>r4 credits</p>
-<ul>
-<li>Aroenai - MM yaz archive bug report and testing</li>
-</ul>
-<p>r4 changes</p>
-<ul>
-<li>relocating yaz files within archives was not
-working properly due to alignment, but now it
-is; thanks for the bug report, Aroenai!</li>
-</ul>
-</blockquote></p>
-                    </div>
-            </div>
-
-            
-            <div class="post-footer">
-                <div class="meta">
-                    <div class="info">
-                        <em class="fas fa-calendar-day"></em>
-                            <span class="date">
-                                                 20/8/2020
-                                             </span>
-                        
-                        <span class="separator"><a class="tag" href="/tags/tools/">tools</a></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    
     <div class="pagination">
         
     <ul class="pagination pagination-default">
@@ -549,10 +531,13 @@ is; thanks for the bug report, Aroenai!</li>
         <a href="/page/4/" aria-label="Page 4" class="page-link" role="button">4</a>
       </li>
       <li class="page-item">
+        <a href="/page/5/" aria-label="Page 5" class="page-link" role="button">5</a>
+      </li>
+      <li class="page-item">
         <a href="/page/2/" aria-label="Next" class="page-link" role="button"><span aria-hidden="true">&raquo;</span></a>
       </li>
       <li class="page-item">
-        <a href="/page/4/" aria-label="Last" class="page-link" role="button"><span aria-hidden="true">&raquo;&raquo;</span></a>
+        <a href="/page/5/" aria-label="Last" class="page-link" role="button"><span aria-hidden="true">&raquo;&raquo;</span></a>
       </li>
     </ul>
     </div>

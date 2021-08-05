@@ -6,7 +6,18 @@
     <description>Recent content in Posts on z64me</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 05 Jul 2021 17:57:17 -0400</lastBuildDate><atom:link href="https://z64.me/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 30 Jul 2021 17:57:17 -0400</lastBuildDate><atom:link href="https://z64.me/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Writing a tiny MIPS assembler and disassembler in C</title>
+      <link>https://z64.me/post/writing-minimips64/</link>
+      <pubDate>Fri, 30 Jul 2021 17:57:17 -0400</pubDate>
+      
+      <guid>https://z64.me/post/writing-minimips64/</guid>
+      
+        <description>&lt;p&gt;We are able to do most of our Nintendo 64 development in C nowadays. But things weren&amp;rsquo;t always like that! Long ago, legendary hackers did it all in handwritten assembly. Join me as I write a minimalistic MIPS assembler/disassembler and show you how to compile a rudimentary hack using it.&lt;/p&gt;</description>
+      
+    </item>
+    
     <item>
       <title>TP Link 64 Deluxe source now available</title>
       <link>https://z64.me/post/tp-link-64-deluxe-source/</link>

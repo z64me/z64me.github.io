@@ -211,6 +211,58 @@ Remember that you can also specify a section header for the posts below by confi
         <div class="post  . ">
             
             <div class="post-title">
+                <h3><a href="/post/zzrtl-1.0.4/">zzrtl 1.0.4 update</a>
+                </h3>
+            </div>
+            <div class="post-content">
+                <div class="p_part">
+                    <p><p>Remember this junk from the manual?</p>
+<blockquote>
+<p><code>repack</code> should always be false (0)
+unless you modify MM&rsquo;s packing functionality;
+this makes it so the re-encoded files fit at
+the offsets of the original files within the
+archives (this is to get around MM&rsquo;s hard-coded
+references to the assets; if you happen to use
+custom code for MM archive parsing, you can use
+true (1)</p>
+</blockquote>
+<p>It turns out that was dead wrong. The actual problem was, certain parts of a certain (few?) archive(s)&rsquo;s file table(s) were being overwritten thanks to a hiccup in my alignment code. Thankfully, <strong>Aroenai</strong> was able to pinpoint one of these broken files and the bug was fixed in no time.</p>
+<p>One less thing to haunt me; thanks again, <strong>Aroenai</strong>!</p>
+<blockquote>
+<p>r4 credits</p>
+<ul>
+<li>Aroenai - MM yaz archive bug report and testing</li>
+</ul>
+<p>r4 changes</p>
+<ul>
+<li>relocating yaz files within archives was not
+working properly due to alignment, but now it
+is; thanks for the bug report, Aroenai!</li>
+</ul>
+</blockquote></p>
+                    </div>
+            </div>
+
+            
+            <div class="post-footer">
+                <div class="meta">
+                    <div class="info">
+                        <em class="fas fa-calendar-day"></em>
+                            <span class="date">
+                                                 20/8/2020
+                                             </span>
+                        
+                        <span class="separator"><a class="tag" href="/tags/tools/">tools</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+
+        <div class="post  . ">
+            
+            <div class="post-title">
                 <h3><a href="/post/zztexview-1.0.1/">zztexview 1.0.1 update</a>
                 </h3>
             </div>
@@ -555,35 +607,6 @@ to support Majora&rsquo;s Mask</li>
             </div>
         </div>
     
-
-        <div class="post  . ">
-            
-            <div class="post-title">
-                <h3><a href="/post/zzrtl-release/">zzrtl released</a>
-                </h3>
-            </div>
-            <div class="post-content">
-                <div class="p_part">
-                    <p><p>finally</p>
-<p>it is <a href="https://old.z64.me/tools/zzrtl.html">here</a></p></p>
-                    </div>
-            </div>
-
-            
-            <div class="post-footer">
-                <div class="meta">
-                    <div class="info">
-                        <em class="fas fa-calendar-day"></em>
-                            <span class="date">
-                                                 12/1/2020
-                                             </span>
-                        
-                        <span class="separator"><a class="tag" href="/tags/tools/">tools</a></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    
     <div class="pagination">
         
     <ul class="pagination pagination-default">
@@ -606,10 +629,13 @@ to support Majora&rsquo;s Mask</li>
         <a href="/page/4/" aria-label="Page 4" class="page-link" role="button">4</a>
       </li>
       <li class="page-item">
+        <a href="/page/5/" aria-label="Page 5" class="page-link" role="button">5</a>
+      </li>
+      <li class="page-item">
         <a href="/page/3/" aria-label="Next" class="page-link" role="button"><span aria-hidden="true">&raquo;</span></a>
       </li>
       <li class="page-item">
-        <a href="/page/4/" aria-label="Last" class="page-link" role="button"><span aria-hidden="true">&raquo;&raquo;</span></a>
+        <a href="/page/5/" aria-label="Last" class="page-link" role="button"><span aria-hidden="true">&raquo;&raquo;</span></a>
       </li>
     </ul>
     </div>
