@@ -6,7 +6,18 @@
     <description>Recent content in Posts on z64me</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 30 Jul 2021 17:57:17 -0400</lastBuildDate><atom:link href="https://z64.me/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 09 Aug 2021 19:29:00 -0400</lastBuildDate><atom:link href="https://z64.me/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Data mining the F-Zero X overdump</title>
+      <link>https://z64.me/post/data-mining-the-overdump/</link>
+      <pubDate>Mon, 09 Aug 2021 19:29:00 -0400</pubDate>
+      
+      <guid>https://z64.me/post/data-mining-the-overdump/</guid>
+      
+        <description>&lt;p&gt;Ever go on a treasure hunt? Think of that, except the entire adventure takes place inside a blob of data no one has ever laid eyes on. We data miners are digital archaeologists, and we struck a goldmine. Today, I will tell the tale of the F-Zero X overdump expedition.&lt;/p&gt;</description>
+      
+    </item>
+    
     <item>
       <title>Writing a tiny MIPS assembler and disassembler in C</title>
       <link>https://z64.me/post/writing-minimips64/</link>

@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html  dir="ltr" lang="en" data-theme=""><head>
+    <title> z64me | Data mining the F-Zero X overdump </title>
+
+    
+    <meta charset="utf-8"><meta name="generator" content="Hugo 0.84.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="description" content="Hoot hoot! 🦉">
+    
+    
+    
+    <link rel="stylesheet"
+        href="/css/main.min.a64b503bd01d7d777f851f0e4b751dcd433d000a2187b9494c48797538337163.css"
+        integrity="sha256-pktQO9AdfXd/hR8OS3UdzUM9AAohh7lJTEh5dTgzcWM="
+        crossorigin="anonymous"
+        type="text/css">
+    
+    
+    <link rel="stylesheet"
+        href="/css/markupHighlight.min.bc108ac4d429f5e06afa75cfccb6585578f5198a03d669c1bd24b26e4a2895b7.css"
+        integrity="sha256-vBCKxNQp9eBq&#43;nXPzLZYVXj1GYoD1mnBvSSybkoolbc="
+        crossorigin="anonymous"
+        type="text/css">
+    
+    <link rel="stylesheet" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" 
+    integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" 
+    crossorigin="anonymous" />
+    
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+    <link rel="canonical" href="/post/data-mining-the-overdump/">
+
+    
+    
+    
+    
+    <script type="text/javascript"
+            src="/js/anatole-header.min.98b79432dfa53ecc682fb19247f797a316f8cbca9d5455c8bb22e58fc694b675.js"
+            integrity="sha256-mLeUMt&#43;lPsxoL7GSR/eXoxb4y8qdVFXIuyLlj8aUtnU="
+            crossorigin="anonymous"></script>
+
+
+    
+        
+        
+        <script type="text/javascript"
+                src="/js/anatole-theme-switcher.min.7fd87181cdd7e8413aa64b6867bb32f3a8dc242e684fc7d5bbb9f600dbc2b6eb.js"
+                integrity="sha256-f9hxgc3X6EE6pktoZ7sy86jcJC5oT8fVu7n2ANvCtus="
+                crossorigin="anonymous"></script>
+    
+    <meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://z64.me/images/site-feature-image.png"/>
+
+<meta name="twitter:title" content="Data mining the F-Zero X overdump"/>
+<meta name="twitter:description" content="Ever go on a treasure hunt? Think of that, except the entire adventure takes place inside a blob of data no one has ever laid eyes on. We data miners are digital archaeologists, and we struck a goldmine. Today, I will tell the tale of the F-Zero X overdump expedition."/>
+
+
+    
+
+</head>
+<body>
+<header><div class="page-top  . ">
+    <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+    </a>
+    <nav>
+        <ul class="nav__list" id="navMenu">
+            <div class="nav__links">
+                
+                
+                    
+                    <li><a 
+                        href="/"
+                                
+                        title="">Home</a></li>
+                
+                    
+                    <li><a 
+                        href="/post/"
+                                
+                        title="">Posts</a></li>
+                
+                    
+                    <li><a 
+                        href="/about/"
+                                
+                        title="">About</a></li>
+                
+                
+                    
+                        <li><a href="/"
+                            title=""></a>
+                        </li>
+                    
+                        <li><a href="/ar/"
+                            title=""></a>
+                        </li>
+                    
+                
+            </div>
+            <li>
+                
+                <a class="theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a>
+                
+            </li>
+        </ul>
+    </nav>
+</div>
+</header>
+<div class="wrapper">
+    <aside><div class="sidebar . ">
+    <div class="sidebar__content">
+        <div class="logo-title">
+            <div class="title">
+                <img src="/images/profile.jpg" alt="profile picture">
+                <h3 title=""><a href="/">z64me</a></h3>
+                <div class="description">
+                    <p>Hoot hoot! 🦉</p>
+                </div>
+            </div>
+        </div>
+        <ul class="social-links">
+            
+                <li>
+                    <a href="https://github.com/z64me" rel="me" aria-label="GitHub">
+                        <i class="fab fa-github fa-2x" aria-hidden="true"></i>
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://www.youtube.com/c/z64me/videos" rel="me" aria-label="YouTube">
+                        <i class="fab fa-youtube fa-2x" aria-hidden="true"></i>
+                    </a>
+                </li>
+            
+        </ul>
+    </div><footer class="footer footer--sidebar">        
+    <div class="by_farbox">
+        <ul class="footer__list">
+            <li class="footer__item">&copy;
+                
+                    2018 - 2021
+                
+            </li>
+            
+            <li class="footer__item">
+                <a href="https://old.z64.me/"  target="_blank" rel="noopener noreferrer"  title="">
+                    old site
+                </a>
+            </li>
+            
+            <li class="footer__item">
+                <a href="/post/index.xml"  title="">
+                    rss
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</footer>
+
+<script type="text/javascript"
+        src="/js/medium-zoom.min.83cb1dd5fea8d42d87d1e601a07faa73089ad0ef9ccfe5daf6041289ebcc4e46.js"
+        integrity="sha256-g8sd1f6o1C2H0eYBoH&#43;qcwia0O&#43;cz&#43;Xa9gQSievMTkY="
+        crossorigin="anonymous"></script></div>
+</aside>
+    <main>
+        <div class="autopagerize_page_element">
+            <div class="content">
+    <div class="post  . ">
+        <div class="post-content">
+            
+            <img class="post-thumbnail" src="/thumbnails/data-mining-the-overdump.jpg" alt="Thumbnail image">
+            
+            <div class="post-title">
+                <h1>Data mining the F-Zero X overdump</h1>
+                
+                    <div class="info">
+                        <em class="fas fa-calendar-day"></em>
+                        <span class="date"> 
+                                                9/8/2021
+                                           </span>
+                        <em class="fas fa-stopwatch"></em>
+                        <span class="reading-time">10-minute read</span>
+                    </div>
+                
+            </div>
+
+            <p>Ever go on a treasure hunt? Think of that, except the entire adventure takes place inside a blob of data no one has ever laid eyes on. We data miners are digital archaeologists, and we struck a goldmine. Today, I will tell the tale of the F-Zero X overdump expedition.</p>
+<h2 id="brief-attribution">Brief attribution</h2>
+<p>Many video game preservation enthusiasts were hard at work that day, and countless discoveries were made. I may detail the totality of everyone&rsquo;s findings at a later date, but for now, I want to focus on recounting my own contributions to this data mining effort.</p>
+<p>A very big thank you to <a href="https://twitter.com/forestillusion">Forest of Illusion</a> for making this data available to us.</p>
+<h2 id="what-is-the-f-zero-x-overdump">What is the F-Zero X overdump?</h2>
+<p>Dumping refers to the process of copying a memory chip&rsquo;s contents. In the case of this particular dump, the chip in question was from a Nintendo 64 development cartridge known to contain F-Zero X.</p>
+<p>The cartridge had a 32 MiB capacity, but F-Zero X is only a 16 MiB game. Therefore, any data stored beyond the initial 16 MiB was considered unrelated to F-Zero X, and was colloquially referred to as &ldquo;the overdump.&rdquo;</p>
+<h2 id="initial-observations">Initial observations</h2>
+<p>Since the overdump was from the Nintendo 64 era, there was a good chance it would contain uncompressed image data. Therefore, a quick sweep for potential image data was the first order of business.</p>
+<p>Almost immediately, these textures were discovered. They are stored in standard RGBA8888 format (8 bits per color channel). Surprisingly, these are from an earlier stage of <em>The Legend of Zelda: Ocarina of Time</em>&rsquo;s development.</p>
+<p><img src="/images/data-mining-the-overdump-1.png" alt="image"></p>
+<h2 id="hunting-for-geometry-3d-models">Hunting for geometry (3D models)</h2>
+<p>There were surviving textures, but how about geometry? Let&rsquo;s make some assumptions based on what is known about other games from that era. Here is a snippet from the notes I wrote while brainstorming:</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">* Addresses on the Nintendo 64 use big-endian byte ordering.
+* Values use hexadecimal notation unless otherwise specified.
+* Scene files reference room files, which contain texture-mapped geometry.
+
+Scene Files
+ -&gt; Scene files are always located at 64-bit aligned addresses
+ -&gt; Scene files point to data within themselves through segment addresses
+    on segment 02.
+ -&gt; They always begin with a header
+ -&gt; Some contain multiple headers scattered throughout the file
+ -&gt; Scene headers contain some notable commands (not an exhaustive list):
+     -&gt; headers often begin with 15xxxxxx xxxxxxxx or 18xxxxxx xxxxxxxx
+     -&gt; 03000000 xxxxxxxx points to collision header at local address X
+     -&gt; 04nn0000 xxxxxxxx defines N room file addresses at local address X
+     -&gt; The pattern 14000000 00000000 marks the end of the scene header
+
+Room Files
+ -&gt; Room files also begin with a header
+ -&gt; Useful commands to know (not an exhaustive list):
+     -&gt; 01nn0000 xxxxxxxx defines N game entities at local address X
+     -&gt; 0Bnn0000 xxxxxxxx defines N game objects at local address X
+     -&gt; 0A000000 xxxxxxxx points to mesh header at local address X
+                          (the mesh header references the geometry)
+     -&gt; The pattern 14000000 00000000 marks the end of the room header
+
+Derived from
+https://wiki.cloudmodding.com/oot/Scenes_and_Rooms
+</code></pre></div><p>Based on this information, I was able to locate some data bearing a striking resemblance to a scene file header in the overdump.</p>
+<p><img src="/images/data-mining-the-overdump-2.png" alt="image"></p>
+<h2 id="writing-a-short-program-to-locate-all-the-scene-files">Writing a short program to locate all the scene files</h2>
+<p>Since those notes worked so well in helping me locate a scene file using only a hex editor, I decided to write a short program to quickly search the whole overdump based on the same parameters.</p>
+<p>I love automation. Check out the source:</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="cm">/*
+</span><span class="cm"> * find-scenes.c &lt;z64.me&gt;
+</span><span class="cm"> *
+</span><span class="cm"> * locates scene files in a binary blob
+</span><span class="cm"> *
+</span><span class="cm"> */</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;stdint.h&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="cp">#define die(X) { fprintf(stderr, X&#34;\n&#34;); exit(EXIT_FAILURE); }
+</span><span class="cp"></span>
+<span class="cm">/* minimal file loader
+</span><span class="cm"> * returns 0 on failure
+</span><span class="cm"> * returns pointer to loaded file on success
+</span><span class="cm"> */</span>
+<span class="kt">void</span> <span class="o">*</span><span class="nf">loadfile</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">fn</span><span class="p">,</span> <span class="n">size_t</span> <span class="o">*</span><span class="n">sz</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="n">FILE</span> <span class="o">*</span><span class="n">fp</span><span class="p">;</span>
+   <span class="kt">void</span> <span class="o">*</span><span class="n">dat</span><span class="p">;</span>
+   
+   <span class="cm">/* rudimentary error checking returns 0 on any error */</span>
+   <span class="k">if</span> <span class="p">(</span>
+      <span class="o">!</span><span class="n">fn</span>
+      <span class="o">||</span> <span class="o">!</span><span class="n">sz</span>
+      <span class="o">||</span> <span class="o">!</span><span class="p">(</span><span class="n">fp</span> <span class="o">=</span> <span class="n">fopen</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s">&#34;rb&#34;</span><span class="p">))</span>
+      <span class="o">||</span> <span class="n">fseek</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">SEEK_END</span><span class="p">)</span>
+      <span class="o">||</span> <span class="o">!</span><span class="p">(</span><span class="o">*</span><span class="n">sz</span> <span class="o">=</span> <span class="n">ftell</span><span class="p">(</span><span class="n">fp</span><span class="p">))</span>
+      <span class="o">||</span> <span class="n">fseek</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">SEEK_SET</span><span class="p">)</span>
+      <span class="o">||</span> <span class="o">!</span><span class="p">(</span><span class="n">dat</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="o">*</span><span class="n">sz</span><span class="p">))</span>
+      <span class="o">||</span> <span class="n">fread</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">sz</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span> <span class="o">!=</span> <span class="o">*</span><span class="n">sz</span>
+      <span class="o">||</span> <span class="n">fclose</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+   <span class="p">)</span>
+      <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+   
+   <span class="k">return</span> <span class="n">dat</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* read big-endian u32 */</span>
+<span class="kt">uint32_t</span> <span class="nf">rbeu32</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">b</span> <span class="o">=</span> <span class="n">data</span><span class="p">;</span>
+   
+   <span class="k">return</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="mi">24</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">3</span><span class="p">]);</span>
+<span class="p">}</span>
+
+<span class="cm">/* retrieve data pointed to by a scene segment
+</span><span class="cm"> * returns 0 if out of bounds or if invalid segment pointer
+</span><span class="cm"> */</span>
+<span class="kt">void</span> <span class="o">*</span><span class="nf">scenesegment</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">datBegin</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">datEnd</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">scene</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">ptr</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="kt">uint32_t</span> <span class="n">addr</span> <span class="o">=</span> <span class="n">rbeu32</span><span class="p">(</span><span class="n">ptr</span><span class="p">);</span>
+   <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">dat</span> <span class="o">=</span> <span class="n">scene</span> <span class="o">+</span> <span class="p">(</span><span class="n">addr</span> <span class="o">&amp;</span> <span class="mh">0xffffff</span><span class="p">);</span>
+   
+   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">ptr</span><span class="p">)</span>
+      <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+   
+   <span class="cm">/* invalid segment pointer */</span>
+   <span class="k">if</span> <span class="p">((</span><span class="n">addr</span> <span class="o">&gt;&gt;</span> <span class="mi">24</span><span class="p">)</span> <span class="o">!=</span> <span class="mh">0x02</span><span class="p">)</span>
+      <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+   
+   <span class="cm">/* out of bounds */</span>
+   <span class="k">if</span> <span class="p">(</span><span class="n">dat</span> <span class="o">&lt;</span> <span class="n">datBegin</span> <span class="o">||</span> <span class="n">dat</span> <span class="o">&gt;=</span> <span class="n">datEnd</span><span class="p">)</span>
+      <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+   
+   <span class="k">return</span> <span class="n">dat</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* searches for scene header pattern and prints findings */</span>
+<span class="kt">void</span> <span class="nf">findheaders</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">datBegin</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">datSz</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">dat</span><span class="p">;</span>
+   <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">datEnd</span> <span class="o">=</span> <span class="n">datBegin</span> <span class="o">+</span> <span class="n">datSz</span><span class="p">;</span>
+   <span class="k">const</span> <span class="kt">uint8_t</span> <span class="n">endmarker</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span> <span class="mh">0x14</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">};</span>
+   
+   <span class="cp">#define STRIDE 8 </span><span class="cm">/* length of a header command */</span><span class="cp">
+</span><span class="cp"></span>   
+   <span class="k">for</span> <span class="p">(</span><span class="n">dat</span> <span class="o">=</span> <span class="n">datBegin</span> <span class="p">;</span> <span class="n">dat</span> <span class="o">&lt;</span> <span class="n">datEnd</span><span class="p">;</span> <span class="n">dat</span> <span class="o">+=</span> <span class="n">STRIDE</span><span class="p">)</span>
+   <span class="p">{</span>
+      <span class="cm">/* potential scene header end marker match */</span>
+      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">memcmp</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="n">endmarker</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">endmarker</span><span class="p">)))</span>
+      <span class="p">{</span>
+         <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">bounds</span> <span class="o">=</span> <span class="n">dat</span> <span class="o">-</span> <span class="mi">32</span> <span class="o">*</span> <span class="n">STRIDE</span><span class="p">;</span>
+         <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">roomlist</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+         <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">scene</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+         <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">sceneEnd</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+         <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">walk</span><span class="p">;</span>
+         <span class="kt">uint8_t</span> <span class="n">roomnum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+         <span class="kt">uint8_t</span> <span class="n">i</span><span class="p">;</span>
+         <span class="kt">unsigned</span> <span class="n">datAddr</span><span class="p">;</span>
+         
+         <span class="cm">/* take care to avoid buffer underflow */</span>
+         <span class="k">if</span> <span class="p">(</span><span class="n">bounds</span> <span class="o">&lt;</span> <span class="n">datBegin</span><span class="p">)</span>
+            <span class="n">bounds</span> <span class="o">=</span> <span class="n">datBegin</span><span class="p">;</span>
+         
+         <span class="cm">/* walk backwards for a max of 32 unique header commands
+</span><span class="cm">          * to confirm whether the structure matches what&#39;s typical
+</span><span class="cm">          */</span>
+         <span class="k">for</span> <span class="p">(</span><span class="n">walk</span> <span class="o">=</span> <span class="n">dat</span><span class="p">;</span> <span class="n">walk</span> <span class="o">&gt;</span> <span class="n">bounds</span><span class="p">;</span> <span class="n">walk</span> <span class="o">-=</span> <span class="n">STRIDE</span><span class="p">)</span>
+         <span class="p">{</span>
+            <span class="k">switch</span> <span class="p">(</span><span class="o">*</span><span class="n">walk</span><span class="p">)</span>
+            <span class="p">{</span>
+               <span class="k">case</span> <span class="mh">0x04</span><span class="o">:</span>
+                  <span class="n">roomlist</span> <span class="o">=</span> <span class="n">walk</span> <span class="o">+</span> <span class="mi">4</span><span class="p">;</span>
+                  <span class="n">roomnum</span> <span class="o">=</span> <span class="n">walk</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+                  <span class="n">scene</span> <span class="o">=</span> <span class="n">walk</span><span class="p">;</span> <span class="cm">/* some scenes begin with this command */</span>
+                  <span class="k">break</span><span class="p">;</span>
+               
+               <span class="cm">/* some scenes actually lack these commands */</span>
+               <span class="k">case</span> <span class="mh">0x15</span><span class="o">:</span>
+               <span class="k">case</span> <span class="mh">0x18</span><span class="o">:</span>
+                  <span class="n">scene</span> <span class="o">=</span> <span class="n">walk</span><span class="p">;</span>
+                  <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+         <span class="p">}</span>
+         
+         <span class="cm">/* missing start command, so not a scene */</span>
+         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">scene</span><span class="p">)</span>
+            <span class="k">continue</span><span class="p">;</span>
+         
+         <span class="cm">/* not 64-bit aligned, so not a scene */</span>
+         <span class="n">datAddr</span> <span class="o">=</span> <span class="p">(</span><span class="kt">unsigned</span><span class="p">)(</span><span class="n">scene</span> <span class="o">-</span> <span class="n">datBegin</span><span class="p">);</span>
+         <span class="k">if</span> <span class="p">(</span><span class="n">datAddr</span> <span class="o">&amp;</span> <span class="mh">0xf</span><span class="p">)</span>
+            <span class="k">continue</span><span class="p">;</span>
+         
+         <span class="cm">/* no room list */</span>
+         <span class="k">if</span> <span class="p">(</span><span class="n">roomnum</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">continue</span><span class="p">;</span>
+         
+         <span class="cm">/* invalid room list pointer */</span>
+         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">roomlist</span> <span class="o">=</span> <span class="n">scenesegment</span><span class="p">(</span><span class="n">datBegin</span><span class="p">,</span> <span class="n">datEnd</span><span class="p">,</span> <span class="n">scene</span><span class="p">,</span> <span class="n">roomlist</span><span class="p">)))</span>
+            <span class="k">continue</span><span class="p">;</span>
+         
+         <span class="cm">/* print file address of potential scene header */</span>
+         <span class="n">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s">&#34;%08X</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">datAddr</span><span class="p">);</span>
+         
+         <span class="cm">/* walk room list */</span>
+         <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">roomnum</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+         <span class="p">{</span>
+            <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">this</span> <span class="o">=</span> <span class="n">roomlist</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+            <span class="kt">uint32_t</span> <span class="n">begin</span> <span class="o">=</span> <span class="n">rbeu32</span><span class="p">(</span><span class="n">this</span><span class="p">);</span>
+            <span class="kt">uint32_t</span> <span class="n">end</span> <span class="o">=</span> <span class="n">rbeu32</span><span class="p">(</span><span class="n">this</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">));</span>
+            
+            <span class="cm">/* invalid room address conditions */</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">begin</span> <span class="o">&gt;</span> <span class="n">end</span>
+               <span class="o">||</span> <span class="n">begin</span> <span class="o">&gt;=</span> <span class="n">datSz</span>
+               <span class="o">||</span> <span class="n">end</span> <span class="o">&gt;=</span> <span class="n">datSz</span>
+            <span class="p">)</span>
+            <span class="p">{</span>
+               <span class="n">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s">&#34; -&gt; ERROR</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+               <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+            
+            <span class="cm">/* list start address of each room referenced by scene */</span>
+            <span class="n">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s">&#34; -&gt; %08X</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">begin</span><span class="p">);</span>
+            
+            <span class="cm">/* zero each room file&#39;s contents so its header is ignored */</span>
+            <span class="n">memset</span><span class="p">(</span><span class="n">datBegin</span> <span class="o">+</span> <span class="n">begin</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">end</span> <span class="o">-</span> <span class="n">begin</span><span class="p">);</span>
+            
+            <span class="cm">/* files are packed such that the end of the scene
+</span><span class="cm">             * happens to be the same address as the beginning
+</span><span class="cm">             * of the first room
+</span><span class="cm">             */</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+               <span class="n">sceneEnd</span> <span class="o">=</span> <span class="n">datBegin</span> <span class="o">+</span> <span class="n">begin</span><span class="p">;</span>
+         <span class="p">}</span>
+         
+         <span class="cm">/* it made it through the entire room list without a problem,
+</span><span class="cm">          * so that data appears to be correct; now zero the scene
+</span><span class="cm">          * file&#39;s contents in case it contains alternate headers
+</span><span class="cm">          */</span>
+         <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="n">roomnum</span><span class="p">)</span>
+            <span class="n">memset</span><span class="p">(</span><span class="n">scene</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sceneEnd</span> <span class="o">-</span> <span class="n">scene</span><span class="p">);</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+   
+   <span class="cp">#undef STRIDE
+</span><span class="cp"></span><span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+   <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">dat</span><span class="p">;</span>
+   <span class="n">size_t</span> <span class="n">datSz</span><span class="p">;</span>
+   <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">fn</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+   
+   <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">!=</span> <span class="mi">2</span> <span class="o">||</span> <span class="o">!</span><span class="n">fn</span><span class="p">)</span>
+      <span class="n">die</span><span class="p">(</span><span class="s">&#34;arguments: find-scenes file.bin&#34;</span><span class="p">);</span>
+   
+   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">dat</span> <span class="o">=</span> <span class="n">loadfile</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">datSz</span><span class="p">)))</span>
+      <span class="n">die</span><span class="p">(</span><span class="s">&#34;failed to load input file&#34;</span><span class="p">);</span>
+   
+   <span class="n">findheaders</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="n">datSz</span><span class="p">);</span>
+   
+   <span class="cm">/* cleanup */</span>
+   <span class="n">free</span><span class="p">(</span><span class="n">dat</span><span class="p">);</span>
+   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+</code></pre></div><h2 id="bringing-the-geometry-back-to-life">Bringing the geometry back to life</h2>
+<p>Now with a list of all the surviving scene and room files in the overdump, I wrote a new program to extract them.</p>
+<p>The first thing I tried after extracting these files was opening them in various programs capable of interpreting and displaying Nintendo 64 geometry. Unfortunately, none of the programs I tried were able to recognize the assets I recovered, so I was faced with a new challenge: find out why they don&rsquo;t work, and do something about it.</p>
+<p>By carefully inspecting each file&rsquo;s hex dump using the format spec described <a href="https://wiki.cloudmodding.com/oot/Scenes_and_Rooms">on the CloudModding wiki</a> as a guide, I was able to determine the following culprits:</p>
+<ul>
+<li>Game entity/object list indices have been shifted and are thus stale.</li>
+<li>The player spawn point in one scene uses an invalid flag.</li>
+<li>Door lists in some scenes are formatted differently.</li>
+<li>Water boxes are formatted differently.</li>
+<li>Collision cameras are formatted differently.</li>
+<li>Certain collision flags have been rearranged.</li>
+<li>Room behavior flags function differently.</li>
+<li>Optional alternate headers complicate things, so disable them.</li>
+<li>Some mesh headers are formatted differently.</li>
+<li>Some geometry accomplishes scrolling texture animation by referencing external data (which doesn&rsquo;t exist) in a fashion similar to <a href="https://www.khronos.org/opengl/wiki/Uniform_(GLSL)">GLSL&rsquo;s shader uniforms</a>.</li>
+<li>Triangle commands store their indices in different bytes.</li>
+<li>The geometry was compiled using a different microcode.</li>
+</ul>
+<p>These culprits were trivial to circumvent: all but one.</p>
+<h2 id="converting-the-microcode">Converting the microcode</h2>
+<p>All the geometry I found is expressed through a graphics microcode. It operates as a fixed function pipeline, much like OpenGL&rsquo;s immediate mode. A series of commands are encoded as 64-bit instructions, and then each instruction is executed in order to initialize materials, load vertices into the vertex buffer, render triangles, and so on.</p>
+<p>The microcode I was able to ascertain these files were using was incompatible with the game I planned on injecting them into, so the only thing left to do was convert them to a compatible microcode. I devised the following steps:</p>
+<ul>
+<li>Extract 3D model data.</li>
+<li>Disassemble to a common intermediate format.</li>
+<li>Recompile with new microcode.</li>
+<li>Inject recompiled 3D model data.</li>
+<li>Repeat for all geometry.</li>
+</ul>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Incompatible 3D model data:
+
+00000000: e700000000000000 fa00000100a100ff  ................
+00000010: e700000000000000 b900031dc8103478  ..............4x
+00000020: bb00000000000000 e700000000000000  ................
+00000030: fc41fffffffff638 b700000000002000  .A.....8...... .
+00000040: b700000000020000 b700000000000200  ................
+00000050: 040040ff03000f10 bf00000000000204  ..@.............
+00000060: bf00000000000406 bf00000000080a0c  ................
+00000070: bf00000000080c0e bf00000000101214  ................
+00000080: bf00000000101416 bf00000000181a1c  ................
+00000090: bf00000000181c1e 0400207f03001010  .......... .....
+000000a0: bf00000000000406 bf00000000000608  ................
+000000b0: bf00000000020a0c bf00000000020c0e  ................
+000000c0: b800000000000000                   ........
+
+</code></pre></div><p>This binary data is then disassembled into C macros using a program called <strong>gfxdis</strong>:</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">gfxdis output:
+
+gsDPPipeSync(),
+gsDPSetPrimColor(0, qu08(0.00390625), 0x00, 0xA1, 0x00, 0xFF),
+gsDPPipeSync(),
+gsDPSetRenderMode(AA_EN | Z_CMP | Z_UPD | IM_RD | CVG_DST_CLAMP | ZMODE_INTER | CVG_X_ALPHA | ALPHA_CVG_SEL | GBL_c1(G_BL_CLR_FOG, G_BL_A_SHADE, G_BL_CLR_IN, G_BL_1MA), AA_EN | Z_CMP | Z_UPD | IM_RD | CVG_DST_CLAMP | ZMODE_INTER | CVG_X_ALPHA | ALPHA_CVG_SEL | GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA)),
+gsSPTexture(0, 0, 0, G_TX_RENDERTILE, G_OFF),
+gsDPPipeSync(),
+gsDPSetCombineLERP(SHADE, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, 0, 0, 0, COMBINED, 0, 0, 0, COMBINED),
+gsSPSetGeometryMode(G_CULL_BACK),
+gsSPSetGeometryMode(G_LIGHTING),
+gsSPSetGeometryMode(G_SHADING_SMOOTH),
+gsSPVertex(0x03000F10, 16, 0),
+gsSP1Triangle(0, 1, 2, 0),
+gsSP1Triangle(0, 2, 3, 0),
+gsSP1Triangle(4, 5, 6, 0),
+gsSP1Triangle(4, 6, 7, 0),
+gsSP1Triangle(8, 9, 10, 0),
+gsSP1Triangle(8, 10, 11, 0),
+gsSP1Triangle(12, 13, 14, 0),
+gsSP1Triangle(12, 14, 15, 0),
+gsSPVertex(0x03001010, 8, 0),
+gsSP1Triangle(0, 2, 3, 0),
+gsSP1Triangle(0, 3, 4, 0),
+gsSP1Triangle(1, 5, 6, 0),
+gsSP1Triangle(1, 6, 7, 0),
+gsSPEndDisplayList(),
+</code></pre></div><p>Finally, my own program called <strong>gfxasm</strong> recompiles these C macros into the desired microcode:</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">gfxasm output:
+
+00000000: e700000000000000 fa00000100a100ff  ................
+00000010: e700000000000000 e200001cc8103478  ..............4x
+00000020: d700000000000000 e700000000000000  ................
+00000030: fc41fffffffff638 d9ffffff00000400  .A.....8........
+00000040: d9ffffff00020000 d9ffffff00200000  ............. ..
+00000050: 0101002003000f10 0500020400000000  ... ............
+00000060: 0500040600000000 05080a0c00000000  ................
+00000070: 05080c0e00000000 0510121400000000  ................
+00000080: 0510141600000000 05181a1c00000000  ................
+00000090: 05181c1e00000000 0100801003001010  ................
+000000a0: 0500040600000000 0500060800000000  ................
+000000b0: 05020a0c00000000 05020c0e00000000  ................
+000000c0: df00000000000000                   ........
+
+</code></pre></div><p>This was automated for every file. Some 3D models contain instructions for branching to other 3D models, so I got to have some fun with recursion when writing the code for this.</p>
+<h2 id="exploring-the-end-product">Exploring the end product</h2>
+<p>Once everything was working, I compiled it all into a playable demo for others to download and enjoy. <a href="https://www.youtube.com/watch?v=rHWcylaYDk4">Click here</a> to try it for yourself, or skip around the video below to watch someone else explore them.</p>
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe src="https://www.youtube.com/embed/L3FfqV3Xxhc" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
+</div>
+
+<h2 id="it-doesnt-end-there">It doesn&rsquo;t end there</h2>
+<p>People are still doing new and exciting things with these findings:</p>
+<ul>
+<li><a href="https://noclip.website/#zelview_beta/91;ShareData=AJr/YT%5E%5BZ*9P,LIUV-0cWPE-%5D6JDKJUX&amp;9KUQ/_~WOs$?911S*8:(HCUH$5t=a)">Click here</a> to explore these worlds directly in your web browser. Great work, <a href="https://github.com/magcius">Jasper</a>!</li>
+<li>The <a href="https://www.youtube.com/watch?v=BOfTbIzG1hU">Space World 97 Experience</a> is an in-progress project aiming to use these and other recovered assets to accurately recreate an early build of <em>The Legend of Zelda: Ocarina of Time</em>.</li>
+</ul>
+<h2 id="press">Press</h2>
+<p>My data recovery project was a huge success, and thousands of people were happy with the results! It even made a few headlines:</p>
+<ul>
+<li><a href="https://kotaku.com/ocarina-of-time-demo-fragments-reveal-a-much-earlier-ve-1846095012">Walker, Ian. &ldquo;Ocarina of Time Demo Fragments Reveal a Much Earlier Version of the Game&rdquo;, <em>Kotaku</em>, 20 Jan. 2021</a></li>
+<li><a href="https://www.retrorgb.com/a-zelda-64-was-beta-found-well-half-of-it.html">Fratz, Chris. &ldquo;A Zelda 64 Beta Was Found (well, half of it)&rdquo;, <em>RetroRGB</em>, 24 Jan. 2021</a></li>
+<li><a href="https://www.keengamer.com/articles/news/some-lost-space-world-97-zelda-64-beta-files-have-been-found/">Girardin, Geoff. &ldquo;Some Lost Space World 97 Zelda 64 Beta Files Have Been Found&rdquo;, <em>KeenGamer</em>, 20 Jan. 2021</a></li>
+</ul>
+<h2 id="source-code">Source code</h2>
+<p>The full source code for this is <a href="https://github.com/z64me/overdump-extract-scenes">available on GitHub: z64me/overdump-extract-scenes</a></p></div>
+        <div class="post-footer">
+            <div class="info">
+                
+                <span class="separator"><a class="tag" href="/tags/fun/">fun</a><a class="tag" href="/tags/articles/">articles</a><a class="tag" href="/tags/mods/">mods</a></span>
+            </div>
+        </div>
+
+        
+    </div>
+
+
+            </div>
+        </div>
+    </main>
+</div><footer class="footer footer--base">        
+    <div class="by_farbox">
+        <ul class="footer__list">
+            <li class="footer__item">&copy;
+                
+                    2018 - 2021
+                
+            </li>
+            
+            <li class="footer__item">
+                <a href="https://old.z64.me/"  target="_blank" rel="noopener noreferrer"  title="">
+                    old site
+                </a>
+            </li>
+            
+            <li class="footer__item">
+                <a href="/post/index.xml"  title="">
+                    rss
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</footer>
+
+<script type="text/javascript"
+        src="/js/medium-zoom.min.83cb1dd5fea8d42d87d1e601a07faa73089ad0ef9ccfe5daf6041289ebcc4e46.js"
+        integrity="sha256-g8sd1f6o1C2H0eYBoH&#43;qcwia0O&#43;cz&#43;Xa9gQSievMTkY="
+        crossorigin="anonymous"></script></body>
+
+</html>
