@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://z64.me/</loc>
-    <lastmod>2021-08-09T19:29:00-04:00</lastmod>
+    <lastmod>2021-08-16T00:22:57-04:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="ar"
@@ -16,22 +16,22 @@
                 />
   </url><url>
     <loc>https://z64.me/tags/articles/</loc>
-    <lastmod>2021-08-09T19:29:00-04:00</lastmod>
+    <lastmod>2021-08-16T00:22:57-04:00</lastmod>
   </url><url>
-    <loc>https://z64.me/post/data-mining-the-overdump/</loc>
-    <lastmod>2021-08-09T19:29:00-04:00</lastmod>
+    <loc>https://z64.me/post/developing-flappy-navi/</loc>
+    <lastmod>2021-08-16T00:22:57-04:00</lastmod>
   </url><url>
     <loc>https://z64.me/tags/fun/</loc>
-    <lastmod>2021-08-09T19:29:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/tags/mods/</loc>
-    <lastmod>2021-08-09T19:29:00-04:00</lastmod>
+    <lastmod>2021-08-16T00:22:57-04:00</lastmod>
   </url><url>
     <loc>https://z64.me/post/</loc>
-    <lastmod>2021-08-09T19:29:00-04:00</lastmod>
+    <lastmod>2021-08-16T00:22:57-04:00</lastmod>
+  </url><url>
+    <loc>https://z64.me/tags/programming/</loc>
+    <lastmod>2021-08-16T00:22:57-04:00</lastmod>
   </url><url>
     <loc>https://z64.me/tags/</loc>
-    <lastmod>2021-08-09T19:29:00-04:00</lastmod>
+    <lastmod>2021-08-16T00:22:57-04:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="ar"
@@ -43,6 +43,12 @@
                 href="https://z64.me/tags/"
                 />
   </url><url>
+    <loc>https://z64.me/post/data-mining-the-overdump/</loc>
+    <lastmod>2021-08-09T19:29:00-04:00</lastmod>
+  </url><url>
+    <loc>https://z64.me/tags/mods/</loc>
+    <lastmod>2021-08-09T19:29:00-04:00</lastmod>
+  </url><url>
     <loc>https://z64.me/post/writing-minimips64/</loc>
     <lastmod>2021-07-30T17:57:17-04:00</lastmod>
   </url><url>
@@ -52,137 +58,14 @@
     <loc>https://z64.me/post/wild-berries/</loc>
     <lastmod>2021-06-25T17:53:17-04:00</lastmod>
   </url><url>
-    <loc>https://z64.me/tags/tools/</loc>
-    <lastmod>2021-06-24T13:44:32-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/zzrtl-open-source/</loc>
-    <lastmod>2021-06-24T13:44:32-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/new-website/</loc>
-    <lastmod>2021-06-23T23:13:06-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/tags/website/</loc>
-    <lastmod>2021-06-23T23:13:06-04:00</lastmod>
-  </url><url>
     <loc>https://z64.me/about/</loc>
     <lastmod>2021-06-24T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/rip-google-sites/</loc>
-    <lastmod>2021-06-20T14:38:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/z64decompress-release/</loc>
-    <lastmod>2021-05-03T12:00:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/z64compress-release/</loc>
-    <lastmod>2021-04-29T20:48:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/tags/guides/</loc>
-    <lastmod>2021-02-12T07:37:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/new-playas-pipeline-release/</loc>
-    <lastmod>2021-02-12T07:37:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/gfxasm-source-code-release/</loc>
-    <lastmod>2020-12-04T10:31:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/zzrtl-1.0.4/</loc>
-    <lastmod>2020-08-20T12:57:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/zztexview-1.0.1/</loc>
-    <lastmod>2020-04-30T16:18:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/zztexview-release/</loc>
-    <lastmod>2020-04-29T16:33:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/zzrtl-1.0.3/</loc>
-    <lastmod>2020-04-13T15:14:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/zzplayas-1.0.3/</loc>
-    <lastmod>2020-03-17T10:18:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/z64enc-lzo-aplib/</loc>
-    <lastmod>2020-02-10T12:44:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/zzrtl-1.0.2/</loc>
-    <lastmod>2020-02-10T12:43:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/z64enc-release/</loc>
-    <lastmod>2020-02-01T20:30:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/zzrtl-1.0.1/</loc>
-    <lastmod>2020-02-01T20:29:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/zzrtl-1.0.0/</loc>
-    <lastmod>2020-01-12T19:40:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/zzrtl-release/</loc>
-    <lastmod>2020-01-12T02:04:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/zzplayas-1.0.2/</loc>
-    <lastmod>2019-10-10T12:23:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/zzconvert-1.0.7/</loc>
-    <lastmod>2019-07-06T21:07:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/zzconvert-1.0.6/</loc>
-    <lastmod>2019-06-30T21:07:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/zzromtool-1.0.4/</loc>
-    <lastmod>2019-06-30T21:07:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/zzromtool-1.0.3/</loc>
-    <lastmod>2019-06-01T12:39:00-04:00</lastmod>
   </url><url>
     <loc>https://z64.me/archives/</loc>
     <lastmod>2019-05-28T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://z64.me/post/zzromtool-1.0.2/</loc>
-    <lastmod>2019-04-02T12:21:00-04:00</lastmod>
-  </url><url>
     <loc>https://z64.me/contact/</loc>
     <lastmod>2019-03-08T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/zzromtool-1.0.1/</loc>
-    <lastmod>2019-02-04T01:28:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/zzromtool-1.0.0/</loc>
-    <lastmod>2019-02-02T20:00:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/zzromtool-release/</loc>
-    <lastmod>2019-01-31T23:40:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/zzplayas-1.0.1/</loc>
-    <lastmod>2019-01-31T23:28:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/zzplayas-1.0.0/</loc>
-    <lastmod>2019-01-24T03:04:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/zzconvert-1.0.5/</loc>
-    <lastmod>2019-01-24T03:03:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/cylindrical-billboarding-woes/</loc>
-    <lastmod>2019-01-09T17:34:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/zzconvert-1.0.4/</loc>
-    <lastmod>2018-12-02T04:33:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/zzconvert-1.0.3/</loc>
-    <lastmod>2018-11-27T23:17:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/zzconvert-1.0.2/</loc>
-    <lastmod>2018-10-24T20:15:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/zzconvert-1.0.1/</loc>
-    <lastmod>2018-09-24T22:06:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/zzconvert-1.0.0/</loc>
-    <lastmod>2018-09-07T15:37:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/playas-pipeline-release/</loc>
-    <lastmod>2018-08-26T22:52:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/zzdec-release/</loc>
-    <lastmod>2018-02-15T01:14:00-04:00</lastmod>
   </url><url>
     <loc>https://z64.me/imprint/</loc>
     <priority>0</priority>
