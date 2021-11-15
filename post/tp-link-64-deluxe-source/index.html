@@ -3,7 +3,7 @@
     <title> z64me | TP Link 64 Deluxe source now available </title>
 
     
-    <meta charset="utf-8"><meta name="generator" content="Hugo 0.84.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta charset="utf-8"><meta name="generator" content="Hugo 0.88.1" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
     <meta name="description" content="Hoot hoot! 🦉">
     
     
@@ -221,7 +221,7 @@
 </figure>
 
 <code>z64convert</code> writes these as code for you&hellip;</p>
-<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="k">static</span> <span class="k">const</span> <span class="kt">uint32_t</span> <span class="n">proxy_Kokiri</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="k">static</span> <span class="k">const</span> <span class="kt">uint32_t</span> <span class="n">proxy_Kokiri</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
 	<span class="mh">0xDE010000</span><span class="p">,</span> <span class="mh">0x0601FFA8</span><span class="p">,</span>
 	<span class="mh">0xDE010000</span><span class="p">,</span> <span class="mh">0x06020358</span><span class="p">,</span>
 	<span class="mh">0xDE010000</span><span class="p">,</span> <span class="mh">0x0601CE20</span><span class="p">,</span>
@@ -248,7 +248,7 @@
 	<span class="cm">/* etc */</span>
 <span class="p">};</span>
 </code></pre></div><p>&hellip; which you can then use in your embedded overlay like so:</p>
-<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="cm">/* override riggedmesh with one of the available tunics */</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cm">/* override riggedmesh with one of the available tunics */</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">curTunic</span> <span class="o">!=</span> <span class="n">prevTunic</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="kt">unsigned</span> <span class="n">proxySize</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">proxy_Kokiri</span><span class="p">);</span>
@@ -272,7 +272,7 @@
 </code></pre></div><h2 id="proxies-generic">Proxies (generic)</h2>
 <p>If you select the <strong>Master Sword handle</strong> in Blender and look at its settings in the <strong>Object Data</strong> tab, you&rsquo;ll see that it has the proxy setting enabled. This is so all references to it can easily be redirected to any model we want.</p>
 <p>Why? Because normally, the game uses the Master Sword model when you hold the Kokiri Sword as Adult Link (the Ordon Sword in this mod). It is also displayed in Link&rsquo;s sheath when the Biggoron Sword is equipped (lazy Nintendo). This behavior is unacceptable, but is easily solvable now.</p>
-<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="cm">/* override Master Sword and Sheath models */</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cm">/* override Master Sword and Sheath models */</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">curSword</span> <span class="o">!=</span> <span class="n">prevSword</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="k">switch</span> <span class="p">(</span><span class="n">curSword</span><span class="p">)</span>

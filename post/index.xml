@@ -6,7 +6,18 @@
     <description>Recent content in Posts on z64me</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 16 Aug 2021 00:22:57 -0400</lastBuildDate><atom:link href="https://z64.me/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 01 Nov 2021 14:20:56 -0400</lastBuildDate><atom:link href="https://z64.me/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Crafting simple hardware drivers with libusb</title>
+      <link>https://z64.me/post/crafting-drivers-libusb/</link>
+      <pubDate>Mon, 01 Nov 2021 14:20:56 -0400</pubDate>
+      
+      <guid>https://z64.me/post/crafting-drivers-libusb/</guid>
+      
+        <description>&lt;p&gt;I recently upgraded my computer mouse. Windows drivers are available through the vendor&amp;rsquo;s website, but what&amp;rsquo;s a daily Linux user like me to do? Reverse engineer it, of course!&lt;/p&gt;</description>
+      
+    </item>
+    
     <item>
       <title>Developing a video game in C: Flappy Navi</title>
       <link>https://z64.me/post/developing-flappy-navi/</link>

@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://z64.me/</loc>
-    <lastmod>2021-08-16T00:22:57-04:00</lastmod>
+    <lastmod>2021-11-01T14:20:56-04:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="ar"
@@ -16,22 +16,25 @@
                 />
   </url><url>
     <loc>https://z64.me/tags/articles/</loc>
-    <lastmod>2021-08-16T00:22:57-04:00</lastmod>
+    <lastmod>2021-11-01T14:20:56-04:00</lastmod>
   </url><url>
-    <loc>https://z64.me/post/developing-flappy-navi/</loc>
-    <lastmod>2021-08-16T00:22:57-04:00</lastmod>
+    <loc>https://z64.me/tags/c/</loc>
+    <lastmod>2021-11-01T14:20:56-04:00</lastmod>
+  </url><url>
+    <loc>https://z64.me/tags/c&#43;&#43;/</loc>
+    <lastmod>2021-11-01T14:20:56-04:00</lastmod>
+  </url><url>
+    <loc>https://z64.me/post/crafting-drivers-libusb/</loc>
+    <lastmod>2021-11-01T14:20:56-04:00</lastmod>
   </url><url>
     <loc>https://z64.me/tags/fun/</loc>
-    <lastmod>2021-08-16T00:22:57-04:00</lastmod>
+    <lastmod>2021-11-01T14:20:56-04:00</lastmod>
   </url><url>
     <loc>https://z64.me/post/</loc>
-    <lastmod>2021-08-16T00:22:57-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/tags/programming/</loc>
-    <lastmod>2021-08-16T00:22:57-04:00</lastmod>
+    <lastmod>2021-11-01T14:20:56-04:00</lastmod>
   </url><url>
     <loc>https://z64.me/tags/</loc>
-    <lastmod>2021-08-16T00:22:57-04:00</lastmod>
+    <lastmod>2021-11-01T14:20:56-04:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="ar"
@@ -42,6 +45,12 @@
                 hreflang="en"
                 href="https://z64.me/tags/"
                 />
+  </url><url>
+    <loc>https://z64.me/post/developing-flappy-navi/</loc>
+    <lastmod>2021-08-16T00:22:57-04:00</lastmod>
+  </url><url>
+    <loc>https://z64.me/tags/programming/</loc>
+    <lastmod>2021-08-16T00:22:57-04:00</lastmod>
   </url><url>
     <loc>https://z64.me/post/data-mining-the-overdump/</loc>
     <lastmod>2021-08-09T19:29:00-04:00</lastmod>

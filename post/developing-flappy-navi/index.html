@@ -3,7 +3,7 @@
     <title> z64me | Developing a video game in C: Flappy Navi </title>
 
     
-    <meta charset="utf-8"><meta name="generator" content="Hugo 0.84.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta charset="utf-8"><meta name="generator" content="Hugo 0.88.1" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
     <meta name="description" content="Hoot hoot! 🦉">
     
     
@@ -186,7 +186,7 @@
 <h2 id="planning">Planning</h2>
 <p>Games, being finite-state machines, are best represented using flowcharts. Here&rsquo;s mine:</p>
 <p><img src="/images/developing-flappy-navi-flowchart.png" alt="image"></p>
-<p>Once I established a list of game states, I created mockups for each. These reflect how I wanted the game to look, and they helped me establish a working screen resolution so I wouldn&rsquo;t run into problems later.</p>
+<p>Once I determined a list of game states, I created mockups for each. These reflected how I wanted the game to look, and they helped me establish a working screen resolution so I wouldn&rsquo;t run into problems later.</p>
 <table>
 <thead>
 <tr>
@@ -217,7 +217,7 @@
 <p>The player is nothing more than a center-screen rectangle that is influenced by gravity. Because all movement is based on real-world time, I can conveniently use this parabolic motion formula for the physics:</p>
 <p><img src="/images/developing-flappy-navi-quadratic-equation.png" alt="image"></p>
 <p>And here it is expressed as a simple C function:</p>
-<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="cm">/* a snippet from FlappyNavi/src/player.c */</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cm">/* a snippet from FlappyNavi/src/player.c */</span>
 
 <span class="cm">/* player movement is accomplished using a simple quadratic equation;
 </span><span class="cm"> * this solution keeps the game framerate-independent without having
@@ -262,7 +262,7 @@
 <p>If you color-code it based on the control pixels, you get this:</p>
 <p><img src="/images/developing-flappy-navi-spritesheet-colors.png" alt="image"></p>
 <p>To display a sprite in the game window, you only need its row/column indices:</p>
-<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="cm">/* a snippet from FlappyNavi/src/ui.c */</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cm">/* a snippet from FlappyNavi/src/ui.c */</span>
 
 <span class="kt">int</span> <span class="n">winCenterX</span> <span class="o">=</span> <span class="n">WINDOW_W</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
 
@@ -283,7 +283,7 @@
 <h2 id="particles">Particles</h2>
 <p><img src="/images/developing-flappy-navi-particles31.gif" alt="image"></p>
 <p>Particle effects make any game more lively. New particles are added to the game world like so:</p>
-<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="cm">/* a snippet from FlappyNavi/src/player.c */</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cm">/* a snippet from FlappyNavi/src/player.c */</span>
 
 <span class="cm">/* spawn particles */</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">game</span><span class="o">-&gt;</span><span class="n">ticks</span> <span class="o">-</span> <span class="n">fairy</span><span class="o">-&gt;</span><span class="n">particleTime</span> <span class="o">&gt;=</span> <span class="n">PLAYER_PARTFREQ</span><span class="p">)</span>
@@ -307,7 +307,7 @@
 <h2 id="the-virtual-filesystem">The virtual filesystem</h2>
 <p>There&rsquo;s nothing quite like distributing a piece of software as a tiny self-contained executable. Because all the asset loading is routed through a single function, this goal seemed feasible, so I decided to give it a try.</p>
 <p>When the compiler flag <code>-DFLAPPY_STATIC_BUILD</code> is specified, a rudimentary virtual filesystem is embedded into the application like so:</p>
-<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="cm">/* a snippet from FlappyNavi/src/file.c */</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cm">/* a snippet from FlappyNavi/src/file.c */</span>
 
 <span class="cp">#include</span> <span class="cpf">&#34;incbin.h&#34;</span><span class="cp">
 </span><span class="cp"></span>

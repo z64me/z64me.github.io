@@ -3,7 +3,7 @@
     <title> z64me | Data mining the F-Zero X overdump </title>
 
     
-    <meta charset="utf-8"><meta name="generator" content="Hugo 0.84.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta charset="utf-8"><meta name="generator" content="Hugo 0.88.1" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
     <meta name="description" content="Hoot hoot! 🦉">
     
     
@@ -195,7 +195,7 @@
 <p><img src="/images/data-mining-the-overdump-1.png" alt="image"></p>
 <h2 id="hunting-for-geometry-3d-models">Hunting for geometry (3D models)</h2>
 <p>There were surviving textures, but how about geometry? Let&rsquo;s make some assumptions based on what is known about other games from that era. Here is a snippet from the notes I wrote while brainstorming:</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">* Addresses on the Nintendo 64 use big-endian byte ordering.
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">* Addresses on the Nintendo 64 use big-endian byte ordering.
 * Values use hexadecimal notation unless otherwise specified.
 * Scene files reference room files, which contain texture-mapped geometry.
 
@@ -227,7 +227,7 @@ https://wiki.cloudmodding.com/oot/Scenes_and_Rooms
 <h2 id="writing-a-short-program-to-locate-all-the-scene-files">Writing a short program to locate all the scene files</h2>
 <p>Since those notes worked so well in helping me locate a scene file using only a hex editor, I decided to write a short program to quickly search the whole overdump based on the same parameters.</p>
 <p>I love automation. Check out the source:</p>
-<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="cm">/*
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cm">/*
 </span><span class="cm"> * find-scenes.c &lt;z64.me&gt;
 </span><span class="cm"> *
 </span><span class="cm"> * locates scene files in a binary blob
@@ -457,7 +457,7 @@ https://wiki.cloudmodding.com/oot/Scenes_and_Rooms
 <li>Inject recompiled 3D model data.</li>
 <li>Repeat for all geometry.</li>
 </ul>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Incompatible 3D model data:
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Incompatible 3D model data:
 
 00000000: e700000000000000 fa00000100a100ff  ................
 00000010: e700000000000000 b900031dc8103478  ..............4x
@@ -474,7 +474,7 @@ https://wiki.cloudmodding.com/oot/Scenes_and_Rooms
 000000c0: b800000000000000                   ........
 
 </code></pre></div><p>This binary data is then disassembled into C macros using a program called <strong>gfxdis</strong>:</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">gfxdis output:
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">gfxdis output:
 
 gsDPPipeSync(),
 gsDPSetPrimColor(0, qu08(0.00390625), 0x00, 0xA1, 0x00, 0xFF),
@@ -502,7 +502,7 @@ gsSP1Triangle(1, 5, 6, 0),
 gsSP1Triangle(1, 6, 7, 0),
 gsSPEndDisplayList(),
 </code></pre></div><p>Finally, my own program called <strong>gfxasm</strong> recompiles these C macros into the desired microcode:</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">gfxasm output:
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">gfxasm output:
 
 00000000: e700000000000000 fa00000100a100ff  ................
 00000010: e700000000000000 e200001cc8103478  ..............4x
