@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html  dir="ltr" lang="en" data-theme="light"><head>
+    <title> z64me | EzSpriteSheet: a free and open source sprite sheet creator </title>
+
+    
+    <meta charset="utf-8"><meta name="generator" content="Hugo 0.88.1" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="description" content="Hoot hoot! 🦉">
+    
+    
+    
+    <link rel="stylesheet"
+        href="/css/main.min.d7d091492c200520b33b845275b425f60a913a013a133ee523d569ee7d465fdd.css"
+        integrity="sha256-19CRSSwgBSCzO4RSdbQl9gqROgE6Ez7lI9Vp7n1GX90="
+        crossorigin="anonymous"
+        type="text/css">
+    
+    
+    <link rel="stylesheet"
+        href="/css/markupHighlight.min.bc108ac4d429f5e06afa75cfccb6585578f5198a03d669c1bd24b26e4a2895b7.css"
+        integrity="sha256-vBCKxNQp9eBq&#43;nXPzLZYVXj1GYoD1mnBvSSybkoolbc="
+        crossorigin="anonymous"
+        type="text/css">
+    
+    <link rel="stylesheet" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" 
+    integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" 
+    crossorigin="anonymous" />
+    
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+    <link rel="canonical" href="/post/ezspritesheet/">
+
+    
+    
+    
+    
+    <script type="text/javascript"
+            src="/js/anatole-header.min.98b79432dfa53ecc682fb19247f797a316f8cbca9d5455c8bb22e58fc694b675.js"
+            integrity="sha256-mLeUMt&#43;lPsxoL7GSR/eXoxb4y8qdVFXIuyLlj8aUtnU="
+            crossorigin="anonymous"></script>
+
+
+    
+    <meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://z64.me/images/site-feature-image.png"/>
+
+<meta name="twitter:title" content="EzSpriteSheet: a free and open source sprite sheet creator"/>
+<meta name="twitter:description" content="Creating sprite sheets has never been easier: toss a folder at my new program and watch magic happen! This article details both why and how I engineered new software to address a common concern among game developers. This project was a month-long commitment."/>
+
+
+    
+
+</head>
+<body>
+<header><div class="page-top  . ">
+    <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+    </a>
+    <nav>
+        <ul class="nav__list" id="navMenu">
+            <div class="nav__links">
+                
+                
+                    
+                    <li><a 
+                        href="/"
+                                
+                        title="">Home</a></li>
+                
+                    
+                    <li><a 
+                        href="/post/"
+                                
+                        title="">Posts</a></li>
+                
+                    
+                    <li><a 
+                        href="/about/"
+                                
+                        title="">About</a></li>
+                
+                
+                    
+                        <li><a href="/"
+                            title=""></a>
+                        </li>
+                    
+                        <li><a href="/ar/"
+                            title=""></a>
+                        </li>
+                    
+                
+            </div>
+            <li>
+                
+            </li>
+        </ul>
+    </nav>
+</div>
+</header>
+<div class="wrapper">
+    <aside><div class="sidebar . ">
+    <div class="sidebar__content">
+        <div class="logo-title">
+            <div class="title">
+                <img src="/images/profile.jpg" alt="profile picture">
+                <h3 title=""><a href="/">z64me</a></h3>
+                <div class="description">
+                    <p>Hoot hoot! 🦉</p>
+                </div>
+            </div>
+        </div>
+        <ul class="social-links">
+            
+                <li>
+                    <a href="https://github.com/z64me" rel="me" aria-label="GitHub">
+                        <i class="fab fa-github fa-2x" aria-hidden="true"></i>
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://www.youtube.com/c/z64me/videos" rel="me" aria-label="YouTube">
+                        <i class="fab fa-youtube fa-2x" aria-hidden="true"></i>
+                    </a>
+                </li>
+            
+        </ul>
+    </div><footer class="footer footer--sidebar">        
+    <div class="by_farbox">
+        <ul class="footer__list">
+            <li class="footer__item">&copy;
+                
+                    2018 - 2021
+                
+            </li>
+            
+            <li class="footer__item">
+                <a href="https://old.z64.me/"  target="_blank" rel="noopener noreferrer"  title="">
+                    old site
+                </a>
+            </li>
+            
+            <li class="footer__item">
+                <a href="/post/index.xml"  title="">
+                    rss
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</footer>
+
+<script type="text/javascript"
+        src="/js/medium-zoom.min.83cb1dd5fea8d42d87d1e601a07faa73089ad0ef9ccfe5daf6041289ebcc4e46.js"
+        integrity="sha256-g8sd1f6o1C2H0eYBoH&#43;qcwia0O&#43;cz&#43;Xa9gQSievMTkY="
+        crossorigin="anonymous"></script></div>
+</aside>
+    <main>
+        <div class="autopagerize_page_element">
+            <div class="content">
+    <div class="post  . ">
+        <div class="post-content">
+            
+            <img class="post-thumbnail" src="/thumbnails/ezspritesheet.png" alt="Thumbnail image">
+            
+            <div class="post-title">
+                <h1>EzSpriteSheet: a free and open source sprite sheet creator</h1>
+                
+                    <div class="info">
+                        <em class="fas fa-calendar-day"></em>
+                        <span class="date"> 
+                                                15/1/2022
+                                           </span>
+                        <em class="fas fa-stopwatch"></em>
+                        <span class="reading-time">4-minute read</span>
+                    </div>
+                
+            </div>
+
+            <p>Creating sprite sheets has never been easier: toss a folder at my new program and watch magic happen! This article details both why and how I engineered new software to address a common concern among game developers. This project was a month-long commitment.</p>
+<p><img src="/images/ezspritesheet.png" alt="image"></p>
+<h2 id="motivation">Motivation</h2>
+<p>When developing games from scratch, I believe a neatly-organized folder of animated GIF&rsquo;s/WEBP&rsquo;s to be the best way to manage sprites. Anything more than that and you add needless complexity. I wanted a program that would convert such a folder (and its subfolders) into an optimized collection of sprite sheets. All existing software was lacking in this department, so I decided to roll my own solution.</p>
+<p><img src="/images/ezspritesheet-gallery.gif" alt="image"></p>
+<h2 id="maintaining-multiple-user-interfaces">Maintaining multiple user interfaces</h2>
+<p>First and foremost, I wanted to ensure all features would be available through a simple command line interface. Writing software this way makes it easier to integrate into existing development pipelines.</p>
+<p>I also wanted to provide a graphical user interface (GUI) for those who prefer a visual, point-and-click experience.</p>
+<p>Dividing code into modules simplifies this challenge. It also reduces redundancy and improves readability:</p>
+<p><img src="/images/ezspritesheet-layout.png" alt="image"></p>
+<p>Did I mention QtCreator has a really nice WYSIWYG editor for creating GUI&rsquo;s? I used it to design the main window, pictured below:</p>
+<p><img src="/images/ezspritesheet-qtcreator.png" alt="image"></p>
+<h2 id="reusing-code-where-it-counts">Reusing code where it counts</h2>
+<p>When developing a new piece of software, you should constantly reassess your goals and look for opportunities to lighten your workload: not by cutting corners, but by leveraging existing libraries where possible. I saved a lot of time by reusing boilerplate code from Google&rsquo;s libwebp for processing WEBP&rsquo;s and GIF&rsquo;s.</p>
+<h2 id="providing-reference-implementations">Providing reference implementations</h2>
+<p>If you want people to adopt your software, make it easy for them by providing reference implementations. I wrote two: one in C using SDL2 for rendering, and another in JavaScript using an HTML5 canvas. Both display animated sprites on the screen, and demonstrate how to use EzSpriteSheet&rsquo;s output in a meaningful way.</p>
+<p>Try the JavaScript demo live in your web browser: <a href="https://z64.me/bin/ezspritesheet.js">https://z64.me/bin/ezspritesheet.js</a></p>
+<p><img src="/images/ezspritesheet-demo.gif" alt="image"></p>
+<h2 id="the-most-important-step">The most important step</h2>
+<p>You don&rsquo;t want all that hard work to amount to a program with a reputation for instability, do you? Before delivering a product to the masses, you should make sure it&rsquo;s free of defects. In other words, it&rsquo;s time for some quality assurance.</p>
+<p>My favorite software for the job is Valgrind. Run a program through it and it will tell you if it detects any of the following:</p>
+<ul>
+<li>Uninitialized variable/memory usage</li>
+<li>Invalid memory access</li>
+<li>Memory leaks</li>
+</ul>
+<p>Those things compromise stability, and your software may behave differently on different machines. For example: some CPU&rsquo;s set uninitialized variables to zero when advancing the stack pointer, whereas others leave them set to seemingly random values. <strong>Valgrind helps you avoid surprises like this.</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">==993667== 
+==993667== HEAP SUMMARY:
+==993667==     in use at exit: 0 bytes in 0 blocks
+==993667==   total heap usage: 43,399 allocs, 43,399 frees, 57,924,516 bytes allocated
+==993667== 
+==993667== All heap blocks were freed -- no leaks are possible
+==993667== 
+==993667== For lists of detected and suppressed errors, rerun with: -s
+==993667== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+</code></pre></div><p>This is what you want: Valgrind is happy! Publish that code with confidence!</p>
+<h2 id="its-already-being-used-in-a-production-environment">It&rsquo;s already being used in a production environment</h2>
+<p>This racing game uses EzSpriteSheet to produce a texture atlas for its HUD elements:</p>
+<p><img src="/images/ezspritesheet-production.jpg" alt="image"></p>
+<h2 id="features">Features</h2>
+<p>As of this writing, EzSpriteSheet is more feature-rich than its competition:</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>TexturePacker</th>
+<th>EzSpriteSheet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rotate sprites to save space</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Add padding around packed sprites</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Detect and omit duplicate sprites</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Trim excess pixels from around sprites</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Users can write their own export modules</td>
+<td></td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Automatic pivot point detection</td>
+<td></td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Supports animated GIF&rsquo;s</td>
+<td></td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Supports animated WEBP&rsquo;s</td>
+<td></td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Open source</td>
+<td></td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Price</td>
+<td>$39.99 per 2 computers</td>
+<td>Free</td>
+</tr>
+</tbody>
+</table>
+<h2 id="you-read-that-right-its-open-source">You read that right: it&rsquo;s open source</h2>
+<p>And you can find it on <a href="https://github.com/z64me/EzSpriteSheet">GitHub.com/z64me/EzSpriteSheet</a></p>
+<h2 id="attribution">Attribution</h2>
+<p>The following libraries and software made this project possible:</p>
+<ul>
+<li><a href="https://github.com/nothings/stb">stb</a></li>
+<li><a href="https://sourceforge.net/projects/giflib/">giflib</a></li>
+<li><a href="https://developers.google.com/speed/webp/download">libwebp</a></li>
+<li><a href="https://www.pcre.org/">libpcre2</a></li>
+<li><a href="https://www.qt.io/">QtCreator</a></li>
+<li><a href="https://github.com/juj/RectangleBinPack">RectangleBinPack</a></li>
+<li>Sprite art courtesy of <a href="https://twitter.com/DynoPunch">@DynoPunch</a></li>
+</ul></div>
+        <div class="post-footer">
+            <div class="info">
+                
+                <span class="separator"><a class="tag" href="/tags/fun/">fun</a><a class="tag" href="/tags/articles/">articles</a><a class="tag" href="/tags/programming/">programming</a><a class="tag" href="/tags/c/">c</a><a class="tag" href="/tags/c&#43;&#43;/">c&#43;&#43;</a><a class="tag" href="/tags/javascript/">javascript</a><a class="tag" href="/tags/web/">web</a><a class="tag" href="/tags/ui/">ui</a><a class="tag" href="/tags/ux/">ux</a></span>
+            </div>
+        </div>
+
+        
+    </div>
+
+
+            </div>
+        </div>
+    </main>
+</div><footer class="footer footer--base">        
+    <div class="by_farbox">
+        <ul class="footer__list">
+            <li class="footer__item">&copy;
+                
+                    2018 - 2021
+                
+            </li>
+            
+            <li class="footer__item">
+                <a href="https://old.z64.me/"  target="_blank" rel="noopener noreferrer"  title="">
+                    old site
+                </a>
+            </li>
+            
+            <li class="footer__item">
+                <a href="/post/index.xml"  title="">
+                    rss
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</footer>
+
+<script type="text/javascript"
+        src="/js/medium-zoom.min.83cb1dd5fea8d42d87d1e601a07faa73089ad0ef9ccfe5daf6041289ebcc4e46.js"
+        integrity="sha256-g8sd1f6o1C2H0eYBoH&#43;qcwia0O&#43;cz&#43;Xa9gQSievMTkY="
+        crossorigin="anonymous"></script></body>
+
+</html>

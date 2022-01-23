@@ -6,7 +6,18 @@
     <description>Recent content in Posts on z64me</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 01 Nov 2021 14:20:56 -0400</lastBuildDate><atom:link href="https://z64.me/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 15 Jan 2022 22:43:38 -0400</lastBuildDate><atom:link href="https://z64.me/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>EzSpriteSheet: a free and open source sprite sheet creator</title>
+      <link>https://z64.me/post/ezspritesheet/</link>
+      <pubDate>Sat, 15 Jan 2022 22:43:38 -0400</pubDate>
+      
+      <guid>https://z64.me/post/ezspritesheet/</guid>
+      
+        <description>&lt;p&gt;Creating sprite sheets has never been easier: toss a folder at my new program and watch magic happen! This article details both why and how I engineered new software to address a common concern among game developers. This project was a month-long commitment.&lt;/p&gt;</description>
+      
+    </item>
+    
     <item>
       <title>Crafting simple hardware drivers with libusb</title>
       <link>https://z64.me/post/crafting-drivers-libusb/</link>
