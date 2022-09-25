@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html  dir="ltr" lang="en" data-theme="light"><head>
-    <title> z64me | Writing a tiny MIPS assembler and disassembler in C </title>
+    <title> MD Holland | Writing a tiny MIPS assembler and disassembler in C </title>
 
     
-    <meta charset="utf-8"><meta name="generator" content="Hugo 0.88.1" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-    <meta name="description" content="Hoot hoot! 🦉">
+    <meta charset="utf-8"><meta name="generator" content="Hugo 0.101.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="description" content="Software Developer">
     
     
     
@@ -38,14 +38,14 @@
     
     
     <script type="text/javascript"
-            src="/js/anatole-header.min.98b79432dfa53ecc682fb19247f797a316f8cbca9d5455c8bb22e58fc694b675.js"
-            integrity="sha256-mLeUMt&#43;lPsxoL7GSR/eXoxb4y8qdVFXIuyLlj8aUtnU="
+            src="/js/anatole-header.min.d0408165d31a17f17bba83038bf54e86121f85021bdf936382e636f0f77a952f.js"
+            integrity="sha256-0ECBZdMaF/F7uoMDi/VOhhIfhQIb35NjguY28Pd6lS8="
             crossorigin="anonymous"></script>
 
 
     
     <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://z64.me/images/site-feature-image.png"/>
+<meta name="twitter:image" content="https://holland.vg/images/site-feature-image.png"/>
 
 <meta name="twitter:title" content="Writing a tiny MIPS assembler and disassembler in C"/>
 <meta name="twitter:description" content="We are able to do most of our Nintendo 64 development in C nowadays. But things weren&rsquo;t always like that! Long ago, legendary hackers did it all in handwritten assembly. Join me as I write a minimalistic MIPS assembler/disassembler and show you how to compile a rudimentary hack using it."/>
@@ -72,18 +72,6 @@
                                 
                         title="">Home</a></li>
                 
-                    
-                    <li><a 
-                        href="/post/"
-                                
-                        title="">Posts</a></li>
-                
-                    
-                    <li><a 
-                        href="/about/"
-                                
-                        title="">About</a></li>
-                
                 
                     
                         <li><a href="/"
@@ -109,9 +97,9 @@
         <div class="logo-title">
             <div class="title">
                 <img src="/images/profile.jpg" alt="profile picture">
-                <h3 title=""><a href="/">z64me</a></h3>
+                <h3 title=""><a href="/">MD Holland</a></h3>
                 <div class="description">
-                    <p>Hoot hoot! 🦉</p>
+                    <p>Software Developer</p>
                 </div>
             </div>
         </div>
@@ -123,26 +111,14 @@
                     </a>
                 </li>
             
-                <li>
-                    <a href="https://www.youtube.com/c/z64me/videos" rel="me" aria-label="YouTube">
-                        <i class="fab fa-youtube fa-2x" aria-hidden="true"></i>
-                    </a>
-                </li>
-            
         </ul>
     </div><footer class="footer footer--sidebar">        
     <div class="by_farbox">
         <ul class="footer__list">
             <li class="footer__item">&copy;
                 
-                    2018 - 2021
+                    2018 - 2022
                 
-            </li>
-            
-            <li class="footer__item">
-                <a href="https://old.z64.me/"  target="_blank" rel="noopener noreferrer"  title="">
-                    old site
-                </a>
             </li>
             
             <li class="footer__item">
@@ -156,8 +132,8 @@
 </footer>
 
 <script type="text/javascript"
-        src="/js/medium-zoom.min.83cb1dd5fea8d42d87d1e601a07faa73089ad0ef9ccfe5daf6041289ebcc4e46.js"
-        integrity="sha256-g8sd1f6o1C2H0eYBoH&#43;qcwia0O&#43;cz&#43;Xa9gQSievMTkY="
+        src="/js/medium-zoom.min.51d7548d5d0e5d4ff7991252239ce6abf1fd527a0eabad7ce6b49aa21f6e08da.js"
+        integrity="sha256-UddUjV0OXU/3mRJSI5zmq/H9UnoOq6185rSaoh9uCNo="
         crossorigin="anonymous"></script></div>
 </aside>
     <main>
@@ -192,351 +168,351 @@
 <p>In the world of computers, there is no &ldquo;one size fits all&rdquo;. There are so many different types of processors, and they don&rsquo;t all use the same instruction set. The instruction set the Nintendo 64 (the target platform) uses is called MIPS R4300i.</p>
 <h2 id="instruction-encoding">Instruction encoding</h2>
 <p>Before implementing MIPS, we must understand its instruction encoding. Thankfully, Anarko compiled <a href="https://www.romhacking.net/documents/649/">this comprehensive documentation</a>. It is an invaluable resource. Check out this snippet from it:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">-----------------------------------------------------------------
-| BEQ       | Branch on EQual                                   |
-|-----------|---------------------------------------------------|
-|000100 (4) |   rs    |   rt    |            offset             |
-------6----------5---------5-------------------16----------------
- Format:  BEQ rs, rt, offset
- Purpose: To compare GPRs then do a PC-relative conditional branch.
- Comment: BEQ rs, r0, offset is equal to a BEQZ rs, offset
-          BEQ r0, r0, offset is equal to a B offset
- Descrip: branch if rs = rt
-</code></pre></div><p>To keep my source code simple, I compared every instruction&rsquo;s encoding scheme and decided on a common structure I could use to represent them all:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="k">struct</span> <span class="n">pack</span>
-<span class="p">{</span>
-   <span class="kt">int</span>   <span class="n">is_reg</span><span class="p">;</span> <span class="cm">/* is a register value                */</span>
-   <span class="kt">int</span>   <span class="n">is_fp</span><span class="p">;</span>  <span class="cm">/* is a floating-point register       */</span>
-   <span class="kt">int</span>   <span class="n">is_v</span><span class="p">;</span>   <span class="cm">/* use value v below for packing      */</span>
-   <span class="kt">int</span>   <span class="n">v</span><span class="p">;</span>      <span class="cm">/* value to use if (is_v)             */</span>
-   <span class="kt">int</span>   <span class="n">shift</span><span class="p">;</span>  <span class="cm">/* bit shift by (negative means left) */</span>
-   <span class="kt">int</span>   <span class="n">and</span><span class="p">;</span>    <span class="cm">/* bitwise &amp; by (0 = last entry)      */</span>
-<span class="p">};</span>
-
-<span class="k">struct</span> <span class="n">inst</span>
-<span class="p">{</span>
-   <span class="k">const</span> <span class="kt">char</span>    <span class="o">*</span><span class="n">name</span><span class="p">;</span>
-   <span class="k">struct</span> <span class="n">pack</span>    <span class="n">pack</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span>
-   <span class="kt">int</span>            <span class="n">is_branch</span><span class="p">;</span>
-   <span class="kt">unsigned</span>       <span class="n">code</span><span class="p">;</span>
-   <span class="kt">unsigned</span>       <span class="n">mask</span><span class="p">;</span>
-<span class="p">};</span>
-</code></pre></div><p>Because going through and deriving values for these one-by-one would be a pain (there are nearly three-hundred unique instructions!), I quickly wrote a program to parse the documentation and automate this task. They all go into an array:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cm">/* ... */</span>
-<span class="p">,</span> <span class="p">{</span> <span class="s">&#34;xori&#34;</span><span class="p">,</span> <span class="p">{</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">16</span><span class="p">,</span> <span class="mi">31</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">21</span><span class="p">,</span> <span class="mi">31</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">65535</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="o">-</span><span class="mi">26</span><span class="p">,</span> <span class="mi">63</span><span class="p">}},</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">939524096</span><span class="p">,</span> <span class="o">-</span><span class="mi">67108864</span> <span class="p">}</span>
-<span class="p">,</span> <span class="p">{</span> <span class="s">&#34;beq&#34;</span><span class="p">,</span> <span class="p">{</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">21</span><span class="p">,</span> <span class="mi">31</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">16</span><span class="p">,</span> <span class="mi">31</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">65535</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">26</span><span class="p">,</span> <span class="mi">63</span><span class="p">}},</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">268435456</span><span class="p">,</span> <span class="o">-</span><span class="mi">67108864</span> <span class="p">}</span>
-<span class="p">,</span> <span class="p">{</span> <span class="s">&#34;beql&#34;</span><span class="p">,</span> <span class="p">{</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">21</span><span class="p">,</span> <span class="mi">31</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">16</span><span class="p">,</span> <span class="mi">31</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">65535</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="o">-</span><span class="mi">26</span><span class="p">,</span> <span class="mi">63</span><span class="p">}},</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1342177280</span><span class="p">,</span> <span class="o">-</span><span class="mi">67108864</span> <span class="p">}</span>
-<span class="p">,</span> <span class="p">{</span> <span class="s">&#34;bgez&#34;</span><span class="p">,</span> <span class="p">{</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">21</span><span class="p">,</span> <span class="mi">31</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">65535</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">26</span><span class="p">,</span> <span class="mi">63</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">16</span><span class="p">,</span> <span class="mi">31</span><span class="p">}},</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">67174400</span><span class="p">,</span> <span class="o">-</span><span class="mi">65077248</span> <span class="p">}</span>
-<span class="p">,</span> <span class="p">{</span> <span class="s">&#34;bgezal&#34;</span><span class="p">,</span> <span class="p">{</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">21</span><span class="p">,</span> <span class="mi">31</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">65535</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">26</span><span class="p">,</span> <span class="mi">63</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="o">-</span><span class="mi">16</span><span class="p">,</span> <span class="mi">31</span><span class="p">}},</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">68222976</span><span class="p">,</span> <span class="o">-</span><span class="mi">65077248</span> <span class="p">}</span>
-<span class="cm">/* ... */</span>
-</code></pre></div><p>This table has an entry for every instruction, and contains all the information necessary for packing and unpacking each.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">-----------------------------------------------------------------
+</span></span><span class="line"><span class="cl">| BEQ       | Branch on EQual                                   |
+</span></span><span class="line"><span class="cl">|-----------|---------------------------------------------------|
+</span></span><span class="line"><span class="cl">|000100 (4) |   rs    |   rt    |            offset             |
+</span></span><span class="line"><span class="cl">------6----------5---------5-------------------16----------------
+</span></span><span class="line"><span class="cl"> Format:  BEQ rs, rt, offset
+</span></span><span class="line"><span class="cl"> Purpose: To compare GPRs then do a PC-relative conditional branch.
+</span></span><span class="line"><span class="cl"> Comment: BEQ rs, r0, offset is equal to a BEQZ rs, offset
+</span></span><span class="line"><span class="cl">          BEQ r0, r0, offset is equal to a B offset
+</span></span><span class="line"><span class="cl"> Descrip: branch if rs = rt
+</span></span></code></pre></div><p>To keep my source code simple, I compared every instruction&rsquo;s encoding scheme and decided on a common structure I could use to represent them all:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">pack</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">int</span>   <span class="n">is_reg</span><span class="p">;</span> <span class="cm">/* is a register value                */</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">int</span>   <span class="n">is_fp</span><span class="p">;</span>  <span class="cm">/* is a floating-point register       */</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">int</span>   <span class="n">is_v</span><span class="p">;</span>   <span class="cm">/* use value v below for packing      */</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">int</span>   <span class="n">v</span><span class="p">;</span>      <span class="cm">/* value to use if (is_v)             */</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">int</span>   <span class="n">shift</span><span class="p">;</span>  <span class="cm">/* bit shift by (negative means left) */</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">int</span>   <span class="n">and</span><span class="p">;</span>    <span class="cm">/* bitwise &amp; by (0 = last entry)      */</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">inst</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">   <span class="k">const</span> <span class="kt">char</span>    <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="k">struct</span> <span class="n">pack</span>    <span class="n">pack</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">int</span>            <span class="n">is_branch</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">unsigned</span>       <span class="n">code</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">unsigned</span>       <span class="n">mask</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></div><p>Because going through and deriving values for these one-by-one would be a pain (there are nearly three-hundred unique instructions!), I quickly wrote a program to parse the documentation and automate this task. They all go into an array:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cm">/* ... */</span>
+</span></span><span class="line"><span class="cl"><span class="p">,</span> <span class="p">{</span> <span class="s">&#34;xori&#34;</span><span class="p">,</span> <span class="p">{</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">16</span><span class="p">,</span> <span class="mi">31</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">21</span><span class="p">,</span> <span class="mi">31</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">65535</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="o">-</span><span class="mi">26</span><span class="p">,</span> <span class="mi">63</span><span class="p">}},</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">939524096</span><span class="p">,</span> <span class="o">-</span><span class="mi">67108864</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">,</span> <span class="p">{</span> <span class="s">&#34;beq&#34;</span><span class="p">,</span> <span class="p">{</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">21</span><span class="p">,</span> <span class="mi">31</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">16</span><span class="p">,</span> <span class="mi">31</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">65535</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">26</span><span class="p">,</span> <span class="mi">63</span><span class="p">}},</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">268435456</span><span class="p">,</span> <span class="o">-</span><span class="mi">67108864</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">,</span> <span class="p">{</span> <span class="s">&#34;beql&#34;</span><span class="p">,</span> <span class="p">{</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">21</span><span class="p">,</span> <span class="mi">31</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">16</span><span class="p">,</span> <span class="mi">31</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">65535</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="o">-</span><span class="mi">26</span><span class="p">,</span> <span class="mi">63</span><span class="p">}},</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1342177280</span><span class="p">,</span> <span class="o">-</span><span class="mi">67108864</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">,</span> <span class="p">{</span> <span class="s">&#34;bgez&#34;</span><span class="p">,</span> <span class="p">{</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">21</span><span class="p">,</span> <span class="mi">31</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">65535</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">26</span><span class="p">,</span> <span class="mi">63</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">16</span><span class="p">,</span> <span class="mi">31</span><span class="p">}},</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">67174400</span><span class="p">,</span> <span class="o">-</span><span class="mi">65077248</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">,</span> <span class="p">{</span> <span class="s">&#34;bgezal&#34;</span><span class="p">,</span> <span class="p">{</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">21</span><span class="p">,</span> <span class="mi">31</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">65535</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">26</span><span class="p">,</span> <span class="mi">63</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="o">-</span><span class="mi">16</span><span class="p">,</span> <span class="mi">31</span><span class="p">}},</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">68222976</span><span class="p">,</span> <span class="o">-</span><span class="mi">65077248</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/* ... */</span>
+</span></span></code></pre></div><p>This table has an entry for every instruction, and contains all the information necessary for packing and unpacking each.</p>
 <h2 id="disassembling">Disassembling</h2>
 <p>The first thing I did after constructing my table was implement disassembling. It is smartest to add disassembling first because all you have to do is compare the output against that of a known-working disassembler such as LemASM.</p>
 <p>Because I use a common structure to describe every instruction, I don&rsquo;t have to write different functions for each, meaning very little code is required for disassembly.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="k">const</span> <span class="k">struct</span> <span class="n">inst</span> <span class="o">*</span><span class="nf">findinstFromBin</span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">v</span><span class="p">)</span>
-<span class="p">{</span>
-   <span class="k">const</span> <span class="k">struct</span> <span class="n">inst</span> <span class="o">*</span><span class="n">i</span><span class="p">;</span>
-   <span class="k">const</span> <span class="k">struct</span> <span class="n">inst</span> <span class="o">*</span><span class="n">end</span> <span class="o">=</span> <span class="n">inst</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">inst</span><span class="p">)</span> <span class="o">/</span> <span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">inst</span><span class="p">);</span>
-   
-   <span class="cm">/* search instruction lut for matching name */</span>
-   <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="n">inst</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">end</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
-      <span class="cm">/* code mask matches */</span>
-      <span class="k">if</span> <span class="p">((</span><span class="n">v</span> <span class="o">&amp;</span> <span class="n">i</span><span class="o">-&gt;</span><span class="n">mask</span><span class="p">)</span> <span class="o">==</span> <span class="n">i</span><span class="o">-&gt;</span><span class="n">code</span><span class="p">)</span>
-         <span class="k">return</span> <span class="n">i</span><span class="p">;</span>
-   
-   <span class="cm">/* no match found */</span>
-   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="k">static</span> <span class="kt">int</span> <span class="nf">unpack</span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">v</span><span class="p">,</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">pack</span> <span class="o">*</span><span class="n">p</span><span class="p">)</span>
-<span class="p">{</span>
-   <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">shift</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
-      <span class="n">v</span> <span class="o">&gt;&gt;=</span> <span class="o">-</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">shift</span><span class="p">;</span>
-   <span class="k">else</span>
-      <span class="n">v</span> <span class="o">&lt;&lt;=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">shift</span><span class="p">;</span>
-   <span class="k">return</span> <span class="n">v</span> <span class="o">&amp;</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">and</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="cm">/* disassemble an instruction */</span>
-<span class="k">static</span> <span class="kt">int</span> <span class="nf">dasm</span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">op</span><span class="p">)</span>
-<span class="p">{</span>
-   <span class="k">const</span> <span class="k">struct</span> <span class="n">inst</span> <span class="o">*</span><span class="n">i</span><span class="p">;</span>
-   <span class="k">const</span> <span class="k">struct</span> <span class="n">pack</span> <span class="o">*</span><span class="n">p</span><span class="p">;</span>
-   <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">notation_imm</span> <span class="o">=</span> <span class="s">&#34;0x%04x&#34;</span><span class="p">;</span>
-   <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">notation_fp</span> <span class="o">=</span> <span class="s">&#34;f%d&#34;</span><span class="p">;</span>
-   <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">notation</span> <span class="o">=</span> <span class="s">&#34;%s&#34;</span><span class="p">;</span>
-   
-   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">op</span><span class="p">)</span>
-      <span class="k">return</span> <span class="n">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s">&#34;nop</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
-   
-   <span class="cm">/* no match found */</span>
-   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="n">findinstFromBin</span><span class="p">(</span><span class="n">op</span><span class="p">)))</span>
-      <span class="n">die</span><span class="p">(</span><span class="s">&#34;invalid instruction %08X&#34;</span><span class="p">,</span> <span class="n">op</span><span class="p">);</span>
-   
-   <span class="cm">/* unpack instruction */</span>
-   <span class="n">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s">&#34;%-12s&#34;</span><span class="p">,</span> <span class="n">i</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">);</span>
-   <span class="k">for</span> <span class="p">(</span><span class="n">p</span> <span class="o">=</span> <span class="n">i</span><span class="o">-&gt;</span><span class="n">pack</span><span class="p">;</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">and</span><span class="p">;</span> <span class="o">++</span><span class="n">p</span><span class="p">)</span>
-   <span class="p">{</span>
-      <span class="cm">/* is register */</span>
-      <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">is_reg</span><span class="p">)</span>
-      <span class="p">{</span>
-         <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">is_fp</span><span class="p">)</span>
-            <span class="n">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="n">notation_fp</span><span class="p">,</span> <span class="n">unpack</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">p</span><span class="p">));</span>
-         <span class="k">else</span>
-            <span class="n">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="n">notation</span><span class="p">,</span> <span class="n">regName</span><span class="p">(</span><span class="n">unpack</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">p</span><span class="p">)));</span>
-         <span class="n">notation</span> <span class="o">=</span> <span class="s">&#34;, %s&#34;</span><span class="p">;</span>
-         <span class="n">notation_imm</span> <span class="o">=</span> <span class="s">&#34;, 0x%04x&#34;</span><span class="p">;</span>
-         <span class="n">notation_fp</span> <span class="o">=</span> <span class="s">&#34;, f%d&#34;</span><span class="p">;</span>
-      <span class="p">}</span>
-      
-      <span class="cm">/* is immediate */</span>
-      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">is_v</span><span class="p">)</span>
-      <span class="p">{</span>
-         <span class="n">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="n">notation_imm</span><span class="p">,</span> <span class="n">unpack</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">p</span><span class="p">));</span>
-         <span class="n">notation</span> <span class="o">=</span> <span class="s">&#34;(%s)&#34;</span><span class="p">;</span>
-      <span class="p">}</span>
-   <span class="p">}</span>
-   <span class="n">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s">&#34;</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
-   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div><p>Disassembling a 32-bit instruction is as simple as calling <code>dasm(0x03E00008);</code>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">const</span> <span class="k">struct</span> <span class="n">inst</span> <span class="o">*</span><span class="nf">findinstFromBin</span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">v</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">   <span class="k">const</span> <span class="k">struct</span> <span class="n">inst</span> <span class="o">*</span><span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="k">const</span> <span class="k">struct</span> <span class="n">inst</span> <span class="o">*</span><span class="n">end</span> <span class="o">=</span> <span class="n">inst</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">inst</span><span class="p">)</span> <span class="o">/</span> <span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">inst</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="cm">/* search instruction lut for matching name */</span>
+</span></span><span class="line"><span class="cl">   <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="n">inst</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">end</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="cm">/* code mask matches */</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">((</span><span class="n">v</span> <span class="o">&amp;</span> <span class="n">i</span><span class="o">-&gt;</span><span class="n">mask</span><span class="p">)</span> <span class="o">==</span> <span class="n">i</span><span class="o">-&gt;</span><span class="n">code</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">         <span class="k">return</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="cm">/* no match found */</span>
+</span></span><span class="line"><span class="cl">   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">static</span> <span class="kt">int</span> <span class="nf">unpack</span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">v</span><span class="p">,</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">pack</span> <span class="o">*</span><span class="n">p</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">   <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">shift</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="n">v</span> <span class="o">&gt;&gt;=</span> <span class="o">-</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">shift</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="k">else</span>
+</span></span><span class="line"><span class="cl">      <span class="n">v</span> <span class="o">&lt;&lt;=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">shift</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="k">return</span> <span class="n">v</span> <span class="o">&amp;</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">and</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* disassemble an instruction */</span>
+</span></span><span class="line"><span class="cl"><span class="k">static</span> <span class="kt">int</span> <span class="nf">dasm</span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">op</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">   <span class="k">const</span> <span class="k">struct</span> <span class="n">inst</span> <span class="o">*</span><span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="k">const</span> <span class="k">struct</span> <span class="n">pack</span> <span class="o">*</span><span class="n">p</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">notation_imm</span> <span class="o">=</span> <span class="s">&#34;0x%04x&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">notation_fp</span> <span class="o">=</span> <span class="s">&#34;f%d&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">notation</span> <span class="o">=</span> <span class="s">&#34;%s&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">op</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="n">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s">&#34;nop</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="cm">/* no match found */</span>
+</span></span><span class="line"><span class="cl">   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="n">findinstFromBin</span><span class="p">(</span><span class="n">op</span><span class="p">)))</span>
+</span></span><span class="line"><span class="cl">      <span class="n">die</span><span class="p">(</span><span class="s">&#34;invalid instruction %08X&#34;</span><span class="p">,</span> <span class="n">op</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="cm">/* unpack instruction */</span>
+</span></span><span class="line"><span class="cl">   <span class="n">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s">&#34;%-12s&#34;</span><span class="p">,</span> <span class="n">i</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">   <span class="k">for</span> <span class="p">(</span><span class="n">p</span> <span class="o">=</span> <span class="n">i</span><span class="o">-&gt;</span><span class="n">pack</span><span class="p">;</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">and</span><span class="p">;</span> <span class="o">++</span><span class="n">p</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="cm">/* is register */</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">is_reg</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span>
+</span></span><span class="line"><span class="cl">         <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">is_fp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="n">notation_fp</span><span class="p">,</span> <span class="n">unpack</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">p</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">         <span class="k">else</span>
+</span></span><span class="line"><span class="cl">            <span class="n">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="n">notation</span><span class="p">,</span> <span class="n">regName</span><span class="p">(</span><span class="n">unpack</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">p</span><span class="p">)));</span>
+</span></span><span class="line"><span class="cl">         <span class="n">notation</span> <span class="o">=</span> <span class="s">&#34;, %s&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">         <span class="n">notation_imm</span> <span class="o">=</span> <span class="s">&#34;, 0x%04x&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">         <span class="n">notation_fp</span> <span class="o">=</span> <span class="s">&#34;, f%d&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      
+</span></span><span class="line"><span class="cl">      <span class="cm">/* is immediate */</span>
+</span></span><span class="line"><span class="cl">      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">is_v</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span>
+</span></span><span class="line"><span class="cl">         <span class="n">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="n">notation_imm</span><span class="p">,</span> <span class="n">unpack</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">p</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">         <span class="n">notation</span> <span class="o">=</span> <span class="s">&#34;(%s)&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">   <span class="p">}</span>
+</span></span><span class="line"><span class="cl">   <span class="n">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s">&#34;</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Disassembling a 32-bit instruction is as simple as calling <code>dasm(0x03E00008);</code>.</p>
 <p>Here is some sample output from running the command <code>minimips64 --disassemble --address 0x76150 --prefix --hex --jrra &quot;code-10u.bin&quot;</code>. You can see the address of and hexadecimal notation for instructions listed to the left of each. The <code>--jrra</code> argument tells it to stop when it reaches the <code>jr ra</code> at the end of the function.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cm">/*00076150, 00004825*/</span>   <span class="n">or</span>          <span class="n">t1</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span>
-<span class="cm">/*00076154, 8C6802C0*/</span>   <span class="n">lw</span>          <span class="n">t0</span><span class="p">,</span> <span class="mh">0x02c0</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
-<span class="cm">/*00076158, 3C0CDB06*/</span>   <span class="n">lui</span>         <span class="n">t4</span><span class="p">,</span> <span class="mh">0xdb06</span>
-<span class="cm">/*0007615C, 358C0030*/</span>   <span class="n">ori</span>         <span class="n">t4</span><span class="p">,</span> <span class="n">t4</span><span class="p">,</span> <span class="mh">0x0030</span>
-<span class="cm">/*00076160, 250B0008*/</span>   <span class="n">addiu</span>       <span class="n">t3</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="mh">0x0008</span>
-<span class="cm">/*00076164, AC6B02C0*/</span>   <span class="n">sw</span>          <span class="n">t3</span><span class="p">,</span> <span class="mh">0x02c0</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
-<span class="cm">/*00076168, AD0C0000*/</span>   <span class="n">sw</span>          <span class="n">t4</span><span class="p">,</span> <span class="mh">0x0000</span><span class="p">(</span><span class="n">t0</span><span class="p">)</span>
-<span class="cm">/*0007616C, 8FAD0050*/</span>   <span class="n">lw</span>          <span class="n">t5</span><span class="p">,</span> <span class="mh">0x0050</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
-<span class="cm">/*00076170, 240B0020*/</span>   <span class="n">addiu</span>       <span class="n">t3</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="mh">0x0020</span>
-<span class="cm">/*00076174, 240E0040*/</span>   <span class="n">addiu</span>       <span class="n">t6</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="mh">0x0040</span>
-<span class="cm">/*00076178, 8DA40000*/</span>   <span class="n">lw</span>          <span class="n">a0</span><span class="p">,</span> <span class="mh">0x0000</span><span class="p">(</span><span class="n">t5</span><span class="p">)</span>
-<span class="cm">/*0007617C, 24180020*/</span>   <span class="n">addiu</span>       <span class="n">t8</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="mh">0x0020</span>
-<span class="cm">/*00076180, 240F0001*/</span>   <span class="n">addiu</span>       <span class="n">t7</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="mh">0x0001</span>
-<span class="cm">/*00076184, 24190040*/</span>   <span class="n">addiu</span>       <span class="n">t9</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="mh">0x0040</span>
-<span class="cm">/*00076188, AFB90024*/</span>   <span class="n">sw</span>          <span class="n">t9</span><span class="p">,</span> <span class="mh">0x0024</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
-<span class="cm">/*0007618C, AFAF0018*/</span>   <span class="n">sw</span>          <span class="n">t7</span><span class="p">,</span> <span class="mh">0x0018</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
-<span class="cm">/*00076190, AFB80014*/</span>   <span class="n">sw</span>          <span class="n">t8</span><span class="p">,</span> <span class="mh">0x0014</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
-<span class="cm">/*00076194, AFA30044*/</span>   <span class="n">sw</span>          <span class="n">v1</span><span class="p">,</span> <span class="mh">0x0044</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
-<span class="cm">/*00076198, AFAB0028*/</span>   <span class="n">sw</span>          <span class="n">t3</span><span class="p">,</span> <span class="mh">0x0028</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
-<span class="cm">/*0007619C, AFA90020*/</span>   <span class="n">sw</span>          <span class="n">t1</span><span class="p">,</span> <span class="mh">0x0020</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
-<span class="cm">/*000761A0, AFA0001C*/</span>   <span class="n">sw</span>          <span class="n">r0</span><span class="p">,</span> <span class="mh">0x001c</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
-<span class="cm">/*000761A4, AFAE0010*/</span>   <span class="n">sw</span>          <span class="n">t6</span><span class="p">,</span> <span class="mh">0x0010</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
-<span class="cm">/*000761A8, 00002825*/</span>   <span class="n">or</span>          <span class="n">a1</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span>
-<span class="cm">/*000761AC, 00003025*/</span>   <span class="n">or</span>          <span class="n">a2</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span>
-<span class="cm">/*000761B0, 00003825*/</span>   <span class="n">or</span>          <span class="n">a3</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span>
-<span class="cm">/*000761B4, 0C01FAE1*/</span>   <span class="n">jal</span>         <span class="mh">0x7eb84</span>
-<span class="cm">/*000761B8, AFA8003C*/</span>   <span class="n">sw</span>          <span class="n">t0</span><span class="p">,</span> <span class="mh">0x003c</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
-<span class="cm">/*000761BC, 8FAA003C*/</span>   <span class="n">lw</span>          <span class="n">t2</span><span class="p">,</span> <span class="mh">0x003c</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
-<span class="cm">/*000761C0, 8FA30044*/</span>   <span class="n">lw</span>          <span class="n">v1</span><span class="p">,</span> <span class="mh">0x0044</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
-<span class="cm">/*000761C4, 3C18FB00*/</span>   <span class="n">lui</span>         <span class="n">t8</span><span class="p">,</span> <span class="mh">0xfb00</span>
-<span class="cm">/*000761C8, AD420004*/</span>   <span class="n">sw</span>          <span class="n">v0</span><span class="p">,</span> <span class="mh">0x0004</span><span class="p">(</span><span class="n">t2</span><span class="p">)</span>
-<span class="cm">/*000761CC, 8C6802C0*/</span>   <span class="n">lw</span>          <span class="n">t0</span><span class="p">,</span> <span class="mh">0x02c0</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
-<span class="cm">/*000761D0, 3C0DE700*/</span>   <span class="n">lui</span>         <span class="n">t5</span><span class="p">,</span> <span class="mh">0xe700</span>
-<span class="cm">/*000761D4, 3C0BDB06*/</span>   <span class="n">lui</span>         <span class="n">t3</span><span class="p">,</span> <span class="mh">0xdb06</span>
-<span class="cm">/*000761D8, 250C0008*/</span>   <span class="n">addiu</span>       <span class="n">t4</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="mh">0x0008</span>
-<span class="cm">/*000761DC, AC6C02C0*/</span>   <span class="n">sw</span>          <span class="n">t4</span><span class="p">,</span> <span class="mh">0x02c0</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
-<span class="cm">/*000761E0, AD000004*/</span>   <span class="n">sw</span>          <span class="n">r0</span><span class="p">,</span> <span class="mh">0x0004</span><span class="p">(</span><span class="n">t0</span><span class="p">)</span>
-<span class="cm">/*000761E4, AD0D0000*/</span>   <span class="n">sw</span>          <span class="n">t5</span><span class="p">,</span> <span class="mh">0x0000</span><span class="p">(</span><span class="n">t0</span><span class="p">)</span>
-<span class="cm">/*000761E8, 8C6802C0*/</span>   <span class="n">lw</span>          <span class="n">t0</span><span class="p">,</span> <span class="mh">0x02c0</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
-<span class="cm">/*000761EC, 3C0F8080*/</span>   <span class="n">lui</span>         <span class="n">t7</span><span class="p">,</span> <span class="mh">0x8080</span>
-<span class="cm">/*000761F0, 35EF8080*/</span>   <span class="n">ori</span>         <span class="n">t7</span><span class="p">,</span> <span class="n">t7</span><span class="p">,</span> <span class="mh">0x8080</span>
-<span class="cm">/*000761F4, 250E0008*/</span>   <span class="n">addiu</span>       <span class="n">t6</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="mh">0x0008</span>
-<span class="cm">/*000761F8, AC6E02C0*/</span>   <span class="n">sw</span>          <span class="n">t6</span><span class="p">,</span> <span class="mh">0x02c0</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
-<span class="cm">/*000761FC, AD0F0004*/</span>   <span class="n">sw</span>          <span class="n">t7</span><span class="p">,</span> <span class="mh">0x0004</span><span class="p">(</span><span class="n">t0</span><span class="p">)</span>
-<span class="cm">/*00076200, AD180000*/</span>   <span class="n">sw</span>          <span class="n">t8</span><span class="p">,</span> <span class="mh">0x0000</span><span class="p">(</span><span class="n">t0</span><span class="p">)</span>
-<span class="cm">/*00076204, 8C6702D0*/</span>   <span class="n">lw</span>          <span class="n">a3</span><span class="p">,</span> <span class="mh">0x02d0</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
-<span class="cm">/*00076208, 356B0020*/</span>   <span class="n">ori</span>         <span class="n">t3</span><span class="p">,</span> <span class="n">t3</span><span class="p">,</span> <span class="mh">0x0020</span>
-<span class="cm">/*0007620C, 3C0C8012*/</span>   <span class="n">lui</span>         <span class="n">t4</span><span class="p">,</span> <span class="mh">0x8012</span>
-<span class="cm">/*00076210, 24F90008*/</span>   <span class="n">addiu</span>       <span class="n">t9</span><span class="p">,</span> <span class="n">a3</span><span class="p">,</span> <span class="mh">0x0008</span>
-<span class="cm">/*00076214, AC7902D0*/</span>   <span class="n">sw</span>          <span class="n">t9</span><span class="p">,</span> <span class="mh">0x02d0</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
-<span class="cm">/*00076218, ACEB0000*/</span>   <span class="n">sw</span>          <span class="n">t3</span><span class="p">,</span> <span class="mh">0x0000</span><span class="p">(</span><span class="n">a3</span><span class="p">)</span>
-<span class="cm">/*0007621C, 8D8CA5E0*/</span>   <span class="n">lw</span>          <span class="n">t4</span><span class="p">,</span> <span class="mh">0xa5e0</span><span class="p">(</span><span class="n">t4</span><span class="p">)</span>
-<span class="cm">/*00076220, 3C098010*/</span>   <span class="n">lui</span>         <span class="n">t1</span><span class="p">,</span> <span class="mh">0x8010</span>
-<span class="cm">/*00076224, 3C0B8012*/</span>   <span class="n">lui</span>         <span class="n">t3</span><span class="p">,</span> <span class="mh">0x8012</span>
-<span class="cm">/*00076228, 000C6880*/</span>   <span class="n">sll</span>         <span class="n">t5</span><span class="p">,</span> <span class="n">t4</span><span class="p">,</span> <span class="mh">0x0002</span>
-<span class="cm">/*0007622C, 012D4821*/</span>   <span class="n">addu</span>        <span class="n">t1</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t5</span>
-<span class="cm">/*00076230, 8D29BE6C*/</span>   <span class="n">lw</span>          <span class="n">t1</span><span class="p">,</span> <span class="mh">0xbe6c</span><span class="p">(</span><span class="n">t1</span><span class="p">)</span>
-<span class="cm">/*00076234, 3C0100FF*/</span>   <span class="n">lui</span>         <span class="n">at</span><span class="p">,</span> <span class="mh">0x00ff</span>
-<span class="cm">/*00076238, 3421FFFF*/</span>   <span class="n">ori</span>         <span class="n">at</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="mh">0xffff</span>
-<span class="cm">/*0007623C, 0009C100*/</span>   <span class="n">sll</span>         <span class="n">t8</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="mh">0x0004</span>
-<span class="cm">/*00076240, 00187F02*/</span>   <span class="n">srl</span>         <span class="n">t7</span><span class="p">,</span> <span class="n">t8</span><span class="p">,</span> <span class="mh">0x001c</span>
-<span class="cm">/*00076244, 000FC880*/</span>   <span class="n">sll</span>         <span class="n">t9</span><span class="p">,</span> <span class="n">t7</span><span class="p">,</span> <span class="mh">0x0002</span>
-<span class="cm">/*00076248, 01795821*/</span>   <span class="n">addu</span>        <span class="n">t3</span><span class="p">,</span> <span class="n">t3</span><span class="p">,</span> <span class="n">t9</span>
-<span class="cm">/*0007624C, 8D6B0C38*/</span>   <span class="n">lw</span>          <span class="n">t3</span><span class="p">,</span> <span class="mh">0x0c38</span><span class="p">(</span><span class="n">t3</span><span class="p">)</span>
-<span class="cm">/*00076250, 01217024*/</span>   <span class="n">and</span>         <span class="n">t6</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">at</span>
-<span class="cm">/*00076254, 3C018000*/</span>   <span class="n">lui</span>         <span class="n">at</span><span class="p">,</span> <span class="mh">0x8000</span>
-<span class="cm">/*00076258, 01CB6021*/</span>   <span class="n">addu</span>        <span class="n">t4</span><span class="p">,</span> <span class="n">t6</span><span class="p">,</span> <span class="n">t3</span>
-<span class="cm">/*0007625C, 01816821*/</span>   <span class="n">addu</span>        <span class="n">t5</span><span class="p">,</span> <span class="n">t4</span><span class="p">,</span> <span class="n">at</span>
-<span class="cm">/*00076260, ACED0004*/</span>   <span class="n">sw</span>          <span class="n">t5</span><span class="p">,</span> <span class="mh">0x0004</span><span class="p">(</span><span class="n">a3</span><span class="p">)</span>
-<span class="cm">/*00076264, 8FBF0034*/</span>   <span class="n">lw</span>          <span class="n">ra</span><span class="p">,</span> <span class="mh">0x0034</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
-<span class="cm">/*00076268, 27BD0050*/</span>   <span class="n">addiu</span>       <span class="n">sp</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="mh">0x0050</span>
-<span class="cm">/*0007626C, 03E00008*/</span>   <span class="n">jr</span>          <span class="n">ra</span>
-<span class="cm">/*00076270, 00000000*/</span>   <span class="n">nop</span>
-</code></pre></div><h2 id="assembling">Assembling</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cm">/*00076150, 00004825*/</span>   <span class="n">or</span>          <span class="n">t1</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076154, 8C6802C0*/</span>   <span class="n">lw</span>          <span class="n">t0</span><span class="p">,</span> <span class="mh">0x02c0</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076158, 3C0CDB06*/</span>   <span class="n">lui</span>         <span class="n">t4</span><span class="p">,</span> <span class="mh">0xdb06</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*0007615C, 358C0030*/</span>   <span class="n">ori</span>         <span class="n">t4</span><span class="p">,</span> <span class="n">t4</span><span class="p">,</span> <span class="mh">0x0030</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076160, 250B0008*/</span>   <span class="n">addiu</span>       <span class="n">t3</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="mh">0x0008</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076164, AC6B02C0*/</span>   <span class="n">sw</span>          <span class="n">t3</span><span class="p">,</span> <span class="mh">0x02c0</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076168, AD0C0000*/</span>   <span class="n">sw</span>          <span class="n">t4</span><span class="p">,</span> <span class="mh">0x0000</span><span class="p">(</span><span class="n">t0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*0007616C, 8FAD0050*/</span>   <span class="n">lw</span>          <span class="n">t5</span><span class="p">,</span> <span class="mh">0x0050</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076170, 240B0020*/</span>   <span class="n">addiu</span>       <span class="n">t3</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="mh">0x0020</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076174, 240E0040*/</span>   <span class="n">addiu</span>       <span class="n">t6</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="mh">0x0040</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076178, 8DA40000*/</span>   <span class="n">lw</span>          <span class="n">a0</span><span class="p">,</span> <span class="mh">0x0000</span><span class="p">(</span><span class="n">t5</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*0007617C, 24180020*/</span>   <span class="n">addiu</span>       <span class="n">t8</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="mh">0x0020</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076180, 240F0001*/</span>   <span class="n">addiu</span>       <span class="n">t7</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="mh">0x0001</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076184, 24190040*/</span>   <span class="n">addiu</span>       <span class="n">t9</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="mh">0x0040</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076188, AFB90024*/</span>   <span class="n">sw</span>          <span class="n">t9</span><span class="p">,</span> <span class="mh">0x0024</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*0007618C, AFAF0018*/</span>   <span class="n">sw</span>          <span class="n">t7</span><span class="p">,</span> <span class="mh">0x0018</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076190, AFB80014*/</span>   <span class="n">sw</span>          <span class="n">t8</span><span class="p">,</span> <span class="mh">0x0014</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076194, AFA30044*/</span>   <span class="n">sw</span>          <span class="n">v1</span><span class="p">,</span> <span class="mh">0x0044</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076198, AFAB0028*/</span>   <span class="n">sw</span>          <span class="n">t3</span><span class="p">,</span> <span class="mh">0x0028</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*0007619C, AFA90020*/</span>   <span class="n">sw</span>          <span class="n">t1</span><span class="p">,</span> <span class="mh">0x0020</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*000761A0, AFA0001C*/</span>   <span class="n">sw</span>          <span class="n">r0</span><span class="p">,</span> <span class="mh">0x001c</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*000761A4, AFAE0010*/</span>   <span class="n">sw</span>          <span class="n">t6</span><span class="p">,</span> <span class="mh">0x0010</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*000761A8, 00002825*/</span>   <span class="n">or</span>          <span class="n">a1</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*000761AC, 00003025*/</span>   <span class="n">or</span>          <span class="n">a2</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*000761B0, 00003825*/</span>   <span class="n">or</span>          <span class="n">a3</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*000761B4, 0C01FAE1*/</span>   <span class="n">jal</span>         <span class="mh">0x7eb84</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*000761B8, AFA8003C*/</span>   <span class="n">sw</span>          <span class="n">t0</span><span class="p">,</span> <span class="mh">0x003c</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*000761BC, 8FAA003C*/</span>   <span class="n">lw</span>          <span class="n">t2</span><span class="p">,</span> <span class="mh">0x003c</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*000761C0, 8FA30044*/</span>   <span class="n">lw</span>          <span class="n">v1</span><span class="p">,</span> <span class="mh">0x0044</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*000761C4, 3C18FB00*/</span>   <span class="n">lui</span>         <span class="n">t8</span><span class="p">,</span> <span class="mh">0xfb00</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*000761C8, AD420004*/</span>   <span class="n">sw</span>          <span class="n">v0</span><span class="p">,</span> <span class="mh">0x0004</span><span class="p">(</span><span class="n">t2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*000761CC, 8C6802C0*/</span>   <span class="n">lw</span>          <span class="n">t0</span><span class="p">,</span> <span class="mh">0x02c0</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*000761D0, 3C0DE700*/</span>   <span class="n">lui</span>         <span class="n">t5</span><span class="p">,</span> <span class="mh">0xe700</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*000761D4, 3C0BDB06*/</span>   <span class="n">lui</span>         <span class="n">t3</span><span class="p">,</span> <span class="mh">0xdb06</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*000761D8, 250C0008*/</span>   <span class="n">addiu</span>       <span class="n">t4</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="mh">0x0008</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*000761DC, AC6C02C0*/</span>   <span class="n">sw</span>          <span class="n">t4</span><span class="p">,</span> <span class="mh">0x02c0</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*000761E0, AD000004*/</span>   <span class="n">sw</span>          <span class="n">r0</span><span class="p">,</span> <span class="mh">0x0004</span><span class="p">(</span><span class="n">t0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*000761E4, AD0D0000*/</span>   <span class="n">sw</span>          <span class="n">t5</span><span class="p">,</span> <span class="mh">0x0000</span><span class="p">(</span><span class="n">t0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*000761E8, 8C6802C0*/</span>   <span class="n">lw</span>          <span class="n">t0</span><span class="p">,</span> <span class="mh">0x02c0</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*000761EC, 3C0F8080*/</span>   <span class="n">lui</span>         <span class="n">t7</span><span class="p">,</span> <span class="mh">0x8080</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*000761F0, 35EF8080*/</span>   <span class="n">ori</span>         <span class="n">t7</span><span class="p">,</span> <span class="n">t7</span><span class="p">,</span> <span class="mh">0x8080</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*000761F4, 250E0008*/</span>   <span class="n">addiu</span>       <span class="n">t6</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="mh">0x0008</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*000761F8, AC6E02C0*/</span>   <span class="n">sw</span>          <span class="n">t6</span><span class="p">,</span> <span class="mh">0x02c0</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*000761FC, AD0F0004*/</span>   <span class="n">sw</span>          <span class="n">t7</span><span class="p">,</span> <span class="mh">0x0004</span><span class="p">(</span><span class="n">t0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076200, AD180000*/</span>   <span class="n">sw</span>          <span class="n">t8</span><span class="p">,</span> <span class="mh">0x0000</span><span class="p">(</span><span class="n">t0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076204, 8C6702D0*/</span>   <span class="n">lw</span>          <span class="n">a3</span><span class="p">,</span> <span class="mh">0x02d0</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076208, 356B0020*/</span>   <span class="n">ori</span>         <span class="n">t3</span><span class="p">,</span> <span class="n">t3</span><span class="p">,</span> <span class="mh">0x0020</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*0007620C, 3C0C8012*/</span>   <span class="n">lui</span>         <span class="n">t4</span><span class="p">,</span> <span class="mh">0x8012</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076210, 24F90008*/</span>   <span class="n">addiu</span>       <span class="n">t9</span><span class="p">,</span> <span class="n">a3</span><span class="p">,</span> <span class="mh">0x0008</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076214, AC7902D0*/</span>   <span class="n">sw</span>          <span class="n">t9</span><span class="p">,</span> <span class="mh">0x02d0</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076218, ACEB0000*/</span>   <span class="n">sw</span>          <span class="n">t3</span><span class="p">,</span> <span class="mh">0x0000</span><span class="p">(</span><span class="n">a3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*0007621C, 8D8CA5E0*/</span>   <span class="n">lw</span>          <span class="n">t4</span><span class="p">,</span> <span class="mh">0xa5e0</span><span class="p">(</span><span class="n">t4</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076220, 3C098010*/</span>   <span class="n">lui</span>         <span class="n">t1</span><span class="p">,</span> <span class="mh">0x8010</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076224, 3C0B8012*/</span>   <span class="n">lui</span>         <span class="n">t3</span><span class="p">,</span> <span class="mh">0x8012</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076228, 000C6880*/</span>   <span class="n">sll</span>         <span class="n">t5</span><span class="p">,</span> <span class="n">t4</span><span class="p">,</span> <span class="mh">0x0002</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*0007622C, 012D4821*/</span>   <span class="n">addu</span>        <span class="n">t1</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t5</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076230, 8D29BE6C*/</span>   <span class="n">lw</span>          <span class="n">t1</span><span class="p">,</span> <span class="mh">0xbe6c</span><span class="p">(</span><span class="n">t1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076234, 3C0100FF*/</span>   <span class="n">lui</span>         <span class="n">at</span><span class="p">,</span> <span class="mh">0x00ff</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076238, 3421FFFF*/</span>   <span class="n">ori</span>         <span class="n">at</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="mh">0xffff</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*0007623C, 0009C100*/</span>   <span class="n">sll</span>         <span class="n">t8</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="mh">0x0004</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076240, 00187F02*/</span>   <span class="n">srl</span>         <span class="n">t7</span><span class="p">,</span> <span class="n">t8</span><span class="p">,</span> <span class="mh">0x001c</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076244, 000FC880*/</span>   <span class="n">sll</span>         <span class="n">t9</span><span class="p">,</span> <span class="n">t7</span><span class="p">,</span> <span class="mh">0x0002</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076248, 01795821*/</span>   <span class="n">addu</span>        <span class="n">t3</span><span class="p">,</span> <span class="n">t3</span><span class="p">,</span> <span class="n">t9</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*0007624C, 8D6B0C38*/</span>   <span class="n">lw</span>          <span class="n">t3</span><span class="p">,</span> <span class="mh">0x0c38</span><span class="p">(</span><span class="n">t3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076250, 01217024*/</span>   <span class="n">and</span>         <span class="n">t6</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">at</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076254, 3C018000*/</span>   <span class="n">lui</span>         <span class="n">at</span><span class="p">,</span> <span class="mh">0x8000</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076258, 01CB6021*/</span>   <span class="n">addu</span>        <span class="n">t4</span><span class="p">,</span> <span class="n">t6</span><span class="p">,</span> <span class="n">t3</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*0007625C, 01816821*/</span>   <span class="n">addu</span>        <span class="n">t5</span><span class="p">,</span> <span class="n">t4</span><span class="p">,</span> <span class="n">at</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076260, ACED0004*/</span>   <span class="n">sw</span>          <span class="n">t5</span><span class="p">,</span> <span class="mh">0x0004</span><span class="p">(</span><span class="n">a3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076264, 8FBF0034*/</span>   <span class="n">lw</span>          <span class="n">ra</span><span class="p">,</span> <span class="mh">0x0034</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076268, 27BD0050*/</span>   <span class="n">addiu</span>       <span class="n">sp</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="mh">0x0050</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*0007626C, 03E00008*/</span>   <span class="n">jr</span>          <span class="n">ra</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*00076270, 00000000*/</span>   <span class="n">nop</span>
+</span></span></code></pre></div><h2 id="assembling">Assembling</h2>
 <p>Now that disassembly works, it&rsquo;s time to do the opposite. I want my program to be able to reassemble what it disassembles. You will know it&rsquo;s working properly when the assembled bytecode matches the original test file.</p>
 <p>The same table describing how to disassemble each instruction also says how to reassemble it. As with disassembly, only a handful of functions are involved in assembly.</p>
 <p>The basic tokenization functions provided by the C standard library made this super easy.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cp">#define DELIM           &#34; \r\n\t(),=&#34;
-</span><span class="cp">#define TOK             strtok(0, DELIM)
-</span><span class="cp">#define STREQ(S0, S1)   (!strcasecmp(S0, S1))
-</span><span class="cp"></span>
-<span class="k">const</span> <span class="k">struct</span> <span class="n">inst</span> <span class="o">*</span><span class="nf">findinstFromString</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">)</span>
-<span class="p">{</span>
-   <span class="k">const</span> <span class="k">struct</span> <span class="n">inst</span> <span class="o">*</span><span class="n">i</span><span class="p">;</span>
-   <span class="k">const</span> <span class="k">struct</span> <span class="n">inst</span> <span class="o">*</span><span class="n">end</span> <span class="o">=</span> <span class="n">inst</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">inst</span><span class="p">)</span> <span class="o">/</span> <span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">inst</span><span class="p">);</span>
-   
-   <span class="cm">/* search instruction lut for matching name */</span>
-   <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="n">inst</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">end</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
-      <span class="cm">/* name matches */</span>
-      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">strcasecmp</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
-         <span class="k">return</span> <span class="n">i</span><span class="p">;</span>
-   
-   <span class="cm">/* no match found */</span>
-   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="cm">/* given a token, return a register number */</span>
-<span class="k">static</span> <span class="kt">int</span> <span class="nf">reg</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">tok</span><span class="p">)</span>
-<span class="p">{</span>
-   <span class="kt">unsigned</span> <span class="n">i</span><span class="p">;</span>
-   <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">lut</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
-      <span class="cp">#include</span> <span class="cpf">&#34;reg.h&#34;</span><span class="cp">
-</span><span class="cp"></span>   <span class="p">};</span>
-   
-   <span class="cm">/* skip $ if there is one */</span>
-   <span class="n">tok</span> <span class="o">+=</span> <span class="o">*</span><span class="n">tok</span> <span class="o">==</span> <span class="sc">&#39;$&#39;</span><span class="p">;</span>
-   
-   <span class="cm">/* floating point register */</span>
-   <span class="k">if</span> <span class="p">(</span><span class="n">tolower</span><span class="p">(</span><span class="o">*</span><span class="n">tok</span><span class="p">)</span> <span class="o">==</span> <span class="sc">&#39;f&#39;</span><span class="p">)</span>
-   <span class="p">{</span>
-      <span class="cm">/* if followed immediately by a number less than 32 */</span>
-      <span class="k">if</span> <span class="p">(</span><span class="n">sscanf</span><span class="p">(</span><span class="n">tok</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#34;%d&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">i</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">32</span><span class="p">)</span>
-         <span class="k">return</span> <span class="n">i</span><span class="p">;</span>
-   <span class="p">}</span>
-   
-   <span class="cm">/* search register lut for matching name */</span>
-   <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">lut</span><span class="p">)</span> <span class="o">/</span> <span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">lut</span><span class="p">);</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
-      <span class="k">if</span> <span class="p">(</span><span class="n">STREQ</span><span class="p">(</span><span class="n">lut</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">tok</span><span class="p">))</span>
-         <span class="k">return</span> <span class="n">i</span><span class="p">;</span>
-   
-   <span class="cm">/* failed to locate register */</span>
-   <span class="n">die</span><span class="p">(</span><span class="s">&#34;invalid register &#39;%s&#39;&#34;</span><span class="p">,</span> <span class="n">tok</span><span class="p">);</span>
-   <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="cm">/* generate an instruction */</span>
-<span class="k">static</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="nf">inst</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">opname</span><span class="p">)</span>
-<span class="p">{</span>
-   <span class="k">const</span> <span class="k">struct</span> <span class="n">inst</span> <span class="o">*</span><span class="n">i</span><span class="p">;</span>
-   <span class="k">const</span> <span class="k">struct</span> <span class="n">pack</span> <span class="o">*</span><span class="n">p</span><span class="p">;</span>
-   <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-   <span class="k">static</span> <span class="kt">int</span> <span class="n">ofs</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-   
-   <span class="cm">/* no match found */</span>
-   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="n">findinstFromString</span><span class="p">(</span><span class="n">opname</span><span class="p">)))</span>
-      <span class="n">die</span><span class="p">(</span><span class="s">&#34;invalid instruction &#39;%s&#39;&#34;</span><span class="p">,</span> <span class="n">opname</span><span class="p">);</span>
-   
-   <span class="o">++</span><span class="n">ofs</span><span class="p">;</span>
-   
-   <span class="cm">/* construct result */</span>
-   <span class="k">for</span> <span class="p">(</span><span class="n">p</span> <span class="o">=</span> <span class="n">i</span><span class="o">-&gt;</span><span class="n">pack</span><span class="p">;</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">and</span><span class="p">;</span> <span class="o">++</span><span class="n">p</span><span class="p">)</span>
-   <span class="p">{</span>
-      <span class="kt">int</span> <span class="n">v</span><span class="p">;</span>
-      
-      <span class="cm">/* is register */</span>
-      <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">is_reg</span><span class="p">)</span>
-         <span class="n">v</span> <span class="o">=</span> <span class="n">reg</span><span class="p">(</span><span class="n">TOK</span><span class="p">);</span>
-      
-      <span class="cm">/* is value */</span>
-      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">is_v</span><span class="p">)</span>
-         <span class="n">v</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">;</span>
-      
-      <span class="cm">/* is immediate */</span>
-      <span class="k">else</span>
-      <span class="p">{</span>
-         <span class="n">v</span> <span class="o">=</span> <span class="n">getval</span><span class="p">(</span><span class="n">TOK</span><span class="p">);</span>
-      
-         <span class="cm">/* if branch, make v relative to ofs */</span>
-         <span class="k">if</span> <span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">is_branch</span> <span class="o">&amp;&amp;</span> <span class="n">g_was_label</span><span class="p">)</span>
-            <span class="n">v</span> <span class="o">-=</span> <span class="n">ofs</span><span class="p">;</span>
-      <span class="p">}</span>
-      
-      <span class="cm">/* transform */</span>
-      <span class="n">v</span> <span class="o">&amp;=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">and</span><span class="p">;</span>
-      <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">shift</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
-         <span class="n">v</span> <span class="o">&lt;&lt;=</span> <span class="o">-</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">shift</span><span class="p">;</span>
-      <span class="k">else</span>
-         <span class="n">v</span> <span class="o">&gt;&gt;=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">shift</span><span class="p">;</span>
-      
-      <span class="cm">/* apply */</span>
-      <span class="n">result</span> <span class="o">|=</span> <span class="n">v</span><span class="p">;</span>
-   <span class="p">}</span>
-   
-   <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div><p>Assemblers often support commands for applying patches and importing binary data. In the same spirit as the rest of the program, I kept the few I added as simple and unintrusive as possible. They are implemented like so:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c">   <span class="cm">/* handle directives */</span>
-   <span class="k">while</span> <span class="p">(</span><span class="o">*</span><span class="n">opname</span> <span class="o">==</span> <span class="sc">&#39;&gt;&#39;</span><span class="p">)</span>
-   <span class="p">{</span>
-      <span class="kt">char</span> <span class="o">*</span><span class="n">d</span> <span class="o">=</span> <span class="n">TOK</span><span class="p">;</span>
-      
-      <span class="k">if</span> <span class="p">(</span><span class="n">STREQ</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s">&#34;seek&#34;</span><span class="p">))</span>
-         <span class="n">seek</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">getval</span><span class="p">(</span><span class="n">TOK</span><span class="p">));</span>
-      <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">STREQ</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s">&#34;define&#34;</span><span class="p">))</span>
-         <span class="n">define</span><span class="p">();</span>
-      <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">STREQ</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s">&#34;import&#34;</span><span class="p">))</span>
-         <span class="n">import</span><span class="p">();</span>
-      <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">STREQ</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s">&#34;incbin&#34;</span><span class="p">))</span>
-         <span class="n">incbin</span><span class="p">(</span><span class="n">put</span><span class="p">,</span> <span class="n">fp</span><span class="p">);</span>
-      <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">STREQ</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s">&#34;write32&#34;</span><span class="p">))</span>
-         <span class="n">put</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">getval</span><span class="p">(</span><span class="n">TOK</span><span class="p">));</span>
-      <span class="k">else</span>
-         <span class="nf">die</span><span class="p">(</span><span class="s">&#34;unknown directive &#39;%s&#39;&#34;</span><span class="p">,</span> <span class="n">d</span><span class="p">);</span>
-      
-      <span class="n">opname</span> <span class="o">=</span> <span class="n">TOK</span><span class="p">;</span>
-      
-      <span class="cm">/* file ended with a directive */</span>
-      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">opname</span><span class="p">)</span>
-         <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
-   <span class="p">}</span>
-</code></pre></div><h2 id="compiling-a-rudimentary-hack">Compiling a rudimentary hack</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#define DELIM           &#34; \r\n\t(),=&#34;
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define TOK             strtok(0, DELIM)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define STREQ(S0, S1)   (!strcasecmp(S0, S1))
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="k">struct</span> <span class="n">inst</span> <span class="o">*</span><span class="nf">findinstFromString</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">   <span class="k">const</span> <span class="k">struct</span> <span class="n">inst</span> <span class="o">*</span><span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="k">const</span> <span class="k">struct</span> <span class="n">inst</span> <span class="o">*</span><span class="n">end</span> <span class="o">=</span> <span class="n">inst</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">inst</span><span class="p">)</span> <span class="o">/</span> <span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">inst</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="cm">/* search instruction lut for matching name */</span>
+</span></span><span class="line"><span class="cl">   <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="n">inst</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">end</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="cm">/* name matches */</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">strcasecmp</span><span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">         <span class="k">return</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="cm">/* no match found */</span>
+</span></span><span class="line"><span class="cl">   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* given a token, return a register number */</span>
+</span></span><span class="line"><span class="cl"><span class="k">static</span> <span class="kt">int</span> <span class="nf">reg</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">tok</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">unsigned</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">lut</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="cp">#include</span> <span class="cpf">&#34;reg.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>   <span class="p">};</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="cm">/* skip $ if there is one */</span>
+</span></span><span class="line"><span class="cl">   <span class="n">tok</span> <span class="o">+=</span> <span class="o">*</span><span class="n">tok</span> <span class="o">==</span> <span class="sc">&#39;$&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="cm">/* floating point register */</span>
+</span></span><span class="line"><span class="cl">   <span class="k">if</span> <span class="p">(</span><span class="n">tolower</span><span class="p">(</span><span class="o">*</span><span class="n">tok</span><span class="p">)</span> <span class="o">==</span> <span class="sc">&#39;f&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="cm">/* if followed immediately by a number less than 32 */</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">sscanf</span><span class="p">(</span><span class="n">tok</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#34;%d&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">i</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">32</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">         <span class="k">return</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="p">}</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="cm">/* search register lut for matching name */</span>
+</span></span><span class="line"><span class="cl">   <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">lut</span><span class="p">)</span> <span class="o">/</span> <span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">lut</span><span class="p">);</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">STREQ</span><span class="p">(</span><span class="n">lut</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">tok</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">         <span class="k">return</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="cm">/* failed to locate register */</span>
+</span></span><span class="line"><span class="cl">   <span class="n">die</span><span class="p">(</span><span class="s">&#34;invalid register &#39;%s&#39;&#34;</span><span class="p">,</span> <span class="n">tok</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">   <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* generate an instruction */</span>
+</span></span><span class="line"><span class="cl"><span class="k">static</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="nf">inst</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">opname</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">   <span class="k">const</span> <span class="k">struct</span> <span class="n">inst</span> <span class="o">*</span><span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="k">const</span> <span class="k">struct</span> <span class="n">pack</span> <span class="o">*</span><span class="n">p</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="k">static</span> <span class="kt">int</span> <span class="n">ofs</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="cm">/* no match found */</span>
+</span></span><span class="line"><span class="cl">   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="n">findinstFromString</span><span class="p">(</span><span class="n">opname</span><span class="p">)))</span>
+</span></span><span class="line"><span class="cl">      <span class="n">die</span><span class="p">(</span><span class="s">&#34;invalid instruction &#39;%s&#39;&#34;</span><span class="p">,</span> <span class="n">opname</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="o">++</span><span class="n">ofs</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="cm">/* construct result */</span>
+</span></span><span class="line"><span class="cl">   <span class="k">for</span> <span class="p">(</span><span class="n">p</span> <span class="o">=</span> <span class="n">i</span><span class="o">-&gt;</span><span class="n">pack</span><span class="p">;</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">and</span><span class="p">;</span> <span class="o">++</span><span class="n">p</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="kt">int</span> <span class="n">v</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      
+</span></span><span class="line"><span class="cl">      <span class="cm">/* is register */</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">is_reg</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">         <span class="n">v</span> <span class="o">=</span> <span class="n">reg</span><span class="p">(</span><span class="n">TOK</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      
+</span></span><span class="line"><span class="cl">      <span class="cm">/* is value */</span>
+</span></span><span class="line"><span class="cl">      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">is_v</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">         <span class="n">v</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">v</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      
+</span></span><span class="line"><span class="cl">      <span class="cm">/* is immediate */</span>
+</span></span><span class="line"><span class="cl">      <span class="k">else</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span>
+</span></span><span class="line"><span class="cl">         <span class="n">v</span> <span class="o">=</span> <span class="n">getval</span><span class="p">(</span><span class="n">TOK</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      
+</span></span><span class="line"><span class="cl">         <span class="cm">/* if branch, make v relative to ofs */</span>
+</span></span><span class="line"><span class="cl">         <span class="k">if</span> <span class="p">(</span><span class="n">i</span><span class="o">-&gt;</span><span class="n">is_branch</span> <span class="o">&amp;&amp;</span> <span class="n">g_was_label</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">v</span> <span class="o">-=</span> <span class="n">ofs</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      
+</span></span><span class="line"><span class="cl">      <span class="cm">/* transform */</span>
+</span></span><span class="line"><span class="cl">      <span class="n">v</span> <span class="o">&amp;=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">and</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">shift</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">         <span class="n">v</span> <span class="o">&lt;&lt;=</span> <span class="o">-</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">shift</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">else</span>
+</span></span><span class="line"><span class="cl">         <span class="n">v</span> <span class="o">&gt;&gt;=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">shift</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      
+</span></span><span class="line"><span class="cl">      <span class="cm">/* apply */</span>
+</span></span><span class="line"><span class="cl">      <span class="n">result</span> <span class="o">|=</span> <span class="n">v</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="p">}</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Assemblers often support commands for applying patches and importing binary data. In the same spirit as the rest of the program, I kept the few I added as simple and unintrusive as possible. They are implemented like so:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl">   <span class="cm">/* handle directives */</span>
+</span></span><span class="line"><span class="cl">   <span class="k">while</span> <span class="p">(</span><span class="o">*</span><span class="n">opname</span> <span class="o">==</span> <span class="sc">&#39;&gt;&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="kt">char</span> <span class="o">*</span><span class="n">d</span> <span class="o">=</span> <span class="n">TOK</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">STREQ</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s">&#34;seek&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">         <span class="n">seek</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">getval</span><span class="p">(</span><span class="n">TOK</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">      <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">STREQ</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s">&#34;define&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">         <span class="n">define</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">      <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">STREQ</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s">&#34;import&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">         <span class="n">import</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">      <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">STREQ</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s">&#34;incbin&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">         <span class="n">incbin</span><span class="p">(</span><span class="n">put</span><span class="p">,</span> <span class="n">fp</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">STREQ</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s">&#34;write32&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">         <span class="n">put</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">getval</span><span class="p">(</span><span class="n">TOK</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">      <span class="k">else</span>
+</span></span><span class="line"><span class="cl">         <span class="nf">die</span><span class="p">(</span><span class="s">&#34;unknown directive &#39;%s&#39;&#34;</span><span class="p">,</span> <span class="n">d</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      
+</span></span><span class="line"><span class="cl">      <span class="n">opname</span> <span class="o">=</span> <span class="n">TOK</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      
+</span></span><span class="line"><span class="cl">      <span class="cm">/* file ended with a directive */</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">opname</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">         <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="p">}</span>
+</span></span></code></pre></div><h2 id="compiling-a-rudimentary-hack">Compiling a rudimentary hack</h2>
 <p>The last thing I did was write an old fashioned assembly hack for The Legend of Zelda: Ocarina of Time.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cm">/* kokiri-tunic.asm
-</span><span class="cm"> * a simple assembly hack for OoT MQ debug using minimips64
-</span><span class="cm"> * this one gradually changes the color of the Kokiri Tunic
-</span><span class="cm"> */</span>
-
-<span class="cm">/* define some addresses for later use */</span>
-<span class="o">&gt;</span> <span class="n">define</span> <span class="n">kRed</span>     <span class="mh">0x80126008</span> <span class="cm">/* Kokiri Tunic RGB color channels */</span>
-<span class="o">&gt;</span> <span class="n">define</span> <span class="n">kGreen</span>   <span class="mh">0x80126009</span>
-<span class="o">&gt;</span> <span class="n">define</span> <span class="n">kBlue</span>    <span class="mh">0x8012600A</span>
-<span class="o">&gt;</span> <span class="n">define</span> <span class="n">GameTime</span> <span class="mh">0x80223E04</span> <span class="cm">/* number of gameplay frames elapsed */</span>
-
-<span class="cm">/* the hack overwrites an unused skelanime function
-</span><span class="cm"> * https://github.com/zeldaret/oot/blob/master/src/code/z_skelanime.c
-</span><span class="cm"> */</span>
-<span class="o">&gt;</span> <span class="n">seek</span> <span class="mh">0xB1C630</span>
-<span class="o">&gt;</span> <span class="n">define</span> <span class="n">SkelAnime_CopyFrameTableFalse</span> <span class="mh">0x800A5490</span>
-   <span class="n">lui</span>     <span class="n">v0</span><span class="p">,</span> <span class="o">%</span><span class="n">hi</span><span class="p">(</span><span class="n">GameTime</span><span class="p">)</span>
-   <span class="n">lw</span>      <span class="n">v0</span><span class="p">,</span> <span class="o">%</span><span class="n">lo</span><span class="p">(</span><span class="n">GameTime</span><span class="p">)(</span><span class="n">v0</span><span class="p">)</span>   <span class="c1">// v0 = time elapsed
-</span><span class="c1"></span>   <span class="n">sll</span>     <span class="n">t0</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="mi">2</span>               <span class="c1">// t0 = time * 4
-</span><span class="c1"></span>   <span class="n">sll</span>     <span class="n">t1</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="mi">1</span>               <span class="c1">// t1 = time * 2
-</span><span class="c1"></span>   <span class="n">lui</span>     <span class="n">v1</span><span class="p">,</span> <span class="o">%</span><span class="n">hi</span><span class="p">(</span><span class="n">kRed</span><span class="p">)</span>
-   <span class="n">sb</span>      <span class="n">v0</span><span class="p">,</span> <span class="o">%</span><span class="n">lo</span><span class="p">(</span><span class="n">kRed</span><span class="p">)(</span><span class="n">v1</span><span class="p">)</span>       <span class="c1">// red = time
-</span><span class="c1"></span>   <span class="n">sb</span>      <span class="n">t0</span><span class="p">,</span> <span class="o">%</span><span class="n">lo</span><span class="p">(</span><span class="n">kGreen</span><span class="p">)(</span><span class="n">v1</span><span class="p">)</span>     <span class="c1">// green = time * 4
-</span><span class="c1"></span>   <span class="n">sb</span>      <span class="n">t1</span><span class="p">,</span> <span class="o">%</span><span class="n">lo</span><span class="p">(</span><span class="n">kBlue</span><span class="p">)(</span><span class="n">v1</span><span class="p">)</span>      <span class="c1">// blue = time * 2
-</span><span class="c1"></span>   <span class="n">jr</span>      <span class="n">ra</span>
-   <span class="n">nop</span>
-
-<span class="cm">/* we will use this hook */</span>
-<span class="o">&gt;</span> <span class="n">seek</span> <span class="mh">0xB3B8A8</span>
-   <span class="n">jal</span>     <span class="n">SkelAnime_CopyFrameTableFalse</span>
-   <span class="n">nop</span>
-</code></pre></div><p>I assemble it and patch it into the game with the following command:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">minimips64 --assemble --rom &#34;oot-debug.z64&#34; &#34;kokiri-tunic.asm&#34;
-</code></pre></div><p>And it works as expected!</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cm">/* kokiri-tunic.asm
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * a simple assembly hack for OoT MQ debug using minimips64
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * this one gradually changes the color of the Kokiri Tunic
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* define some addresses for later use */</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;</span> <span class="n">define</span> <span class="n">kRed</span>     <span class="mh">0x80126008</span> <span class="cm">/* Kokiri Tunic RGB color channels */</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;</span> <span class="n">define</span> <span class="n">kGreen</span>   <span class="mh">0x80126009</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;</span> <span class="n">define</span> <span class="n">kBlue</span>    <span class="mh">0x8012600A</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;</span> <span class="n">define</span> <span class="n">GameTime</span> <span class="mh">0x80223E04</span> <span class="cm">/* number of gameplay frames elapsed */</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* the hack overwrites an unused skelanime function
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * https://github.com/zeldaret/oot/blob/master/src/code/z_skelanime.c
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;</span> <span class="n">seek</span> <span class="mh">0xB1C630</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;</span> <span class="n">define</span> <span class="n">SkelAnime_CopyFrameTableFalse</span> <span class="mh">0x800A5490</span>
+</span></span><span class="line"><span class="cl">   <span class="n">lui</span>     <span class="n">v0</span><span class="p">,</span> <span class="o">%</span><span class="n">hi</span><span class="p">(</span><span class="n">GameTime</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="n">lw</span>      <span class="n">v0</span><span class="p">,</span> <span class="o">%</span><span class="n">lo</span><span class="p">(</span><span class="n">GameTime</span><span class="p">)(</span><span class="n">v0</span><span class="p">)</span>   <span class="c1">// v0 = time elapsed
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="n">sll</span>     <span class="n">t0</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="mi">2</span>               <span class="c1">// t0 = time * 4
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="n">sll</span>     <span class="n">t1</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="mi">1</span>               <span class="c1">// t1 = time * 2
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="n">lui</span>     <span class="n">v1</span><span class="p">,</span> <span class="o">%</span><span class="n">hi</span><span class="p">(</span><span class="n">kRed</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="n">sb</span>      <span class="n">v0</span><span class="p">,</span> <span class="o">%</span><span class="n">lo</span><span class="p">(</span><span class="n">kRed</span><span class="p">)(</span><span class="n">v1</span><span class="p">)</span>       <span class="c1">// red = time
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="n">sb</span>      <span class="n">t0</span><span class="p">,</span> <span class="o">%</span><span class="n">lo</span><span class="p">(</span><span class="n">kGreen</span><span class="p">)(</span><span class="n">v1</span><span class="p">)</span>     <span class="c1">// green = time * 4
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="n">sb</span>      <span class="n">t1</span><span class="p">,</span> <span class="o">%</span><span class="n">lo</span><span class="p">(</span><span class="n">kBlue</span><span class="p">)(</span><span class="n">v1</span><span class="p">)</span>      <span class="c1">// blue = time * 2
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="n">jr</span>      <span class="n">ra</span>
+</span></span><span class="line"><span class="cl">   <span class="n">nop</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* we will use this hook */</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;</span> <span class="n">seek</span> <span class="mh">0xB3B8A8</span>
+</span></span><span class="line"><span class="cl">   <span class="n">jal</span>     <span class="n">SkelAnime_CopyFrameTableFalse</span>
+</span></span><span class="line"><span class="cl">   <span class="n">nop</span>
+</span></span></code></pre></div><p>I assemble it and patch it into the game with the following command:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">minimips64 --assemble --rom &#34;oot-debug.z64&#34; &#34;kokiri-tunic.asm&#34;
+</span></span></code></pre></div><p>And it works as expected!</p>
 <p><img src="/images/writing-minimips64-2.gif" alt="image"></p>
 <h2 id="the-end">The end</h2>
 <p>That&rsquo;s everything. Want to try it out or poke through the code? <a href="https://github.com/z64me/minimips64">It&rsquo;s available on GitHub: z64me/minimips64</a></p></div>
@@ -559,14 +535,8 @@
         <ul class="footer__list">
             <li class="footer__item">&copy;
                 
-                    2018 - 2021
+                    2018 - 2022
                 
-            </li>
-            
-            <li class="footer__item">
-                <a href="https://old.z64.me/"  target="_blank" rel="noopener noreferrer"  title="">
-                    old site
-                </a>
             </li>
             
             <li class="footer__item">
@@ -580,8 +550,8 @@
 </footer>
 
 <script type="text/javascript"
-        src="/js/medium-zoom.min.83cb1dd5fea8d42d87d1e601a07faa73089ad0ef9ccfe5daf6041289ebcc4e46.js"
-        integrity="sha256-g8sd1f6o1C2H0eYBoH&#43;qcwia0O&#43;cz&#43;Xa9gQSievMTkY="
+        src="/js/medium-zoom.min.51d7548d5d0e5d4ff7991252239ce6abf1fd527a0eabad7ce6b49aa21f6e08da.js"
+        integrity="sha256-UddUjV0OXU/3mRJSI5zmq/H9UnoOq6185rSaoh9uCNo="
         crossorigin="anonymous"></script></body>
 
 </html>

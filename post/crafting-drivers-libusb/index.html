@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html  dir="ltr" lang="en" data-theme="light"><head>
-    <title> z64me | Crafting simple hardware drivers with libusb </title>
+    <title> MD Holland | Crafting simple hardware drivers with libusb </title>
 
     
-    <meta charset="utf-8"><meta name="generator" content="Hugo 0.88.1" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-    <meta name="description" content="Hoot hoot! 🦉">
+    <meta charset="utf-8"><meta name="generator" content="Hugo 0.101.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="description" content="Software Developer">
     
     
     
@@ -38,14 +38,14 @@
     
     
     <script type="text/javascript"
-            src="/js/anatole-header.min.98b79432dfa53ecc682fb19247f797a316f8cbca9d5455c8bb22e58fc694b675.js"
-            integrity="sha256-mLeUMt&#43;lPsxoL7GSR/eXoxb4y8qdVFXIuyLlj8aUtnU="
+            src="/js/anatole-header.min.d0408165d31a17f17bba83038bf54e86121f85021bdf936382e636f0f77a952f.js"
+            integrity="sha256-0ECBZdMaF/F7uoMDi/VOhhIfhQIb35NjguY28Pd6lS8="
             crossorigin="anonymous"></script>
 
 
     
     <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://z64.me/images/site-feature-image.png"/>
+<meta name="twitter:image" content="https://holland.vg/images/site-feature-image.png"/>
 
 <meta name="twitter:title" content="Crafting simple hardware drivers with libusb"/>
 <meta name="twitter:description" content="I recently upgraded my computer mouse. Windows drivers are available through the vendor&rsquo;s website, but what&rsquo;s a daily Linux user like me to do? Reverse engineer it, of course!"/>
@@ -72,18 +72,6 @@
                                 
                         title="">Home</a></li>
                 
-                    
-                    <li><a 
-                        href="/post/"
-                                
-                        title="">Posts</a></li>
-                
-                    
-                    <li><a 
-                        href="/about/"
-                                
-                        title="">About</a></li>
-                
                 
                     
                         <li><a href="/"
@@ -109,9 +97,9 @@
         <div class="logo-title">
             <div class="title">
                 <img src="/images/profile.jpg" alt="profile picture">
-                <h3 title=""><a href="/">z64me</a></h3>
+                <h3 title=""><a href="/">MD Holland</a></h3>
                 <div class="description">
-                    <p>Hoot hoot! 🦉</p>
+                    <p>Software Developer</p>
                 </div>
             </div>
         </div>
@@ -123,26 +111,14 @@
                     </a>
                 </li>
             
-                <li>
-                    <a href="https://www.youtube.com/c/z64me/videos" rel="me" aria-label="YouTube">
-                        <i class="fab fa-youtube fa-2x" aria-hidden="true"></i>
-                    </a>
-                </li>
-            
         </ul>
     </div><footer class="footer footer--sidebar">        
     <div class="by_farbox">
         <ul class="footer__list">
             <li class="footer__item">&copy;
                 
-                    2018 - 2021
+                    2018 - 2022
                 
-            </li>
-            
-            <li class="footer__item">
-                <a href="https://old.z64.me/"  target="_blank" rel="noopener noreferrer"  title="">
-                    old site
-                </a>
             </li>
             
             <li class="footer__item">
@@ -156,8 +132,8 @@
 </footer>
 
 <script type="text/javascript"
-        src="/js/medium-zoom.min.83cb1dd5fea8d42d87d1e601a07faa73089ad0ef9ccfe5daf6041289ebcc4e46.js"
-        integrity="sha256-g8sd1f6o1C2H0eYBoH&#43;qcwia0O&#43;cz&#43;Xa9gQSievMTkY="
+        src="/js/medium-zoom.min.51d7548d5d0e5d4ff7991252239ce6abf1fd527a0eabad7ce6b49aa21f6e08da.js"
+        integrity="sha256-UddUjV0OXU/3mRJSI5zmq/H9UnoOq6185rSaoh9uCNo="
         crossorigin="anonymous"></script></div>
 </aside>
     <main>
@@ -217,298 +193,296 @@
 <p><img src="/images/crafting-drivers-libusb-packet.png" alt="image"></p>
 <p>The only block that will be relevant as I write my driver is the &ldquo;Leftover Capture Data&rdquo; block. Everything else is thankfully abstracted by <code>libusb</code>.</p>
 <p>With the &ldquo;set LED color&rdquo; packet solved for, into the notes it goes:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Packet Formats
-  Set LED Color
-    Length: 0x40
-    Data:   07 22 01 01 03 rr gg bb
-</code></pre></div><p>And it is translated into a C function:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cm">/* construct LED color packet */</span>
-<span class="kt">uint8_t</span> <span class="o">*</span><span class="nf">mksig_color</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">r</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">g</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">b</span><span class="p">)</span>
-<span class="p">{</span>
-   <span class="k">static</span> <span class="kt">uint8_t</span> <span class="n">out</span><span class="p">[</span><span class="n">out_wMaxPacketSize</span><span class="p">];</span>
-   <span class="kt">uint8_t</span> <span class="n">tmp</span><span class="p">[</span><span class="n">out_wMaxPacketSize</span><span class="p">]</span> <span class="o">=</span>
-   <span class="p">{</span>
-      <span class="mh">0x07</span><span class="p">,</span> <span class="mh">0x22</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x03</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span>
-   <span class="p">};</span>
-   
-   <span class="k">return</span> <span class="n">memcpy</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">tmp</span><span class="p">,</span> <span class="n">out_wMaxPacketSize</span><span class="p">);</span>
-<span class="p">}</span>
-</code></pre></div><h2 id="writing-the-intial-program">Writing the intial program</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Packet Formats
+</span></span><span class="line"><span class="cl">  Set LED Color
+</span></span><span class="line"><span class="cl">    Length: 0x40
+</span></span><span class="line"><span class="cl">    Data:   07 22 01 01 03 rr gg bb
+</span></span></code></pre></div><p>And it is translated into a C function:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cm">/* construct LED color packet */</span>
+</span></span><span class="line"><span class="cl"><span class="kt">uint8_t</span> <span class="o">*</span><span class="nf">mksig_color</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">r</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">g</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">b</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">   <span class="k">static</span> <span class="kt">uint8_t</span> <span class="n">out</span><span class="p">[</span><span class="n">out_wMaxPacketSize</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">uint8_t</span> <span class="n">tmp</span><span class="p">[</span><span class="n">out_wMaxPacketSize</span><span class="p">]</span> <span class="o">=</span>
+</span></span><span class="line"><span class="cl">   <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="mh">0x07</span><span class="p">,</span> <span class="mh">0x22</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x03</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span>
+</span></span><span class="line"><span class="cl">   <span class="p">};</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="k">return</span> <span class="n">memcpy</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">tmp</span><span class="p">,</span> <span class="n">out_wMaxPacketSize</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="writing-the-intial-program">Writing the intial program</h2>
 <p>The <code>libusb</code> library requires certain parameters in order to locate and communicate with a USB device. Before writing any code, I plugged the mouse into my Linux machine and ran the <code>lsusb</code> command:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Bus 002 Device 002: ID 8087:8000 Intel Corp. Integrated Rate Matching Hub
-Bus 002 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
-Bus 001 Device 002: ID 8087:8008 Intel Corp. Integrated Rate Matching Hub
-Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
-Bus 004 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
-Bus 003 Device 004: ID 0bda:0158 Realtek Semiconductor Corp. USB 2.0 multicard reader
-Bus 003 Device 003: ID 413c:2003 Dell Computer Corp. Keyboard SK-8115
-Bus 003 Device 013: ID 13ba:0018 PCPlay Barcode PCP-BCG4209
-Bus 003 Device 015: ID 1b1c:1b3c Corsair Corsair Gaming HARPOON RGB Mouse
-Bus 003 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
-</code></pre></div><p>Here&rsquo;s the entry for the mouse:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Bus 003 Device 015: ID 1b1c:1b3c Corsair Corsair Gaming HARPOON RGB Mouse
-</code></pre></div><p>The relevant values here are <code>1b1c</code> (the vendor ID), and <code>1b3c</code> (the product ID). I reran <code>lsusb</code> with the options <code>-v -d 1b1c:1b3c</code> to request more information about the mouse:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Bus 003 Device 021: ID 1b1c:1b3c Corsair Corsair Gaming HARPOON RGB Mouse
-Device Descriptor:
-  bLength                18
-  bDescriptorType         1
-  bcdUSB               2.00
-  bDeviceClass            0 
-  bDeviceSubClass         0 
-  bDeviceProtocol         0 
-  bMaxPacketSize0        64
-  idVendor           0x1b1c Corsair
-  idProduct          0x1b3c 
-  bcdDevice            3.08
-  iManufacturer           1 Corsair
-  iProduct                2 Corsair Gaming HARPOON RGB Mouse
-  iSerial                 3 0300F02BAF7C05075F8F52D3F5001C05
-  bNumConfigurations      1
-  Configuration Descriptor:
-    bLength                 9
-    bDescriptorType         2
-    wTotalLength       0x0042
-    bNumInterfaces          2
-    bConfigurationValue     1
-    iConfiguration          0 
-    bmAttributes         0xa0
-      (Bus Powered)
-      Remote Wakeup
-    MaxPower              300mA
-    Interface Descriptor:
-      bLength                 9
-      bDescriptorType         4
-      bInterfaceNumber        0
-      bAlternateSetting       0
-      bNumEndpoints           1
-      bInterfaceClass         3 Human Interface Device
-      bInterfaceSubClass      1 Boot Interface Subclass
-      bInterfaceProtocol      2 Mouse
-      iInterface              0 
-        HID Device Descriptor:
-          bLength                 9
-          bDescriptorType        33
-          bcdHID               1.11
-          bCountryCode            0 Not supported
-          bNumDescriptors         1
-          bDescriptorType        34 Report
-          wDescriptorLength     106
-         Report Descriptors: 
-           ** UNAVAILABLE **
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x81  EP 1 IN
-        bmAttributes            3
-          Transfer Type            Interrupt
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0040  1x 64 bytes
-        bInterval               1
-    Interface Descriptor:
-      bLength                 9
-      bDescriptorType         4
-      bInterfaceNumber        1
-      bAlternateSetting       0
-      bNumEndpoints           2
-      bInterfaceClass         3 Human Interface Device
-      bInterfaceSubClass      0 
-      bInterfaceProtocol      0 
-      iInterface              0 
-        HID Device Descriptor:
-          bLength                 9
-          bDescriptorType        33
-          bcdHID               1.11
-          bCountryCode            0 Not supported
-          bNumDescriptors         1
-          bDescriptorType        34 Report
-          wDescriptorLength      29
-         Report Descriptors: 
-           ** UNAVAILABLE **
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x82  EP 2 IN
-        bmAttributes            3
-          Transfer Type            Interrupt
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0040  1x 64 bytes
-        bInterval               1
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x02  EP 2 OUT
-        bmAttributes            3
-          Transfer Type            Interrupt
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0040  1x 64 bytes
-        bInterval               1
-can&#39;t get device qualifier: Resource temporarily unavailable
-can&#39;t get debug descriptor: Resource temporarily unavailable
-Device Status:     0x0000
-  (Bus Powered)
-</code></pre></div><p>For sending data packets to the mouse, these snippets are the most important:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">  idVendor           0x1b1c Corsair
-  idProduct          0x1b3c
-  
-  /* output interface */
-      bInterfaceNumber        1
-        bEndpointAddress     0x02  EP 2 OUT
-        wMaxPacketSize     0x0040  1x 64 bytes
-
-</code></pre></div><p>I finally had everything I needed to write a basic C program that changes the color of the LED.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cm">/*
-</span><span class="cm"> * harpoon-led.c &lt;z64.me&gt;
-</span><span class="cm"> *
-</span><span class="cm"> * rudimentary test to change the LED
-</span><span class="cm"> * color on a Corsair Harpoon RGB mouse
-</span><span class="cm"> * using libusb
-</span><span class="cm"> *
-</span><span class="cm"> */</span>
-
-<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
-</span><span class="cp">#include</span> <span class="cpf">&lt;stdint.h&gt;</span><span class="cp">
-</span><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
-</span><span class="cp">#include</span> <span class="cpf">&lt;stdbool.h&gt;</span><span class="cp">
-</span><span class="cp">#include</span> <span class="cpf">&lt;libusb-1.0/libusb.h&gt;</span><span class="cp">
-</span><span class="cp"></span>
-<span class="cm">/* device info */</span>
-<span class="cp">#define idVendor   0x1b1c
-</span><span class="cp">#define idProduct  0x1b3c
-</span><span class="cp"></span>
-<span class="cm">/* output interface */</span>
-<span class="cp">#define out_bInterfaceNumber  1
-</span><span class="cp">#define out_bEndpointAddress  0x02 </span><span class="cm">/* EP 2 OUT */</span><span class="cp">
-</span><span class="cp">#define out_wMaxPacketSize    0x0040
-</span><span class="cp"></span>
-<span class="cm">/* construct LED color packet */</span>
-<span class="kt">uint8_t</span> <span class="o">*</span><span class="nf">mksig_color</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">r</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">g</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">b</span><span class="p">)</span>
-<span class="p">{</span>
-   <span class="k">static</span> <span class="kt">uint8_t</span> <span class="n">out</span><span class="p">[</span><span class="n">out_wMaxPacketSize</span><span class="p">];</span>
-   <span class="kt">uint8_t</span> <span class="n">tmp</span><span class="p">[</span><span class="n">out_wMaxPacketSize</span><span class="p">]</span> <span class="o">=</span>
-   <span class="p">{</span>
-      <span class="mh">0x07</span><span class="p">,</span> <span class="mh">0x22</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x03</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span>
-   <span class="p">};</span>
-   
-   <span class="k">return</span> <span class="n">memcpy</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">tmp</span><span class="p">,</span> <span class="n">out_wMaxPacketSize</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
-<span class="p">{</span>
-   <span class="n">libusb_device_handle</span> <span class="o">*</span><span class="n">device</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="cm">/* libusb stuff */</span>
-   <span class="n">libusb_context</span> <span class="o">*</span><span class="n">context</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-   <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">progname</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span> <span class="cm">/* args */</span>
-   <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">colorStr</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
-   <span class="kt">int</span> <span class="n">errcode</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="cm">/* misc */</span>
-   <span class="kt">int</span> <span class="n">sent</span><span class="p">;</span>
-   <span class="kt">unsigned</span> <span class="n">color</span><span class="p">;</span>
-   
-   <span class="cm">/* confirm arguments */</span>
-   <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">)</span>
-   <span class="p">{</span>
-      <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&#34;arguments: %s 0xHexColor</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">progname</span><span class="p">);</span>
-      <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&#34;for example: %s 0xff0000</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">progname</span><span class="p">);</span>
-      <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
-   <span class="p">}</span>
-   
-   <span class="cm">/* parse arguments */</span>
-   <span class="k">if</span> <span class="p">(</span><span class="n">sscanf</span><span class="p">(</span><span class="n">colorStr</span><span class="p">,</span> <span class="s">&#34;%x&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">color</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">)</span>
-   <span class="p">{</span>
-      <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&#34;could not parse color &#39;%s&#39;</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">colorStr</span><span class="p">);</span>
-      <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
-   <span class="p">}</span>
-   
-   <span class="cm">/* fatal error (with cleanup) */</span>
-   <span class="cp">#define die(X) { \
-</span><span class="cp">      perror(X); \
-</span><span class="cp">      if (errcode) \
-</span><span class="cp">         fprintf(stderr, &#34;libusb_strerror: %s\n&#34;, libusb_strerror(errcode)); \
-</span><span class="cp">      if (device) \
-</span><span class="cp">         libusb_close(device); \
-</span><span class="cp">      if (context) \
-</span><span class="cp">         libusb_exit(context); \
-</span><span class="cp">      return 1; \
-</span><span class="cp">   }
-</span><span class="cp"></span>   
-   <span class="cm">/* initialize libusb context */</span>
-   <span class="k">if</span> <span class="p">((</span><span class="n">errcode</span> <span class="o">=</span> <span class="n">libusb_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">context</span><span class="p">)))</span>
-      <span class="n">die</span><span class="p">(</span><span class="s">&#34;libusb_init failed&#34;</span><span class="p">);</span>
-<span class="cp">#ifndef NDEBUG
-</span><span class="cp"></span>   <span class="n">libusb_set_option</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">LIBUSB_OPTION_LOG_LEVEL</span><span class="p">,</span> <span class="n">LIBUSB_LOG_LEVEL_INFO</span><span class="p">);</span>
-<span class="cp">#endif
-</span><span class="cp"></span>   
-   <span class="cm">/* open device handle */</span>
-   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">device</span> <span class="o">=</span> <span class="n">libusb_open_device_with_vid_pid</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">idVendor</span><span class="p">,</span> <span class="n">idProduct</span><span class="p">)))</span>
-      <span class="n">die</span><span class="p">(</span><span class="s">&#34;libusb_open_device_with_vid_pid&#34;</span><span class="p">);</span>
-   
-   <span class="cm">/* tell libusb to automatically detach kernel driver when
-</span><span class="cm">    * interface is claimed, and reattach when interface is released
-</span><span class="cm">    */</span>
-   <span class="k">if</span> <span class="p">((</span><span class="n">errcode</span> <span class="o">=</span> <span class="n">libusb_set_auto_detach_kernel_driver</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="nb">true</span><span class="p">)))</span>
-      <span class="n">die</span><span class="p">(</span><span class="s">&#34;libusb_set_auto_detach_kernel_driver&#34;</span><span class="p">);</span>
-   
-   <span class="cm">/* now attempt to claim the interface */</span>
-   <span class="k">if</span> <span class="p">((</span><span class="n">errcode</span> <span class="o">=</span> <span class="n">libusb_claim_interface</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">out_bInterfaceNumber</span><span class="p">)))</span>
-      <span class="n">die</span><span class="p">(</span><span class="s">&#34;libusb_claim_interface&#34;</span><span class="p">);</span>
-   
-   <span class="cm">/* transfer color code to mouse */</span>
-   <span class="k">if</span> <span class="p">((</span><span class="n">errcode</span> <span class="o">=</span> <span class="n">libusb_bulk_transfer</span><span class="p">(</span>
-         <span class="n">device</span>
-         <span class="p">,</span> <span class="n">out_bEndpointAddress</span> <span class="o">|</span> <span class="n">LIBUSB_ENDPOINT_OUT</span>
-         <span class="p">,</span> <span class="n">mksig_color</span><span class="p">(</span><span class="n">color</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="p">,</span> <span class="n">color</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span> <span class="cm">/* r, g, b */</span>
-         <span class="p">,</span> <span class="n">out_wMaxPacketSize</span>
-         <span class="p">,</span> <span class="o">&amp;</span><span class="n">sent</span>
-         <span class="p">,</span> <span class="mi">0</span> <span class="cm">/* no timeout */</span>
-      <span class="p">))</span>
-      <span class="o">||</span> <span class="n">sent</span> <span class="o">!=</span> <span class="n">out_wMaxPacketSize</span>
-   <span class="p">)</span>
-      <span class="n">die</span><span class="p">(</span><span class="s">&#34;libusb_bulk_transfer&#34;</span><span class="p">);</span>
-   
-   <span class="cm">/* cleanup */</span>
-   <span class="k">if</span> <span class="p">((</span><span class="n">errcode</span> <span class="o">=</span> <span class="n">libusb_release_interface</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">out_bInterfaceNumber</span><span class="p">)))</span>
-      <span class="n">die</span><span class="p">(</span><span class="s">&#34;libusb_release_interface&#34;</span><span class="p">);</span>
-   <span class="n">libusb_close</span><span class="p">(</span><span class="n">device</span><span class="p">);</span>
-   <span class="n">libusb_exit</span><span class="p">(</span><span class="n">context</span><span class="p">);</span>
-   
-   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
-
-</code></pre></div><p>And it works! From there, I went on to solve for every other type of packet.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Bus 002 Device 002: ID 8087:8000 Intel Corp. Integrated Rate Matching Hub
+</span></span><span class="line"><span class="cl">Bus 002 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+</span></span><span class="line"><span class="cl">Bus 001 Device 002: ID 8087:8008 Intel Corp. Integrated Rate Matching Hub
+</span></span><span class="line"><span class="cl">Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+</span></span><span class="line"><span class="cl">Bus 004 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+</span></span><span class="line"><span class="cl">Bus 003 Device 004: ID 0bda:0158 Realtek Semiconductor Corp. USB 2.0 multicard reader
+</span></span><span class="line"><span class="cl">Bus 003 Device 003: ID 413c:2003 Dell Computer Corp. Keyboard SK-8115
+</span></span><span class="line"><span class="cl">Bus 003 Device 013: ID 13ba:0018 PCPlay Barcode PCP-BCG4209
+</span></span><span class="line"><span class="cl">Bus 003 Device 015: ID 1b1c:1b3c Corsair Corsair Gaming HARPOON RGB Mouse
+</span></span><span class="line"><span class="cl">Bus 003 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+</span></span></code></pre></div><p>Here&rsquo;s the entry for the mouse:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Bus 003 Device 015: ID 1b1c:1b3c Corsair Corsair Gaming HARPOON RGB Mouse
+</span></span></code></pre></div><p>The relevant values here are <code>1b1c</code> (the vendor ID), and <code>1b3c</code> (the product ID). I reran <code>lsusb</code> with the options <code>-v -d 1b1c:1b3c</code> to request more information about the mouse:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Bus 003 Device 021: ID 1b1c:1b3c Corsair Corsair Gaming HARPOON RGB Mouse
+</span></span><span class="line"><span class="cl">Device Descriptor:
+</span></span><span class="line"><span class="cl">  bLength                18
+</span></span><span class="line"><span class="cl">  bDescriptorType         1
+</span></span><span class="line"><span class="cl">  bcdUSB               2.00
+</span></span><span class="line"><span class="cl">  bDeviceClass            0 
+</span></span><span class="line"><span class="cl">  bDeviceSubClass         0 
+</span></span><span class="line"><span class="cl">  bDeviceProtocol         0 
+</span></span><span class="line"><span class="cl">  bMaxPacketSize0        64
+</span></span><span class="line"><span class="cl">  idVendor           0x1b1c Corsair
+</span></span><span class="line"><span class="cl">  idProduct          0x1b3c 
+</span></span><span class="line"><span class="cl">  bcdDevice            3.08
+</span></span><span class="line"><span class="cl">  iManufacturer           1 Corsair
+</span></span><span class="line"><span class="cl">  iProduct                2 Corsair Gaming HARPOON RGB Mouse
+</span></span><span class="line"><span class="cl">  iSerial                 3 0300F02BAF7C05075F8F52D3F5001C05
+</span></span><span class="line"><span class="cl">  bNumConfigurations      1
+</span></span><span class="line"><span class="cl">  Configuration Descriptor:
+</span></span><span class="line"><span class="cl">    bLength                 9
+</span></span><span class="line"><span class="cl">    bDescriptorType         2
+</span></span><span class="line"><span class="cl">    wTotalLength       0x0042
+</span></span><span class="line"><span class="cl">    bNumInterfaces          2
+</span></span><span class="line"><span class="cl">    bConfigurationValue     1
+</span></span><span class="line"><span class="cl">    iConfiguration          0 
+</span></span><span class="line"><span class="cl">    bmAttributes         0xa0
+</span></span><span class="line"><span class="cl">      (Bus Powered)
+</span></span><span class="line"><span class="cl">      Remote Wakeup
+</span></span><span class="line"><span class="cl">    MaxPower              300mA
+</span></span><span class="line"><span class="cl">    Interface Descriptor:
+</span></span><span class="line"><span class="cl">      bLength                 9
+</span></span><span class="line"><span class="cl">      bDescriptorType         4
+</span></span><span class="line"><span class="cl">      bInterfaceNumber        0
+</span></span><span class="line"><span class="cl">      bAlternateSetting       0
+</span></span><span class="line"><span class="cl">      bNumEndpoints           1
+</span></span><span class="line"><span class="cl">      bInterfaceClass         3 Human Interface Device
+</span></span><span class="line"><span class="cl">      bInterfaceSubClass      1 Boot Interface Subclass
+</span></span><span class="line"><span class="cl">      bInterfaceProtocol      2 Mouse
+</span></span><span class="line"><span class="cl">      iInterface              0 
+</span></span><span class="line"><span class="cl">        HID Device Descriptor:
+</span></span><span class="line"><span class="cl">          bLength                 9
+</span></span><span class="line"><span class="cl">          bDescriptorType        33
+</span></span><span class="line"><span class="cl">          bcdHID               1.11
+</span></span><span class="line"><span class="cl">          bCountryCode            0 Not supported
+</span></span><span class="line"><span class="cl">          bNumDescriptors         1
+</span></span><span class="line"><span class="cl">          bDescriptorType        34 Report
+</span></span><span class="line"><span class="cl">          wDescriptorLength     106
+</span></span><span class="line"><span class="cl">         Report Descriptors: 
+</span></span><span class="line"><span class="cl">           ** UNAVAILABLE **
+</span></span><span class="line"><span class="cl">      Endpoint Descriptor:
+</span></span><span class="line"><span class="cl">        bLength                 7
+</span></span><span class="line"><span class="cl">        bDescriptorType         5
+</span></span><span class="line"><span class="cl">        bEndpointAddress     0x81  EP 1 IN
+</span></span><span class="line"><span class="cl">        bmAttributes            3
+</span></span><span class="line"><span class="cl">          Transfer Type            Interrupt
+</span></span><span class="line"><span class="cl">          Synch Type               None
+</span></span><span class="line"><span class="cl">          Usage Type               Data
+</span></span><span class="line"><span class="cl">        wMaxPacketSize     0x0040  1x 64 bytes
+</span></span><span class="line"><span class="cl">        bInterval               1
+</span></span><span class="line"><span class="cl">    Interface Descriptor:
+</span></span><span class="line"><span class="cl">      bLength                 9
+</span></span><span class="line"><span class="cl">      bDescriptorType         4
+</span></span><span class="line"><span class="cl">      bInterfaceNumber        1
+</span></span><span class="line"><span class="cl">      bAlternateSetting       0
+</span></span><span class="line"><span class="cl">      bNumEndpoints           2
+</span></span><span class="line"><span class="cl">      bInterfaceClass         3 Human Interface Device
+</span></span><span class="line"><span class="cl">      bInterfaceSubClass      0 
+</span></span><span class="line"><span class="cl">      bInterfaceProtocol      0 
+</span></span><span class="line"><span class="cl">      iInterface              0 
+</span></span><span class="line"><span class="cl">        HID Device Descriptor:
+</span></span><span class="line"><span class="cl">          bLength                 9
+</span></span><span class="line"><span class="cl">          bDescriptorType        33
+</span></span><span class="line"><span class="cl">          bcdHID               1.11
+</span></span><span class="line"><span class="cl">          bCountryCode            0 Not supported
+</span></span><span class="line"><span class="cl">          bNumDescriptors         1
+</span></span><span class="line"><span class="cl">          bDescriptorType        34 Report
+</span></span><span class="line"><span class="cl">          wDescriptorLength      29
+</span></span><span class="line"><span class="cl">         Report Descriptors: 
+</span></span><span class="line"><span class="cl">           ** UNAVAILABLE **
+</span></span><span class="line"><span class="cl">      Endpoint Descriptor:
+</span></span><span class="line"><span class="cl">        bLength                 7
+</span></span><span class="line"><span class="cl">        bDescriptorType         5
+</span></span><span class="line"><span class="cl">        bEndpointAddress     0x82  EP 2 IN
+</span></span><span class="line"><span class="cl">        bmAttributes            3
+</span></span><span class="line"><span class="cl">          Transfer Type            Interrupt
+</span></span><span class="line"><span class="cl">          Synch Type               None
+</span></span><span class="line"><span class="cl">          Usage Type               Data
+</span></span><span class="line"><span class="cl">        wMaxPacketSize     0x0040  1x 64 bytes
+</span></span><span class="line"><span class="cl">        bInterval               1
+</span></span><span class="line"><span class="cl">      Endpoint Descriptor:
+</span></span><span class="line"><span class="cl">        bLength                 7
+</span></span><span class="line"><span class="cl">        bDescriptorType         5
+</span></span><span class="line"><span class="cl">        bEndpointAddress     0x02  EP 2 OUT
+</span></span><span class="line"><span class="cl">        bmAttributes            3
+</span></span><span class="line"><span class="cl">          Transfer Type            Interrupt
+</span></span><span class="line"><span class="cl">          Synch Type               None
+</span></span><span class="line"><span class="cl">          Usage Type               Data
+</span></span><span class="line"><span class="cl">        wMaxPacketSize     0x0040  1x 64 bytes
+</span></span><span class="line"><span class="cl">        bInterval               1
+</span></span><span class="line"><span class="cl">can&#39;t get device qualifier: Resource temporarily unavailable
+</span></span><span class="line"><span class="cl">can&#39;t get debug descriptor: Resource temporarily unavailable
+</span></span><span class="line"><span class="cl">Device Status:     0x0000
+</span></span><span class="line"><span class="cl">  (Bus Powered)
+</span></span></code></pre></div><p>For sending data packets to the mouse, these snippets are the most important:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">  idVendor           0x1b1c Corsair
+</span></span><span class="line"><span class="cl">  idProduct          0x1b3c
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  /* output interface */
+</span></span><span class="line"><span class="cl">      bInterfaceNumber        1
+</span></span><span class="line"><span class="cl">        bEndpointAddress     0x02  EP 2 OUT
+</span></span><span class="line"><span class="cl">        wMaxPacketSize     0x0040  1x 64 bytes
+</span></span></code></pre></div><p>I finally had everything I needed to write a basic C program that changes the color of the LED.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * harpoon-led.c &lt;z64.me&gt;
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * rudimentary test to change the LED
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * color on a Corsair Harpoon RGB mouse
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * using libusb
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdint.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdbool.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;libusb-1.0/libusb.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cm">/* device info */</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#define idVendor   0x1b1c
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define idProduct  0x1b3c
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cm">/* output interface */</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#define out_bInterfaceNumber  1
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define out_bEndpointAddress  0x02 </span><span class="cm">/* EP 2 OUT */</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define out_wMaxPacketSize    0x0040
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cm">/* construct LED color packet */</span>
+</span></span><span class="line"><span class="cl"><span class="kt">uint8_t</span> <span class="o">*</span><span class="nf">mksig_color</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">r</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">g</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">b</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">   <span class="k">static</span> <span class="kt">uint8_t</span> <span class="n">out</span><span class="p">[</span><span class="n">out_wMaxPacketSize</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">uint8_t</span> <span class="n">tmp</span><span class="p">[</span><span class="n">out_wMaxPacketSize</span><span class="p">]</span> <span class="o">=</span>
+</span></span><span class="line"><span class="cl">   <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="mh">0x07</span><span class="p">,</span> <span class="mh">0x22</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x03</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span>
+</span></span><span class="line"><span class="cl">   <span class="p">};</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="k">return</span> <span class="n">memcpy</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">tmp</span><span class="p">,</span> <span class="n">out_wMaxPacketSize</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">   <span class="n">libusb_device_handle</span> <span class="o">*</span><span class="n">device</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="cm">/* libusb stuff */</span>
+</span></span><span class="line"><span class="cl">   <span class="n">libusb_context</span> <span class="o">*</span><span class="n">context</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">progname</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span> <span class="cm">/* args */</span>
+</span></span><span class="line"><span class="cl">   <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">colorStr</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">int</span> <span class="n">errcode</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="cm">/* misc */</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">int</span> <span class="n">sent</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">unsigned</span> <span class="n">color</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="cm">/* confirm arguments */</span>
+</span></span><span class="line"><span class="cl">   <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&#34;arguments: %s 0xHexColor</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">progname</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&#34;for example: %s 0xff0000</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">progname</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="p">}</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="cm">/* parse arguments */</span>
+</span></span><span class="line"><span class="cl">   <span class="k">if</span> <span class="p">(</span><span class="n">sscanf</span><span class="p">(</span><span class="n">colorStr</span><span class="p">,</span> <span class="s">&#34;%x&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">color</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&#34;could not parse color &#39;%s&#39;</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">colorStr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="p">}</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="cm">/* fatal error (with cleanup) */</span>
+</span></span><span class="line"><span class="cl">   <span class="cp">#define die(X) { \
+</span></span></span><span class="line"><span class="cl"><span class="cp">      perror(X); \
+</span></span></span><span class="line"><span class="cl"><span class="cp">      if (errcode) \
+</span></span></span><span class="line"><span class="cl"><span class="cp">         fprintf(stderr, &#34;libusb_strerror: %s\n&#34;, libusb_strerror(errcode)); \
+</span></span></span><span class="line"><span class="cl"><span class="cp">      if (device) \
+</span></span></span><span class="line"><span class="cl"><span class="cp">         libusb_close(device); \
+</span></span></span><span class="line"><span class="cl"><span class="cp">      if (context) \
+</span></span></span><span class="line"><span class="cl"><span class="cp">         libusb_exit(context); \
+</span></span></span><span class="line"><span class="cl"><span class="cp">      return 1; \
+</span></span></span><span class="line"><span class="cl"><span class="cp">   }
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>   
+</span></span><span class="line"><span class="cl">   <span class="cm">/* initialize libusb context */</span>
+</span></span><span class="line"><span class="cl">   <span class="k">if</span> <span class="p">((</span><span class="n">errcode</span> <span class="o">=</span> <span class="n">libusb_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">context</span><span class="p">)))</span>
+</span></span><span class="line"><span class="cl">      <span class="n">die</span><span class="p">(</span><span class="s">&#34;libusb_init failed&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#ifndef NDEBUG
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>   <span class="n">libusb_set_option</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">LIBUSB_OPTION_LOG_LEVEL</span><span class="p">,</span> <span class="n">LIBUSB_LOG_LEVEL_INFO</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#endif
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>   
+</span></span><span class="line"><span class="cl">   <span class="cm">/* open device handle */</span>
+</span></span><span class="line"><span class="cl">   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">device</span> <span class="o">=</span> <span class="n">libusb_open_device_with_vid_pid</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">idVendor</span><span class="p">,</span> <span class="n">idProduct</span><span class="p">)))</span>
+</span></span><span class="line"><span class="cl">      <span class="n">die</span><span class="p">(</span><span class="s">&#34;libusb_open_device_with_vid_pid&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="cm">/* tell libusb to automatically detach kernel driver when
+</span></span></span><span class="line"><span class="cl"><span class="cm">    * interface is claimed, and reattach when interface is released
+</span></span></span><span class="line"><span class="cl"><span class="cm">    */</span>
+</span></span><span class="line"><span class="cl">   <span class="k">if</span> <span class="p">((</span><span class="n">errcode</span> <span class="o">=</span> <span class="n">libusb_set_auto_detach_kernel_driver</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="nb">true</span><span class="p">)))</span>
+</span></span><span class="line"><span class="cl">      <span class="n">die</span><span class="p">(</span><span class="s">&#34;libusb_set_auto_detach_kernel_driver&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="cm">/* now attempt to claim the interface */</span>
+</span></span><span class="line"><span class="cl">   <span class="k">if</span> <span class="p">((</span><span class="n">errcode</span> <span class="o">=</span> <span class="n">libusb_claim_interface</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">out_bInterfaceNumber</span><span class="p">)))</span>
+</span></span><span class="line"><span class="cl">      <span class="n">die</span><span class="p">(</span><span class="s">&#34;libusb_claim_interface&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="cm">/* transfer color code to mouse */</span>
+</span></span><span class="line"><span class="cl">   <span class="k">if</span> <span class="p">((</span><span class="n">errcode</span> <span class="o">=</span> <span class="n">libusb_bulk_transfer</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">         <span class="n">device</span>
+</span></span><span class="line"><span class="cl">         <span class="p">,</span> <span class="n">out_bEndpointAddress</span> <span class="o">|</span> <span class="n">LIBUSB_ENDPOINT_OUT</span>
+</span></span><span class="line"><span class="cl">         <span class="p">,</span> <span class="n">mksig_color</span><span class="p">(</span><span class="n">color</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="p">,</span> <span class="n">color</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span> <span class="cm">/* r, g, b */</span>
+</span></span><span class="line"><span class="cl">         <span class="p">,</span> <span class="n">out_wMaxPacketSize</span>
+</span></span><span class="line"><span class="cl">         <span class="p">,</span> <span class="o">&amp;</span><span class="n">sent</span>
+</span></span><span class="line"><span class="cl">         <span class="p">,</span> <span class="mi">0</span> <span class="cm">/* no timeout */</span>
+</span></span><span class="line"><span class="cl">      <span class="p">))</span>
+</span></span><span class="line"><span class="cl">      <span class="o">||</span> <span class="n">sent</span> <span class="o">!=</span> <span class="n">out_wMaxPacketSize</span>
+</span></span><span class="line"><span class="cl">   <span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="n">die</span><span class="p">(</span><span class="s">&#34;libusb_bulk_transfer&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="cm">/* cleanup */</span>
+</span></span><span class="line"><span class="cl">   <span class="k">if</span> <span class="p">((</span><span class="n">errcode</span> <span class="o">=</span> <span class="n">libusb_release_interface</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">out_bInterfaceNumber</span><span class="p">)))</span>
+</span></span><span class="line"><span class="cl">      <span class="n">die</span><span class="p">(</span><span class="s">&#34;libusb_release_interface&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">   <span class="n">libusb_close</span><span class="p">(</span><span class="n">device</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">   <span class="n">libusb_exit</span><span class="p">(</span><span class="n">context</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>And it works! From there, I went on to solve for every other type of packet.</p>
 <h2 id="polling-rate">Polling rate</h2>
 <p><img src="/images/crafting-drivers-libusb-polling-rate.png" alt="image"></p>
 <p>Using the same process as before, I produced a hex dump for each setting:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Polling Rate Settings
-
-125 Hz / 8 msec
-0000   1b 00 a0 69 3d 04 80 fa ff ff 00 00 00 00 09 00
-0010   00 01 00 02 00 02 01 40 00 00 00 07 0a 00 00 08
-
-250 Hz / 4 msec
-0000   1b 00 a0 69 3d 04 80 fa ff ff 00 00 00 00 09 00
-0010   00 01 00 02 00 02 01 40 00 00 00 07 0a 00 00 04
-
-500 Hz / 2 msec
-0000   1b 00 a0 69 3d 04 80 fa ff ff 00 00 00 00 09 00
-0010   00 01 00 02 00 02 01 40 00 00 00 07 0a 00 00 02
-
-1000 Hz / 1 msec
-0000   1b 00 a0 69 3d 04 80 fa ff ff 00 00 00 00 09 00
-0010   00 01 00 02 00 02 01 40 00 00 00 07 0a 00 00 01
-</code></pre></div><p>This packet type follows a simple pattern: <code>07 0a 00 00 xx</code>, where <code>xx</code> is the millisecond delay on the polling rate. Here it is adapted into a C function:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cm">/* construct a polling rate packet */</span>
-<span class="kt">uint8_t</span> <span class="o">*</span><span class="nf">mksig_pollrate</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">msec</span><span class="p">)</span>
-<span class="p">{</span>
-   <span class="k">static</span> <span class="kt">uint8_t</span> <span class="n">out</span><span class="p">[</span><span class="n">out_wMaxPacketSize</span><span class="p">];</span>
-   <span class="kt">uint8_t</span> <span class="n">tmp</span><span class="p">[</span><span class="n">out_wMaxPacketSize</span><span class="p">]</span> <span class="o">=</span>
-   <span class="p">{</span>
-      <span class="mh">0x07</span><span class="p">,</span> <span class="mh">0x0a</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="n">msec</span>
-   <span class="p">};</span>
-   
-   <span class="k">return</span> <span class="n">memcpy</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">tmp</span><span class="p">,</span> <span class="n">out_wMaxPacketSize</span><span class="p">);</span>
-<span class="p">}</span>
-</code></pre></div><p>Now, for something a little more challenging&hellip;</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Polling Rate Settings
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">125 Hz / 8 msec
+</span></span><span class="line"><span class="cl">0000   1b 00 a0 69 3d 04 80 fa ff ff 00 00 00 00 09 00
+</span></span><span class="line"><span class="cl">0010   00 01 00 02 00 02 01 40 00 00 00 07 0a 00 00 08
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">250 Hz / 4 msec
+</span></span><span class="line"><span class="cl">0000   1b 00 a0 69 3d 04 80 fa ff ff 00 00 00 00 09 00
+</span></span><span class="line"><span class="cl">0010   00 01 00 02 00 02 01 40 00 00 00 07 0a 00 00 04
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">500 Hz / 2 msec
+</span></span><span class="line"><span class="cl">0000   1b 00 a0 69 3d 04 80 fa ff ff 00 00 00 00 09 00
+</span></span><span class="line"><span class="cl">0010   00 01 00 02 00 02 01 40 00 00 00 07 0a 00 00 02
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">1000 Hz / 1 msec
+</span></span><span class="line"><span class="cl">0000   1b 00 a0 69 3d 04 80 fa ff ff 00 00 00 00 09 00
+</span></span><span class="line"><span class="cl">0010   00 01 00 02 00 02 01 40 00 00 00 07 0a 00 00 01
+</span></span></code></pre></div><p>This packet type follows a simple pattern: <code>07 0a 00 00 xx</code>, where <code>xx</code> is the millisecond delay on the polling rate. Here it is adapted into a C function:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cm">/* construct a polling rate packet */</span>
+</span></span><span class="line"><span class="cl"><span class="kt">uint8_t</span> <span class="o">*</span><span class="nf">mksig_pollrate</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">msec</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">   <span class="k">static</span> <span class="kt">uint8_t</span> <span class="n">out</span><span class="p">[</span><span class="n">out_wMaxPacketSize</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">uint8_t</span> <span class="n">tmp</span><span class="p">[</span><span class="n">out_wMaxPacketSize</span><span class="p">]</span> <span class="o">=</span>
+</span></span><span class="line"><span class="cl">   <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="mh">0x07</span><span class="p">,</span> <span class="mh">0x0a</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="n">msec</span>
+</span></span><span class="line"><span class="cl">   <span class="p">};</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="k">return</span> <span class="n">memcpy</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">tmp</span><span class="p">,</span> <span class="n">out_wMaxPacketSize</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Now, for something a little more challenging&hellip;</p>
 <h2 id="reverse-engineering-the-dpi-settings">Reverse engineering the DPI settings</h2>
 <p>iCUE has this nifty menu:</p>
 <p><img src="/images/crafting-drivers-libusb-dpi.png" alt="image"></p>
@@ -527,85 +501,85 @@ Device Status:     0x0000
 <p><img src="/images/crafting-drivers-libusb-dpi-explained.png" alt="image"></p>
 <p>The value appears scrambled in this packet due to something called <strong>Endianness</strong>, also known as <strong>byte order</strong>. Because the driver is running on a Little Endian machine, the bytes for the value <strong>09C4</strong> are stored in reverse, hence <strong>C409</strong>.</p>
 <p>There are two instances of this value, which suggests the mouse supports differing X and Y precisions. The iCUE frontend does not allow the user to specify them separately, however.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">DPI[5] = 2500 (0x9C4)
-0000   1b 00 30 24 34 04 80 fa ff ff 00 00 00 00 09 00
-0010   00 01 00 02 00 02 01 40 00 00 00 07 13 d5 00 00
-0020   c4 09 c4 09 ab cd ef 00 00 00 00 00 00 00 00 00
-
-
-DPI[1] = 2500 (0x9C4)
-0000   1b 00 70 98 4d 04 80 fa ff ff 00 00 00 00 09 00
-0010   00 01 00 02 00 02 01 40 00 00 00 07 13 d1 00 00
-0020   c4 09 c4 09 01 23 45 00 00 00 00 00 00 00 00 00
-</code></pre></div><p>By experimenting with each DPI setting and comparing packets, I derived the pattern <code>07 13 dz 00 00 xxxx yyyy rr gg bb</code>, where <code>z</code> is the index of the DPI mode, <code>x</code> is the X DPI, <code>y</code> is the Y DPI, and <code>rgb</code> represents the LED color channels.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">DPI[5] = 2500 (0x9C4)
+</span></span><span class="line"><span class="cl">0000   1b 00 30 24 34 04 80 fa ff ff 00 00 00 00 09 00
+</span></span><span class="line"><span class="cl">0010   00 01 00 02 00 02 01 40 00 00 00 07 13 d5 00 00
+</span></span><span class="line"><span class="cl">0020   c4 09 c4 09 ab cd ef 00 00 00 00 00 00 00 00 00
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">DPI[1] = 2500 (0x9C4)
+</span></span><span class="line"><span class="cl">0000   1b 00 70 98 4d 04 80 fa ff ff 00 00 00 00 09 00
+</span></span><span class="line"><span class="cl">0010   00 01 00 02 00 02 01 40 00 00 00 07 13 d1 00 00
+</span></span><span class="line"><span class="cl">0020   c4 09 c4 09 01 23 45 00 00 00 00 00 00 00 00 00
+</span></span></code></pre></div><p>By experimenting with each DPI setting and comparing packets, I derived the pattern <code>07 13 dz 00 00 xxxx yyyy rr gg bb</code>, where <code>z</code> is the index of the DPI mode, <code>x</code> is the X DPI, <code>y</code> is the Y DPI, and <code>rgb</code> represents the LED color channels.</p>
 <p>The C function I wrote to generate such packets looks like this:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cm">/* construct a DPI setup packet */</span>
-<span class="kt">uint8_t</span> <span class="o">*</span><span class="nf">mksig_dpisetup</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">index</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="n">x</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="n">y</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">r</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">g</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">b</span><span class="p">)</span>
-<span class="p">{</span>
-   <span class="k">static</span> <span class="kt">uint8_t</span> <span class="n">out</span><span class="p">[</span><span class="n">out_wMaxPacketSize</span><span class="p">];</span>
-   <span class="kt">uint8_t</span> <span class="n">tmp</span><span class="p">[</span><span class="n">out_wMaxPacketSize</span><span class="p">]</span> <span class="o">=</span>
-   <span class="p">{</span>
-      <span class="mh">0x07</span><span class="p">,</span> <span class="mh">0x13</span><span class="p">,</span> <span class="mh">0xd0</span> <span class="o">|</span> <span class="n">index</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span>
-      <span class="p">,</span> <span class="p">(</span><span class="n">x</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span> <span class="o">&amp;</span> <span class="mh">0xff00</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span> <span class="cm">/* XXX ensure Little Endian byte order */</span>
-      <span class="p">,</span> <span class="p">(</span><span class="n">y</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">,</span> <span class="p">(</span><span class="n">y</span> <span class="o">&amp;</span> <span class="mh">0xff00</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span>
-      <span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span>
-   <span class="p">};</span>
-   
-   <span class="k">return</span> <span class="n">memcpy</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">tmp</span><span class="p">,</span> <span class="n">out_wMaxPacketSize</span><span class="p">);</span>
-<span class="p">}</span>
-</code></pre></div><p>Note that this packet type doesn&rsquo;t control whether or not a DPI mode is enabled. That&rsquo;s the final piece of the puzzle. To begin, I had iCUE emit new packets to compare, toggling each setting independently:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">all on
-0000   1b 00 f0 0a 52 04 80 fa ff ff 00 00 00 00 09 00
-0010   00 01 00 02 00 02 01 40 00 00 00 07 13 05 00 3f
-
-only [1] off
-0000   1b 00 f0 0a 52 04 80 fa ff ff 00 00 00 00 09 00
-0010   00 01 00 02 00 02 01 40 00 00 00 07 13 05 00 3d
-
-only [2] off
-0000   1b 00 f0 0a 52 04 80 fa ff ff 00 00 00 00 09 00
-0010   00 01 00 02 00 02 01 40 00 00 00 07 13 05 00 3b
-
-only [3] off
-0000   1b 00 f0 0a 52 04 80 fa ff ff 00 00 00 00 09 00
-0010   00 01 00 02 00 02 01 40 00 00 00 07 13 05 00 37
-
-only [4] off
-0000   1b 00 f0 0a 52 04 80 fa ff ff 00 00 00 00 09 00
-0010   00 01 00 02 00 02 01 40 00 00 00 07 13 05 00 2f
-
-only [5] off
-0000   1b 00 10 a0 ea 03 80 fa ff ff 00 00 00 00 09 00
-0010   00 01 00 02 00 02 01 40 00 00 00 07 13 05 00 1f
-</code></pre></div><p>The last byte on the second line is the only one that changes. Here is each value represented in binary notation:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">index        hex   binary
-all on       3f    00111111
-only 1 off   3d    00111101
-only 2 off   3b    00111011
-only 3 off   37    00110111
-only 4 off   2f    00101111
-only 5 off   1f    00011111
-</code></pre></div><p>This reveals the mouse uses a bitfield to keep track of whether or not a DPI mode is enabled. Literal zeroes and ones determine what happens when you press the DPI button on the mouse: how exciting!</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cm">/* construct a DPI setup packet */</span>
+</span></span><span class="line"><span class="cl"><span class="kt">uint8_t</span> <span class="o">*</span><span class="nf">mksig_dpisetup</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">index</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="n">x</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="n">y</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">r</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">g</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">b</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">   <span class="k">static</span> <span class="kt">uint8_t</span> <span class="n">out</span><span class="p">[</span><span class="n">out_wMaxPacketSize</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">uint8_t</span> <span class="n">tmp</span><span class="p">[</span><span class="n">out_wMaxPacketSize</span><span class="p">]</span> <span class="o">=</span>
+</span></span><span class="line"><span class="cl">   <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="mh">0x07</span><span class="p">,</span> <span class="mh">0x13</span><span class="p">,</span> <span class="mh">0xd0</span> <span class="o">|</span> <span class="n">index</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span>
+</span></span><span class="line"><span class="cl">      <span class="p">,</span> <span class="p">(</span><span class="n">x</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span> <span class="o">&amp;</span> <span class="mh">0xff00</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span> <span class="cm">/* XXX ensure Little Endian byte order */</span>
+</span></span><span class="line"><span class="cl">      <span class="p">,</span> <span class="p">(</span><span class="n">y</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">,</span> <span class="p">(</span><span class="n">y</span> <span class="o">&amp;</span> <span class="mh">0xff00</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span>
+</span></span><span class="line"><span class="cl">      <span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span>
+</span></span><span class="line"><span class="cl">   <span class="p">};</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="k">return</span> <span class="n">memcpy</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">tmp</span><span class="p">,</span> <span class="n">out_wMaxPacketSize</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Note that this packet type doesn&rsquo;t control whether or not a DPI mode is enabled. That&rsquo;s the final piece of the puzzle. To begin, I had iCUE emit new packets to compare, toggling each setting independently:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">all on
+</span></span><span class="line"><span class="cl">0000   1b 00 f0 0a 52 04 80 fa ff ff 00 00 00 00 09 00
+</span></span><span class="line"><span class="cl">0010   00 01 00 02 00 02 01 40 00 00 00 07 13 05 00 3f
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">only [1] off
+</span></span><span class="line"><span class="cl">0000   1b 00 f0 0a 52 04 80 fa ff ff 00 00 00 00 09 00
+</span></span><span class="line"><span class="cl">0010   00 01 00 02 00 02 01 40 00 00 00 07 13 05 00 3d
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">only [2] off
+</span></span><span class="line"><span class="cl">0000   1b 00 f0 0a 52 04 80 fa ff ff 00 00 00 00 09 00
+</span></span><span class="line"><span class="cl">0010   00 01 00 02 00 02 01 40 00 00 00 07 13 05 00 3b
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">only [3] off
+</span></span><span class="line"><span class="cl">0000   1b 00 f0 0a 52 04 80 fa ff ff 00 00 00 00 09 00
+</span></span><span class="line"><span class="cl">0010   00 01 00 02 00 02 01 40 00 00 00 07 13 05 00 37
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">only [4] off
+</span></span><span class="line"><span class="cl">0000   1b 00 f0 0a 52 04 80 fa ff ff 00 00 00 00 09 00
+</span></span><span class="line"><span class="cl">0010   00 01 00 02 00 02 01 40 00 00 00 07 13 05 00 2f
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">only [5] off
+</span></span><span class="line"><span class="cl">0000   1b 00 10 a0 ea 03 80 fa ff ff 00 00 00 00 09 00
+</span></span><span class="line"><span class="cl">0010   00 01 00 02 00 02 01 40 00 00 00 07 13 05 00 1f
+</span></span></code></pre></div><p>The last byte on the second line is the only one that changes. Here is each value represented in binary notation:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">index        hex   binary
+</span></span><span class="line"><span class="cl">all on       3f    00111111
+</span></span><span class="line"><span class="cl">only 1 off   3d    00111101
+</span></span><span class="line"><span class="cl">only 2 off   3b    00111011
+</span></span><span class="line"><span class="cl">only 3 off   37    00110111
+</span></span><span class="line"><span class="cl">only 4 off   2f    00101111
+</span></span><span class="line"><span class="cl">only 5 off   1f    00011111
+</span></span></code></pre></div><p>This reveals the mouse uses a bitfield to keep track of whether or not a DPI mode is enabled. Literal zeroes and ones determine what happens when you press the DPI button on the mouse: how exciting!</p>
 <!--~~All the programmers out there must be screaming: "*But what about DPI mode 0?! Why, it must be none other than the bitmask 00000001!*" The DPI button skips this mode altogether, and the only time the mouse switches to it is when the user presses *a different* mouse button. But this isn't builtin functionality. No, it's instead handled entirely by the driver. In iCUE, the user can specify which button or shortcut toggles "Sniper Mode". It is otherwise unaccounted for.~~-->
 <p>To produce my own packets, I used bitwise operations to construct the bitfield, like so:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cm">/* construct a packet indicating which DPI modes are enabled */</span>
-<span class="kt">uint8_t</span> <span class="o">*</span><span class="nf">mksig_dpisetenabled</span><span class="p">(</span><span class="kt">bool</span> <span class="n">m0</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">m1</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">m2</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">m3</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">m4</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">m5</span><span class="p">)</span>
-<span class="p">{</span>
-   <span class="k">static</span> <span class="kt">uint8_t</span> <span class="n">out</span><span class="p">[</span><span class="n">out_wMaxPacketSize</span><span class="p">];</span>
-   <span class="kt">uint8_t</span> <span class="n">tmp</span><span class="p">[</span><span class="n">out_wMaxPacketSize</span><span class="p">]</span> <span class="o">=</span>
-   <span class="p">{</span>
-      <span class="mh">0x07</span><span class="p">,</span> <span class="mh">0x13</span><span class="p">,</span> <span class="mh">0x05</span><span class="p">,</span> <span class="mh">0x00</span>
-      <span class="p">,</span> <span class="n">m0</span>
-         <span class="o">|</span> <span class="p">(</span><span class="n">m1</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">)</span>
-         <span class="o">|</span> <span class="p">(</span><span class="n">m2</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span>
-         <span class="o">|</span> <span class="p">(</span><span class="n">m3</span> <span class="o">&lt;&lt;</span> <span class="mi">3</span><span class="p">)</span>
-         <span class="o">|</span> <span class="p">(</span><span class="n">m4</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">)</span>
-         <span class="o">|</span> <span class="p">(</span><span class="n">m5</span> <span class="o">&lt;&lt;</span> <span class="mi">5</span><span class="p">)</span>
-   <span class="p">};</span>
-   
-   <span class="k">return</span> <span class="n">memcpy</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">tmp</span><span class="p">,</span> <span class="n">out_wMaxPacketSize</span><span class="p">);</span>
-<span class="p">}</span>
-</code></pre></div><p>When I invoke this function with every argument set to <code>false</code> and send the resulting packet to the mouse, pressing the DPI button no longer has any effect. And when I do the same but with every argument set to <code>true</code>, it goes back to behaving as it originally had. It&rsquo;s working exactly as expected!</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cm">/* construct a packet indicating which DPI modes are enabled */</span>
+</span></span><span class="line"><span class="cl"><span class="kt">uint8_t</span> <span class="o">*</span><span class="nf">mksig_dpisetenabled</span><span class="p">(</span><span class="kt">bool</span> <span class="n">m0</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">m1</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">m2</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">m3</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">m4</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">m5</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">   <span class="k">static</span> <span class="kt">uint8_t</span> <span class="n">out</span><span class="p">[</span><span class="n">out_wMaxPacketSize</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">uint8_t</span> <span class="n">tmp</span><span class="p">[</span><span class="n">out_wMaxPacketSize</span><span class="p">]</span> <span class="o">=</span>
+</span></span><span class="line"><span class="cl">   <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="mh">0x07</span><span class="p">,</span> <span class="mh">0x13</span><span class="p">,</span> <span class="mh">0x05</span><span class="p">,</span> <span class="mh">0x00</span>
+</span></span><span class="line"><span class="cl">      <span class="p">,</span> <span class="n">m0</span>
+</span></span><span class="line"><span class="cl">         <span class="o">|</span> <span class="p">(</span><span class="n">m1</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">         <span class="o">|</span> <span class="p">(</span><span class="n">m2</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">         <span class="o">|</span> <span class="p">(</span><span class="n">m3</span> <span class="o">&lt;&lt;</span> <span class="mi">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">         <span class="o">|</span> <span class="p">(</span><span class="n">m4</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">         <span class="o">|</span> <span class="p">(</span><span class="n">m5</span> <span class="o">&lt;&lt;</span> <span class="mi">5</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="p">};</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="k">return</span> <span class="n">memcpy</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">tmp</span><span class="p">,</span> <span class="n">out_wMaxPacketSize</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>When I invoke this function with every argument set to <code>false</code> and send the resulting packet to the mouse, pressing the DPI button no longer has any effect. And when I do the same but with every argument set to <code>true</code>, it goes back to behaving as it originally had. It&rsquo;s working exactly as expected!</p>
 <h2 id="adding-a-graphical-user-interface-gui">Adding a Graphical User Interface (GUI)</h2>
 <p>My driver now does everything I need, and I&rsquo;m happy running it from the command line. But the fun doesn&rsquo;t have to stop here! I&rsquo;m going to give it a graphical interface! QtCreator makes this process relatively straightforward.</p>
 <p>Because the GUI runs indefinitely, I wanted to support hotplugging (the mouse being unplugged and plugged back in while the program is running). I achieved this by using a <code>QTimer</code>, which spins a thread that continuously reinvokes a given function at a set interval. Inside this function, I had the program monitor the mouse&rsquo;s connection status. Conveniently, this also accounts for the mouse restarting itself each time its polling rate is adjusted.<!-- All settings are repropagated under these circumstances, since the mouse forgets everything except polling rate when it loses power.--></p>
@@ -644,14 +618,8 @@ only 5 off   1f    00011111
         <ul class="footer__list">
             <li class="footer__item">&copy;
                 
-                    2018 - 2021
+                    2018 - 2022
                 
-            </li>
-            
-            <li class="footer__item">
-                <a href="https://old.z64.me/"  target="_blank" rel="noopener noreferrer"  title="">
-                    old site
-                </a>
             </li>
             
             <li class="footer__item">
@@ -665,8 +633,8 @@ only 5 off   1f    00011111
 </footer>
 
 <script type="text/javascript"
-        src="/js/medium-zoom.min.83cb1dd5fea8d42d87d1e601a07faa73089ad0ef9ccfe5daf6041289ebcc4e46.js"
-        integrity="sha256-g8sd1f6o1C2H0eYBoH&#43;qcwia0O&#43;cz&#43;Xa9gQSievMTkY="
+        src="/js/medium-zoom.min.51d7548d5d0e5d4ff7991252239ce6abf1fd527a0eabad7ce6b49aa21f6e08da.js"
+        integrity="sha256-UddUjV0OXU/3mRJSI5zmq/H9UnoOq6185rSaoh9uCNo="
         crossorigin="anonymous"></script></body>
 
 </html>

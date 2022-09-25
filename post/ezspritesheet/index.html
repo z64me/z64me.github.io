@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html  dir="ltr" lang="en" data-theme="light"><head>
-    <title> z64me | EzSpriteSheet: a free and open source sprite sheet creator </title>
+    <title> MD Holland | EzSpriteSheet: a free and open source sprite sheet creator </title>
 
     
-    <meta charset="utf-8"><meta name="generator" content="Hugo 0.88.1" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-    <meta name="description" content="Hoot hoot! 🦉">
+    <meta charset="utf-8"><meta name="generator" content="Hugo 0.101.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="description" content="Software Developer">
     
     
     
@@ -38,14 +38,14 @@
     
     
     <script type="text/javascript"
-            src="/js/anatole-header.min.98b79432dfa53ecc682fb19247f797a316f8cbca9d5455c8bb22e58fc694b675.js"
-            integrity="sha256-mLeUMt&#43;lPsxoL7GSR/eXoxb4y8qdVFXIuyLlj8aUtnU="
+            src="/js/anatole-header.min.d0408165d31a17f17bba83038bf54e86121f85021bdf936382e636f0f77a952f.js"
+            integrity="sha256-0ECBZdMaF/F7uoMDi/VOhhIfhQIb35NjguY28Pd6lS8="
             crossorigin="anonymous"></script>
 
 
     
     <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://z64.me/images/site-feature-image.png"/>
+<meta name="twitter:image" content="https://holland.vg/images/site-feature-image.png"/>
 
 <meta name="twitter:title" content="EzSpriteSheet: a free and open source sprite sheet creator"/>
 <meta name="twitter:description" content="Creating sprite sheets has never been easier: toss a folder at my new program and watch magic happen! This article details both why and how I engineered new software to address a common concern among game developers. This project was a month-long commitment."/>
@@ -72,18 +72,6 @@
                                 
                         title="">Home</a></li>
                 
-                    
-                    <li><a 
-                        href="/post/"
-                                
-                        title="">Posts</a></li>
-                
-                    
-                    <li><a 
-                        href="/about/"
-                                
-                        title="">About</a></li>
-                
                 
                     
                         <li><a href="/"
@@ -109,9 +97,9 @@
         <div class="logo-title">
             <div class="title">
                 <img src="/images/profile.jpg" alt="profile picture">
-                <h3 title=""><a href="/">z64me</a></h3>
+                <h3 title=""><a href="/">MD Holland</a></h3>
                 <div class="description">
-                    <p>Hoot hoot! 🦉</p>
+                    <p>Software Developer</p>
                 </div>
             </div>
         </div>
@@ -123,26 +111,14 @@
                     </a>
                 </li>
             
-                <li>
-                    <a href="https://www.youtube.com/c/z64me/videos" rel="me" aria-label="YouTube">
-                        <i class="fab fa-youtube fa-2x" aria-hidden="true"></i>
-                    </a>
-                </li>
-            
         </ul>
     </div><footer class="footer footer--sidebar">        
     <div class="by_farbox">
         <ul class="footer__list">
             <li class="footer__item">&copy;
                 
-                    2018 - 2021
+                    2018 - 2022
                 
-            </li>
-            
-            <li class="footer__item">
-                <a href="https://old.z64.me/"  target="_blank" rel="noopener noreferrer"  title="">
-                    old site
-                </a>
             </li>
             
             <li class="footer__item">
@@ -156,8 +132,8 @@
 </footer>
 
 <script type="text/javascript"
-        src="/js/medium-zoom.min.83cb1dd5fea8d42d87d1e601a07faa73089ad0ef9ccfe5daf6041289ebcc4e46.js"
-        integrity="sha256-g8sd1f6o1C2H0eYBoH&#43;qcwia0O&#43;cz&#43;Xa9gQSievMTkY="
+        src="/js/medium-zoom.min.51d7548d5d0e5d4ff7991252239ce6abf1fd527a0eabad7ce6b49aa21f6e08da.js"
+        integrity="sha256-UddUjV0OXU/3mRJSI5zmq/H9UnoOq6185rSaoh9uCNo="
         crossorigin="anonymous"></script></div>
 </aside>
     <main>
@@ -209,16 +185,16 @@
 <li>Memory leaks</li>
 </ul>
 <p>Those things compromise stability, and your software may behave differently on different machines. For example: some CPU&rsquo;s set uninitialized variables to zero when advancing the stack pointer, whereas others leave them set to seemingly random values. <strong>Valgrind helps you avoid surprises like this.</strong></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">==993667== 
-==993667== HEAP SUMMARY:
-==993667==     in use at exit: 0 bytes in 0 blocks
-==993667==   total heap usage: 43,399 allocs, 43,399 frees, 57,924,516 bytes allocated
-==993667== 
-==993667== All heap blocks were freed -- no leaks are possible
-==993667== 
-==993667== For lists of detected and suppressed errors, rerun with: -s
-==993667== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
-</code></pre></div><p>This is what you want: Valgrind is happy! Publish that code with confidence!</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">==993667== 
+</span></span><span class="line"><span class="cl">==993667== HEAP SUMMARY:
+</span></span><span class="line"><span class="cl">==993667==     in use at exit: 0 bytes in 0 blocks
+</span></span><span class="line"><span class="cl">==993667==   total heap usage: 43,399 allocs, 43,399 frees, 57,924,516 bytes allocated
+</span></span><span class="line"><span class="cl">==993667== 
+</span></span><span class="line"><span class="cl">==993667== All heap blocks were freed -- no leaks are possible
+</span></span><span class="line"><span class="cl">==993667== 
+</span></span><span class="line"><span class="cl">==993667== For lists of detected and suppressed errors, rerun with: -s
+</span></span><span class="line"><span class="cl">==993667== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+</span></span></code></pre></div><p>This is what you want: Valgrind is happy! Publish that code with confidence!</p>
 <h2 id="its-already-being-used-in-a-production-environment">It&rsquo;s already being used in a production environment</h2>
 <p>This racing game uses EzSpriteSheet to produce a texture atlas for its HUD elements:</p>
 <p><img src="/images/ezspritesheet-production.jpg" alt="image"></p>
@@ -317,14 +293,8 @@
         <ul class="footer__list">
             <li class="footer__item">&copy;
                 
-                    2018 - 2021
+                    2018 - 2022
                 
-            </li>
-            
-            <li class="footer__item">
-                <a href="https://old.z64.me/"  target="_blank" rel="noopener noreferrer"  title="">
-                    old site
-                </a>
             </li>
             
             <li class="footer__item">
@@ -338,8 +308,8 @@
 </footer>
 
 <script type="text/javascript"
-        src="/js/medium-zoom.min.83cb1dd5fea8d42d87d1e601a07faa73089ad0ef9ccfe5daf6041289ebcc4e46.js"
-        integrity="sha256-g8sd1f6o1C2H0eYBoH&#43;qcwia0O&#43;cz&#43;Xa9gQSievMTkY="
+        src="/js/medium-zoom.min.51d7548d5d0e5d4ff7991252239ce6abf1fd527a0eabad7ce6b49aa21f6e08da.js"
+        integrity="sha256-UddUjV0OXU/3mRJSI5zmq/H9UnoOq6185rSaoh9uCNo="
         crossorigin="anonymous"></script></body>
 
 </html>

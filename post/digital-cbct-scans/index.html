@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html  dir="ltr" lang="en" data-theme="light"><head>
+    <title> MD Holland | Rendering and simulating digital CBCT scans </title>
+
+    
+    <meta charset="utf-8"><meta name="generator" content="Hugo 0.101.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="description" content="Software Developer">
+    
+    
+    
+    <link rel="stylesheet"
+        href="/css/main.min.d7d091492c200520b33b845275b425f60a913a013a133ee523d569ee7d465fdd.css"
+        integrity="sha256-19CRSSwgBSCzO4RSdbQl9gqROgE6Ez7lI9Vp7n1GX90="
+        crossorigin="anonymous"
+        type="text/css">
+    
+    
+    <link rel="stylesheet"
+        href="/css/markupHighlight.min.bc108ac4d429f5e06afa75cfccb6585578f5198a03d669c1bd24b26e4a2895b7.css"
+        integrity="sha256-vBCKxNQp9eBq&#43;nXPzLZYVXj1GYoD1mnBvSSybkoolbc="
+        crossorigin="anonymous"
+        type="text/css">
+    
+    <link rel="stylesheet" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" 
+    integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" 
+    crossorigin="anonymous" />
+    
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+    <link rel="canonical" href="/post/digital-cbct-scans/">
+
+    
+    
+    
+    
+    <script type="text/javascript"
+            src="/js/anatole-header.min.d0408165d31a17f17bba83038bf54e86121f85021bdf936382e636f0f77a952f.js"
+            integrity="sha256-0ECBZdMaF/F7uoMDi/VOhhIfhQIb35NjguY28Pd6lS8="
+            crossorigin="anonymous"></script>
+
+
+    
+    <meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://holland.vg/images/site-feature-image.png"/>
+
+<meta name="twitter:title" content="Rendering and simulating digital CBCT scans"/>
+<meta name="twitter:description" content="I began orthodontic treatment recently, and having a digital CBCT scan was part of the consultation process. As a former radiography student with an interest in data processing, I really wanted to get my hands on a copy of the scan so I could conduct some experiments. Let&rsquo;s see what I was able to do with it!"/>
+
+
+    
+
+</head>
+<body>
+<header><div class="page-top  . ">
+    <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+    </a>
+    <nav>
+        <ul class="nav__list" id="navMenu">
+            <div class="nav__links">
+                
+                
+                    
+                    <li><a 
+                        href="/"
+                                
+                        title="">Home</a></li>
+                
+                
+                    
+                        <li><a href="/"
+                            title=""></a>
+                        </li>
+                    
+                        <li><a href="/ar/"
+                            title=""></a>
+                        </li>
+                    
+                
+            </div>
+            <li>
+                
+            </li>
+        </ul>
+    </nav>
+</div>
+</header>
+<div class="wrapper">
+    <aside><div class="sidebar . ">
+    <div class="sidebar__content">
+        <div class="logo-title">
+            <div class="title">
+                <img src="/images/profile.jpg" alt="profile picture">
+                <h3 title=""><a href="/">MD Holland</a></h3>
+                <div class="description">
+                    <p>Software Developer</p>
+                </div>
+            </div>
+        </div>
+        <ul class="social-links">
+            
+                <li>
+                    <a href="https://github.com/z64me" rel="me" aria-label="GitHub">
+                        <i class="fab fa-github fa-2x" aria-hidden="true"></i>
+                    </a>
+                </li>
+            
+        </ul>
+    </div><footer class="footer footer--sidebar">        
+    <div class="by_farbox">
+        <ul class="footer__list">
+            <li class="footer__item">&copy;
+                
+                    2018 - 2022
+                
+            </li>
+            
+            <li class="footer__item">
+                <a href="/post/index.xml"  title="">
+                    rss
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</footer>
+
+<script type="text/javascript"
+        src="/js/medium-zoom.min.51d7548d5d0e5d4ff7991252239ce6abf1fd527a0eabad7ce6b49aa21f6e08da.js"
+        integrity="sha256-UddUjV0OXU/3mRJSI5zmq/H9UnoOq6185rSaoh9uCNo="
+        crossorigin="anonymous"></script></div>
+</aside>
+    <main>
+        <div class="autopagerize_page_element">
+            <div class="content">
+    <div class="post  . ">
+        <div class="post-content">
+            
+            <img class="post-thumbnail" src="/thumbnails/digital-cbct-scans.jpg" alt="Thumbnail image">
+            
+            <div class="post-title">
+                <h1>Rendering and simulating digital CBCT scans</h1>
+                
+                    <div class="info">
+                        <em class="fas fa-calendar-day"></em>
+                        <span class="date"> 
+                                                23/9/2022
+                                           </span>
+                        <em class="fas fa-stopwatch"></em>
+                        <span class="reading-time">9-minute read</span>
+                    </div>
+                
+            </div>
+
+            <p>I began orthodontic treatment recently, and having a digital CBCT scan was part of the consultation process. As a former radiography student with an interest in data processing, I really wanted to get my hands on a copy of the scan so I could conduct some experiments. Let&rsquo;s see what I was able to do with it!</p>
+<h2 id="acquiring-the-data">Acquiring the data</h2>
+<p>The CD the office prepared for me contained a single executable intended to be run on Windows. When I tried running it, nothing happened. I was afraid files were missing. Particularly, my scan.</p>
+<p>So I opened the executable in a hex editor to see what I could find. I performed a search for my last name, and there it was: exactly one result!</p>
+<p><img src="/images/digital-cbct-scans/surname.png" alt=""></p>
+<p>I recognized this as XML data, so I scrolled up until I found what appeared to be the beginning: an opening <code>&lt;INVFile&gt;</code> tag. In XML files, tags come in pairs, so I searched for the accompanying closing tag.</p>
+<p>This was all the information I needed to isolate this block into its own file, creatively named <code>invfile.inv</code>. Was that everything I needed? I wasn&rsquo;t sure yet, so came the next step.</p>
+<h2 id="validating-the-data">Validating the data</h2>
+<p>I searched <code>INV file</code> online. On the <a href="https://www.anatomage.com/software-support/">Anatomage website</a>, it is described as &ldquo;<em>a proprietary file type. The Invivo file will contain patient&rsquo;s scan data and work up data in a single file</em>&rdquo;. I was definitely on the right track.</p>
+<p>I eventually came across <a href="https://invivoworkspace.com/">Invivo Workspace</a>, a web app that can view Invivo case files. I registered an account, uploaded my Invivo case file, and opened it. It worked! I was excited!</p>
+<p><img src="/images/digital-cbct-scans/invivo-holland.png" alt=""></p>
+<h2 id="figuring-out-the-data-structure">Figuring out the data structure</h2>
+<p>Now that I confirmed this file contained the data I was interested in, I went to work. The XML portion contained metadata describing the hardware that was used to produce the scan, its creation date, my name: things like that.</p>
+<p>More notably, it contained a large binary blob. This, I suspected, is where the CT images live. I isolated it and began looking for patterns.</p>
+<p>The most obvious pattern was a recurring watermark which read: <code>Creator: JasPer Version 1.701.0</code>. There happened to be 63 occurrences of this watermark throughout the file. Coincidentally, near the beginning of the file, a 32-bit value equivalent to 63 can be found. Shortly following that is a block of 63 similar values describing the size of each image file. The image files themselves are packed in immediately afterwards.</p>
+<p>It&rsquo;s by way of syllogisms like this, plus some trial and error, that I was able to work out the data structure with no prior knowledge of this file format. It isn&rsquo;t an exact science, but knowing what design patterns are routinely employed by programmers helps tremendously.</p>
+<p>To illustrate this structure to the reader, here&rsquo;s how it looks if I color-code each section. The pink region stores the number of images, the green region stores the filesize of each image, and the orange region contains the images themselves:</p>
+<p><img src="/images/digital-cbct-scans/datamap.png" alt=""></p>
+<p>For curious programmers, that&rsquo;s <a href="https://en.wikipedia.org/wiki/010_Editor">010 Editor</a>, a hex editor that supports binary templates. The binary template I wrote for the color coding looks like this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// Invivo Binary Template
+</span></span></span><span class="line"><span class="cl"><span class="c1">// Holland.vg
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Soft colors
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">#define cRed    0xddddff
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define cGreen  0xddffdd
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define cBlue   0xffdddd
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define cOrange 0x99ddff
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define cYellow 0xccffff
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define cAqua   0xffffcc
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="n">LittleEndian</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">sInvFileBlob</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">sHeader</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">char</span> <span class="n">magic</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&lt;</span><span class="n">bgcolor</span><span class="o">=</span><span class="n">cBlue</span><span class="o">&gt;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">uint32</span> <span class="n">numJpc</span> <span class="o">&lt;</span><span class="n">bgcolor</span><span class="o">=</span><span class="n">cRed</span><span class="o">&gt;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">uint32</span> <span class="n">numCmpt</span> <span class="o">&lt;</span><span class="n">bgcolor</span><span class="o">=</span><span class="n">cYellow</span><span class="o">&gt;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">uint32</span> <span class="n">lastCmpt</span> <span class="o">&lt;</span><span class="n">bgcolor</span><span class="o">=</span><span class="n">cAqua</span><span class="o">&gt;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">uint32</span> <span class="n">jpcSize</span><span class="p">[</span><span class="n">numJpc</span><span class="p">]</span> <span class="o">&lt;</span><span class="n">bgcolor</span><span class="o">=</span><span class="n">cGreen</span><span class="o">&gt;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="n">header</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">sBody</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">local</span> <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">local</span> <span class="n">uint32</span> <span class="n">bg</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">header</span><span class="p">.</span><span class="n">numJpc</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">bg</span> <span class="o">=</span> <span class="n">i</span> <span class="o">&amp;</span> <span class="mi">1</span> <span class="o">?</span> <span class="nl">cRed</span> <span class="p">:</span> <span class="n">cOrange</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="k">struct</span> <span class="n">sJpcFile</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">byte</span> <span class="n">data</span><span class="p">[</span><span class="n">header</span><span class="p">.</span><span class="n">jpcSize</span><span class="p">[</span><span class="n">i</span><span class="p">]];</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span> <span class="n">jpcFile</span> <span class="o">&lt;</span><span class="n">bgcolor</span><span class="o">=</span><span class="n">bg</span><span class="o">&gt;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="n">body</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">sFooter</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">char</span> <span class="n">magic</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">&lt;</span><span class="n">bgcolor</span><span class="o">=</span><span class="n">cBlue</span><span class="o">&gt;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="n">footer</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">invFileBlob</span><span class="p">;</span>
+</span></span></code></pre></div><h2 id="extracting-and-inspecting-an-image-file">Extracting and inspecting an image file</h2>
+<p>By this point, I had isolated a binary blob from an Invivo case file, which was itself extracted from a Windows executable. Having already worked out the data structure, going one level deeper and extracting an image file was simple enough.</p>
+<p>With a little bit of experimentation, I was able to make the following inferences:</p>
+<ul>
+<li>
+<p>The image files were created using the JasPer image encoding library.</p>
+</li>
+<li>
+<p>The image files always began with the byte signature <code>FF 4F FF 51</code>. A quick search revealed this byte signature indicates a JPEG 2000 codestream. <a href="https://en.wikipedia.org/wiki/List_of_file_signatures">Source: List of file signatures - Wikipedia</a></p>
+</li>
+<li>
+<p>Running the file through a JasPer utility named <code>imginfo</code> revealed it is a JPC file specifically, and that it has seven (7) components.</p>
+</li>
+<li>
+<p>Each component is a subimage. This means that even though there are 63 image files in the sequence, 63 image files * 7 components each = 441 images in total.</p>
+</li>
+<li>
+<p>The pixel data inside each component is 16-bit LE grayscale.</p>
+</li>
+</ul>
+<p>These findings informed my thinking as I worked towards my goal. I carefully noted them.</p>
+<p>I was able to successfully view one of the images by first converting it to raw pixel data using the following command:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">convert test.jpc -depth 16 gray:test-16bit-gray.raw
+</span></span></code></pre></div><p>I then loaded that pixel data into <a href="https://en.wikipedia.org/wiki/ImageJ">ImageJ</a>, an image processing program developed and maintained by the <a href="https://imagej.nih.gov/ij/index.html">NIH</a>. It worked!</p>
+<p><img src="/images/digital-cbct-scans/imagej.png" alt=""></p>
+<h2 id="displaying-ct-images-using-code">Displaying CT images using code</h2>
+<p>In the previous two sections, I worked out the data structure of the binary blob, and I applied my findings to extract and display a single image from it. My next goal was to translate these steps into code the computer could understand.</p>
+<p>Here&rsquo;s what I wanted to do, expressed in pseudo code:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">for each image:
+</span></span><span class="line"><span class="cl">   for each channel:
+</span></span><span class="line"><span class="cl">      for each pixel:
+</span></span><span class="line"><span class="cl">         write pixel
+</span></span></code></pre></div><p>It may have been a gross oversimplification of the problem I was trying to solve, but pseudo code doesn&rsquo;t have to be highly involved. I like to use it as a checklist. If the program can do each of these steps, then it works.</p>
+<p>I proceeded to write a program capable of extracting and displaying all the images in rapid succession. This is when things started to get interesting. As you&rsquo;ll see in the sections that follow, many meaningful things would soon be accomplished using this data.</p>
+<p><img src="/images/digital-cbct-scans/cbct-series.gif" alt=""></p>
+<p><em>CT &ldquo;video&rdquo; displayed by my program.</em></p>
+<h2 id="adding-color">Adding color</h2>
+<p>Grayscale is the simplest possible visual representation of a scan: the density of a given point is interpreted as a brightness value. Denser materials such as bone and amalgam come across more brightly than softer tissues and empty passageways.</p>
+<p>Color palettes are <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5148121/">regularly used</a> when interpreting medical images because they can highlight details that might otherwise go unnoticed, so I sought to include them in my program.</p>
+<p><img src="/images/digital-cbct-scans/palettes-illustrated.gif" alt=""></p>
+<p><em>Implementation of this key feature was simple: instead of treating the density as brightness, it is mapped to a point on a predefined color spectrum.</em></p>
+<h2 id="deriving-the-other-anatomical-planes">Deriving the other anatomical planes</h2>
+<p>A CT scan is a sequence of two-dimensional images, but what would happen if you were to theoretically print all of those images onto individual pieces of paper, stack them up, and cut the stack into two halves, allowing you to peer inside? A third dimension would be revealed! This is the 3D nature of CT scans. By doing this via code, we can see the other anatomical planes.</p>
+<!--![](/images/digital-cbct-scans/anatomical-planes.png)-->
+<figure class="small"><img src="/images/digital-cbct-scans/anatomical-planes.png"
+         alt="image"/>
+</figure>
+
+<p>If, in a given image, the X and Y axes represent points existing within the axial plane, then the Z axis refers to other images directly before or after it in the sequence. With this in mind, X, Y, and Z can be cleverly shuffled to produce images of the other planes.</p>
+<p><img src="/images/digital-cbct-scans/anatomical-planes.gif" alt=""></p>
+<p><em>The axial, sagittal, and coronal anatomical planes, respectively, displayed by my program.</em></p>
+<p><img src="/images/digital-cbct-scans/anatomical-planes-relation.gif" alt=""></p>
+<p><em>The moving axis line illustrates the relation between the  axial and sagittal planes.</em></p>
+<h2 id="generating-point-clouds">Generating point clouds</h2>
+<p>In the last section, we established that each pixel in each image represents a point in 2D space, and that if all images are accounted for, each pixel actually represents a point in 3D space. We can use this information to construct a 3D point cloud. And because I already programmed color palettes, the point clouds can be just as vivid and colorful as the images themselves!</p>
+<p>The following results were exported from my software and rendered in <a href="https://www.blender.org/">Blender</a>.</p>
+<!--![](/images/digital-cbct-scans/point-cloud-lights.png)-->
+<figure class="small"><img src="/images/digital-cbct-scans/point-cloud-lights.png"
+         alt="image"/><figcaption>
+            <p>My dental CBCT scan, interpreted as a 3D point cloud. I recognize that face!</p>
+        </figcaption>
+</figure>
+
+<!--![](/images/digital-cbct-scans/multi-density.gif)-->
+<figure class="small"><img src="/images/digital-cbct-scans/multi-density.gif"
+         alt="image"/><figcaption>
+            <p>When I was still in the exploratory phase, I wanted to work with a simplified data set, so I implemented a basic point density algorithm. Pictured: Point clouds of varying densities, overlaid. Higher point densities reveal more detail.</p>
+        </figcaption>
+</figure>
+
+<!--![](/images/digital-cbct-scans/point-cloud-bone-tissue.png)-->
+<figure class="small"><img src="/images/digital-cbct-scans/point-cloud-bone-tissue.png"
+         alt="image"/><figcaption>
+            <p>Point clouds can be manipulated in many ways. Here, I wrote code to isolate the outermost layer of soft tissue from bone before cutting away half.</p>
+        </figcaption>
+</figure>
+
+<h2 id="reversing-the-entire-process">Reversing the entire process</h2>
+<p>What if I wanted to create my own Invivo case file? I don&rsquo;t have a CBCT machine, but I can still simulate a scan! All I need is a 3D model and a way to cut it into slices. I decided to make my first test subject the famous <a href="https://en.wikipedia.org/wiki/Utah_teapot">Utah Teapot</a>.</p>
+<p>In Blender, I set up an orthographic camera pointing down towards the teapot. Next, I added a geometric plane that moves through the teapot from top to bottom. This plane has a boolean operator attached to it. The boolean operator discards any geometry that doesn&rsquo;t happen to intersect with the teapot.</p>
+<p>That&rsquo;s a lot to take in, so I rendered the following animation to illustrate:</p>
+<p><img src="/images/digital-cbct-scans/teapot-illustrated.gif" alt=""></p>
+<p>Then I added two new features to my program. It needed to be able to:</p>
+<ul>
+<li>
+<p>Import image sequences.</p>
+</li>
+<li>
+<p>Export Invivo case files.</p>
+</li>
+</ul>
+<p>Once I got that working, I opened the resulting file in Invivo Workspace. I was quite happy with how it turned out!</p>
+<p><img src="/images/digital-cbct-scans/invivo-utah-teapot.png" alt=""></p>
+<p><em>Check out the watermark I added!</em></p>
+<p><img src="/images/digital-cbct-scans/invivo-stanford-bunny.png" alt=""></p>
+<p><em>I performed the same test with the <a href="https://en.wikipedia.org/wiki/Stanford_bunny">Stanford Bunny</a>.</em></p>
+<p>And then I prepared a more complex model. I wanted something with both bone and soft tissue so the final test could be more realistic.</p>
+<p><img src="/images/digital-cbct-scans/cow-scan-simulation-fast.gif" alt=""></p>
+<p><em>This simulated CT scan of a cow is the culmination of my work.</em></p>
+<!-- ![](/images/digital-cbct-scans/invivo-cow-bone.png) -->
+<p><img src="/images/digital-cbct-scans/invivo-cow.png" alt=""></p>
+<p><em>And here it is displayed in Invivo Workspace.</em></p>
+<h2 id="in-closing">In closing</h2>
+<p>For a long time, I&rsquo;ve been wanting to work with medical imaging data, and this was the perfect opportunity. I worked on this for a few weekends and I had a lot of fun.</p>
+<p>For extra curious readers wanting to conduct their own experiments, all relevant files and the full source code for this project can be found on <a href="https://github.com/z64me/invivo-cbct">GitHub: z64me/invivo-cbct</a></p>
+<p><img src="/images/digital-cbct-scans/invivo-cbct.gif" alt=""></p>
+<h2 id="attribution">Attribution</h2>
+<p>The following software libraries made this project possible:</p>
+<ul>
+<li>
+<p><a href="https://ece.engr.uvic.ca/~frodo/jasper/">libjasper</a></p>
+</li>
+<li>
+<p><a href="https://www.libsdl.org/">libsdl2</a></p>
+</li>
+<li>
+<p><a href="https://github.com/nothings/stb">stb</a></p>
+</li>
+</ul></div>
+        <div class="post-footer">
+            <div class="info">
+                
+                <span class="separator"><a class="tag" href="/tags/fun/">fun</a><a class="tag" href="/tags/articles/">articles</a><a class="tag" href="/tags/programming/">programming</a><a class="tag" href="/tags/c/">c</a><a class="tag" href="/tags/medical/">medical</a></span>
+            </div>
+        </div>
+
+        
+    </div>
+
+
+            </div>
+        </div>
+    </main>
+</div><footer class="footer footer--base">        
+    <div class="by_farbox">
+        <ul class="footer__list">
+            <li class="footer__item">&copy;
+                
+                    2018 - 2022
+                
+            </li>
+            
+            <li class="footer__item">
+                <a href="/post/index.xml"  title="">
+                    rss
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</footer>
+
+<script type="text/javascript"
+        src="/js/medium-zoom.min.51d7548d5d0e5d4ff7991252239ce6abf1fd527a0eabad7ce6b49aa21f6e08da.js"
+        integrity="sha256-UddUjV0OXU/3mRJSI5zmq/H9UnoOq6185rSaoh9uCNo="
+        crossorigin="anonymous"></script></body>
+
+</html>

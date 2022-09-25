@@ -2,110 +2,233 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://z64.me/</loc>
-    <lastmod>2022-01-15T22:43:38-04:00</lastmod>
+    <loc>https://holland.vg/</loc>
+    <lastmod>2022-09-23T22:43:38-04:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="ar"
-                href="https://z64.me/ar/"
+                href="https://holland.vg/ar/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://z64.me/"
+                href="https://holland.vg/"
                 />
   </url><url>
-    <loc>https://z64.me/tags/articles/</loc>
-    <lastmod>2022-01-15T22:43:38-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/tags/c/</loc>
-    <lastmod>2022-01-15T22:43:38-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/tags/c&#43;&#43;/</loc>
-    <lastmod>2022-01-15T22:43:38-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/ezspritesheet/</loc>
-    <lastmod>2022-01-15T22:43:38-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/tags/fun/</loc>
-    <lastmod>2022-01-15T22:43:38-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/tags/javascript/</loc>
-    <lastmod>2022-01-15T22:43:38-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/</loc>
-    <lastmod>2022-01-15T22:43:38-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/tags/programming/</loc>
-    <lastmod>2022-01-15T22:43:38-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/tags/</loc>
-    <lastmod>2022-01-15T22:43:38-04:00</lastmod>
+    <loc>https://holland.vg/tags/articles/</loc>
+    <lastmod>2022-09-23T22:43:38-04:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="ar"
-                href="https://z64.me/ar/tags/"
+                href="https://holland.vg/ar/tags/articles/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://z64.me/tags/"
+                href="https://holland.vg/tags/articles/"
                 />
   </url><url>
-    <loc>https://z64.me/tags/ui/</loc>
+    <loc>https://holland.vg/tags/c/</loc>
+    <lastmod>2022-09-23T22:43:38-04:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ar"
+                href="https://holland.vg/ar/tags/c/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://holland.vg/tags/c/"
+                />
+  </url><url>
+    <loc>https://holland.vg/tags/fun/</loc>
+    <lastmod>2022-09-23T22:43:38-04:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ar"
+                href="https://holland.vg/ar/tags/fun/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://holland.vg/tags/fun/"
+                />
+  </url><url>
+    <loc>https://holland.vg/tags/medical/</loc>
+    <lastmod>2022-09-23T22:43:38-04:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ar"
+                href="https://holland.vg/ar/tags/medical/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://holland.vg/tags/medical/"
+                />
+  </url><url>
+    <loc>https://holland.vg/post/</loc>
+    <lastmod>2022-09-23T22:43:38-04:00</lastmod>
+  </url><url>
+    <loc>https://holland.vg/tags/programming/</loc>
+    <lastmod>2022-09-23T22:43:38-04:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ar"
+                href="https://holland.vg/ar/tags/programming/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://holland.vg/tags/programming/"
+                />
+  </url><url>
+    <loc>https://holland.vg/post/digital-cbct-scans/</loc>
+    <lastmod>2022-09-23T22:43:38-04:00</lastmod>
+  </url><url>
+    <loc>https://holland.vg/tags/</loc>
+    <lastmod>2022-09-23T22:43:38-04:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ar"
+                href="https://holland.vg/ar/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://holland.vg/tags/"
+                />
+  </url><url>
+    <loc>https://holland.vg/tags/c&#43;&#43;/</loc>
+    <lastmod>2022-01-15T22:43:38-04:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ar"
+                href="https://holland.vg/ar/tags/c&#43;&#43;/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://holland.vg/tags/c&#43;&#43;/"
+                />
+  </url><url>
+    <loc>https://holland.vg/post/ezspritesheet/</loc>
     <lastmod>2022-01-15T22:43:38-04:00</lastmod>
   </url><url>
-    <loc>https://z64.me/tags/ux/</loc>
+    <loc>https://holland.vg/tags/javascript/</loc>
     <lastmod>2022-01-15T22:43:38-04:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ar"
+                href="https://holland.vg/ar/tags/javascript/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://holland.vg/tags/javascript/"
+                />
   </url><url>
-    <loc>https://z64.me/tags/web/</loc>
+    <loc>https://holland.vg/tags/ui/</loc>
     <lastmod>2022-01-15T22:43:38-04:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ar"
+                href="https://holland.vg/ar/tags/ui/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://holland.vg/tags/ui/"
+                />
   </url><url>
-    <loc>https://z64.me/post/crafting-drivers-libusb/</loc>
+    <loc>https://holland.vg/tags/ux/</loc>
+    <lastmod>2022-01-15T22:43:38-04:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ar"
+                href="https://holland.vg/ar/tags/ux/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://holland.vg/tags/ux/"
+                />
+  </url><url>
+    <loc>https://holland.vg/tags/web/</loc>
+    <lastmod>2022-01-15T22:43:38-04:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ar"
+                href="https://holland.vg/ar/tags/web/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://holland.vg/tags/web/"
+                />
+  </url><url>
+    <loc>https://holland.vg/post/crafting-drivers-libusb/</loc>
     <lastmod>2021-11-01T14:20:56-04:00</lastmod>
   </url><url>
-    <loc>https://z64.me/post/developing-flappy-navi/</loc>
+    <loc>https://holland.vg/post/developing-flappy-navi/</loc>
     <lastmod>2021-08-16T00:22:57-04:00</lastmod>
   </url><url>
-    <loc>https://z64.me/post/data-mining-the-overdump/</loc>
+    <loc>https://holland.vg/post/data-mining-the-overdump/</loc>
     <lastmod>2021-08-09T19:29:00-04:00</lastmod>
   </url><url>
-    <loc>https://z64.me/tags/mods/</loc>
+    <loc>https://holland.vg/tags/mods/</loc>
     <lastmod>2021-08-09T19:29:00-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/writing-minimips64/</loc>
-    <lastmod>2021-07-30T17:57:17-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/tp-link-64-deluxe-source/</loc>
-    <lastmod>2021-07-05T17:57:17-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/post/wild-berries/</loc>
-    <lastmod>2021-06-25T17:53:17-04:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/about/</loc>
-    <lastmod>2021-06-24T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/archives/</loc>
-    <lastmod>2019-05-28T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/contact/</loc>
-    <lastmod>2019-03-08T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://z64.me/imprint/</loc>
-    <priority>0</priority>
-  </url><url>
-    <loc>https://z64.me/categories/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="ar"
-                href="https://z64.me/ar/categories/"
+                href="https://holland.vg/ar/tags/mods/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://z64.me/categories/"
+                href="https://holland.vg/tags/mods/"
                 />
   </url><url>
-    <loc>https://z64.me/tags/index/</loc>
+    <loc>https://holland.vg/post/writing-minimips64/</loc>
+    <lastmod>2021-07-30T17:57:17-04:00</lastmod>
+  </url><url>
+    <loc>https://holland.vg/post/wild-berries/</loc>
+    <lastmod>2021-06-25T17:53:17-04:00</lastmod>
+  </url><url>
+    <loc>https://holland.vg/about/</loc>
+    <lastmod>2021-06-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://holland.vg/archives/</loc>
+    <lastmod>2019-05-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://holland.vg/contact/</loc>
+    <lastmod>2019-03-08T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://holland.vg/imprint/</loc>
+    <priority>0</priority>
+  </url><url>
+    <loc>https://holland.vg/categories/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ar"
+                href="https://holland.vg/ar/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://holland.vg/categories/"
+                />
+  </url><url>
+    <loc>https://holland.vg/tags/index/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ar"
+                href="https://holland.vg/ar/tags/index/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://holland.vg/tags/index/"
+                />
   </url>
 </urlset>

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html  dir="ltr" lang="en" data-theme="light"><head>
-    <title> z64me | Developing a video game in C: Flappy Navi </title>
+    <title> MD Holland | Developing a video game in C: Flappy Navi </title>
 
     
-    <meta charset="utf-8"><meta name="generator" content="Hugo 0.88.1" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-    <meta name="description" content="Hoot hoot! 🦉">
+    <meta charset="utf-8"><meta name="generator" content="Hugo 0.101.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="description" content="Software Developer">
     
     
     
@@ -38,14 +38,14 @@
     
     
     <script type="text/javascript"
-            src="/js/anatole-header.min.98b79432dfa53ecc682fb19247f797a316f8cbca9d5455c8bb22e58fc694b675.js"
-            integrity="sha256-mLeUMt&#43;lPsxoL7GSR/eXoxb4y8qdVFXIuyLlj8aUtnU="
+            src="/js/anatole-header.min.d0408165d31a17f17bba83038bf54e86121f85021bdf936382e636f0f77a952f.js"
+            integrity="sha256-0ECBZdMaF/F7uoMDi/VOhhIfhQIb35NjguY28Pd6lS8="
             crossorigin="anonymous"></script>
 
 
     
     <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://z64.me/images/site-feature-image.png"/>
+<meta name="twitter:image" content="https://holland.vg/images/site-feature-image.png"/>
 
 <meta name="twitter:title" content="Developing a video game in C: Flappy Navi"/>
 <meta name="twitter:description" content="I write a lot of software, and last week I decided to spice up my repertoire with something fun: why not a video game? I spent only three days on this one, and I&rsquo;m very happy with how it turned out. In this article, I describe the steps I took to complete a small game development project: from start to finish."/>
@@ -72,18 +72,6 @@
                                 
                         title="">Home</a></li>
                 
-                    
-                    <li><a 
-                        href="/post/"
-                                
-                        title="">Posts</a></li>
-                
-                    
-                    <li><a 
-                        href="/about/"
-                                
-                        title="">About</a></li>
-                
                 
                     
                         <li><a href="/"
@@ -109,9 +97,9 @@
         <div class="logo-title">
             <div class="title">
                 <img src="/images/profile.jpg" alt="profile picture">
-                <h3 title=""><a href="/">z64me</a></h3>
+                <h3 title=""><a href="/">MD Holland</a></h3>
                 <div class="description">
-                    <p>Hoot hoot! 🦉</p>
+                    <p>Software Developer</p>
                 </div>
             </div>
         </div>
@@ -123,26 +111,14 @@
                     </a>
                 </li>
             
-                <li>
-                    <a href="https://www.youtube.com/c/z64me/videos" rel="me" aria-label="YouTube">
-                        <i class="fab fa-youtube fa-2x" aria-hidden="true"></i>
-                    </a>
-                </li>
-            
         </ul>
     </div><footer class="footer footer--sidebar">        
     <div class="by_farbox">
         <ul class="footer__list">
             <li class="footer__item">&copy;
                 
-                    2018 - 2021
+                    2018 - 2022
                 
-            </li>
-            
-            <li class="footer__item">
-                <a href="https://old.z64.me/"  target="_blank" rel="noopener noreferrer"  title="">
-                    old site
-                </a>
             </li>
             
             <li class="footer__item">
@@ -156,8 +132,8 @@
 </footer>
 
 <script type="text/javascript"
-        src="/js/medium-zoom.min.83cb1dd5fea8d42d87d1e601a07faa73089ad0ef9ccfe5daf6041289ebcc4e46.js"
-        integrity="sha256-g8sd1f6o1C2H0eYBoH&#43;qcwia0O&#43;cz&#43;Xa9gQSievMTkY="
+        src="/js/medium-zoom.min.51d7548d5d0e5d4ff7991252239ce6abf1fd527a0eabad7ce6b49aa21f6e08da.js"
+        integrity="sha256-UddUjV0OXU/3mRJSI5zmq/H9UnoOq6185rSaoh9uCNo="
         crossorigin="anonymous"></script></div>
 </aside>
     <main>
@@ -217,22 +193,22 @@
 <p>The player is nothing more than a center-screen rectangle that is influenced by gravity. Because all movement is based on real-world time, I can conveniently use this parabolic motion formula for the physics:</p>
 <p><img src="/images/developing-flappy-navi-quadratic-equation.png" alt="image"></p>
 <p>And here it is expressed as a simple C function:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cm">/* a snippet from FlappyNavi/src/player.c */</span>
-
-<span class="cm">/* player movement is accomplished using a simple quadratic equation;
-</span><span class="cm"> * this solution keeps the game framerate-independent without having
-</span><span class="cm"> * to introduce frame step logic
-</span><span class="cm"> * https://www.slideshare.net/snewgas/applications-of-the-vertex-formula-edit-8191421
-</span><span class="cm"> */</span>
-<span class="k">static</span> <span class="kt">float</span> <span class="nf">ParabolaMotion</span><span class="p">(</span><span class="k">struct</span> <span class="n">Parabola</span> <span class="n">p</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">milliseconds</span><span class="p">)</span>
-<span class="p">{</span>
-   <span class="kt">float</span> <span class="n">seconds</span><span class="p">;</span>
-   
-   <span class="n">seconds</span> <span class="o">=</span> <span class="n">milliseconds</span> <span class="o">*</span> <span class="mf">0.001f</span><span class="p">;</span>
-   
-   <span class="k">return</span> <span class="n">PLAYER_GRV</span> <span class="o">*</span> <span class="n">pow</span><span class="p">(</span><span class="n">seconds</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">PLAYER_YVEL</span> <span class="o">*</span> <span class="n">seconds</span> <span class="o">+</span> <span class="n">p</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div><h2 id="obstacles">Obstacles</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cm">/* a snippet from FlappyNavi/src/player.c */</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* player movement is accomplished using a simple quadratic equation;
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * this solution keeps the game framerate-independent without having
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * to introduce frame step logic
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * https://www.slideshare.net/snewgas/applications-of-the-vertex-formula-edit-8191421
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="k">static</span> <span class="kt">float</span> <span class="nf">ParabolaMotion</span><span class="p">(</span><span class="k">struct</span> <span class="n">Parabola</span> <span class="n">p</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">milliseconds</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">float</span> <span class="n">seconds</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="n">seconds</span> <span class="o">=</span> <span class="n">milliseconds</span> <span class="o">*</span> <span class="mf">0.001f</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="k">return</span> <span class="n">PLAYER_GRV</span> <span class="o">*</span> <span class="n">pow</span><span class="p">(</span><span class="n">seconds</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">PLAYER_YVEL</span> <span class="o">*</span> <span class="n">seconds</span> <span class="o">+</span> <span class="n">p</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="obstacles">Obstacles</h2>
 <p><img src="/images/developing-flappy-navi-obstacles.gif" alt="image"></p>
 <p>It may appear that the player is moving through the world, but it&rsquo;s actually the other way around. Indeed, the world is moving around the player! At a regular interval, a new obstacle is created just outside the viewing area, to the right. Then, it moves at a constant speed until it runs off the left edge of the screen. This creates the illusion of the player moving forward continuously.</p>
 <p>The openings the player must fly through come in three varieties: low, medium, and high. They are selected at random, but I also factor in earlier values to help reduce repetition.</p>
@@ -262,16 +238,16 @@
 <p>If you color-code it based on the control pixels, you get this:</p>
 <p><img src="/images/developing-flappy-navi-spritesheet-colors.png" alt="image"></p>
 <p>To display a sprite in the game window, you only need its row/column indices:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cm">/* a snippet from FlappyNavi/src/ui.c */</span>
-
-<span class="kt">int</span> <span class="n">winCenterX</span> <span class="o">=</span> <span class="n">WINDOW_W</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
-
-<span class="cm">/* logo */</span>
-<span class="n">SpritesheetDrawCentered</span><span class="p">(</span><span class="n">game</span><span class="p">,</span> <span class="n">game</span><span class="o">-&gt;</span><span class="n">ui</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">winCenterX</span><span class="p">,</span> <span class="n">WINDOW_H</span> <span class="o">/</span> <span class="mi">5</span><span class="p">);</span>
-
-<span class="cm">/* author */</span>
-<span class="n">SpritesheetDrawCentered</span><span class="p">(</span><span class="n">game</span><span class="p">,</span> <span class="n">game</span><span class="o">-&gt;</span><span class="n">ui</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">winCenterX</span><span class="p">,</span> <span class="n">WINDOW_H</span> <span class="o">-</span> <span class="mi">11</span><span class="p">);</span>
-</code></pre></div><h2 id="background">Background</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cm">/* a snippet from FlappyNavi/src/ui.c */</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">winCenterX</span> <span class="o">=</span> <span class="n">WINDOW_W</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* logo */</span>
+</span></span><span class="line"><span class="cl"><span class="n">SpritesheetDrawCentered</span><span class="p">(</span><span class="n">game</span><span class="p">,</span> <span class="n">game</span><span class="o">-&gt;</span><span class="n">ui</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">winCenterX</span><span class="p">,</span> <span class="n">WINDOW_H</span> <span class="o">/</span> <span class="mi">5</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* author */</span>
+</span></span><span class="line"><span class="cl"><span class="n">SpritesheetDrawCentered</span><span class="p">(</span><span class="n">game</span><span class="p">,</span> <span class="n">game</span><span class="o">-&gt;</span><span class="n">ui</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">winCenterX</span><span class="p">,</span> <span class="n">WINDOW_H</span> <span class="o">-</span> <span class="mi">11</span><span class="p">);</span>
+</span></span></code></pre></div><h2 id="background">Background</h2>
 <p><img src="/images/developing-flappy-navi-background31.gif" alt="image"></p>
 <p>The last thing I added was a static background. The floor is drawn separately and it scrolls along at the same speed as the obstacles, completing the effect I described earlier.</p>
 <h2 id="minimum-viable-product-mvp">Minimum Viable Product (MVP)</h2>
@@ -283,18 +259,18 @@
 <h2 id="particles">Particles</h2>
 <p><img src="/images/developing-flappy-navi-particles31.gif" alt="image"></p>
 <p>Particle effects make any game more lively. New particles are added to the game world like so:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cm">/* a snippet from FlappyNavi/src/player.c */</span>
-
-<span class="cm">/* spawn particles */</span>
-<span class="k">if</span> <span class="p">(</span><span class="n">game</span><span class="o">-&gt;</span><span class="n">ticks</span> <span class="o">-</span> <span class="n">fairy</span><span class="o">-&gt;</span><span class="n">particleTime</span> <span class="o">&gt;=</span> <span class="n">PLAYER_PARTFREQ</span><span class="p">)</span>
-<span class="p">{</span>
-   <span class="n">fairy</span><span class="o">-&gt;</span><span class="n">particleTime</span> <span class="o">=</span> <span class="n">game</span><span class="o">-&gt;</span><span class="n">ticks</span><span class="p">;</span>
-   
-   <span class="n">y</span> <span class="o">+=</span> <span class="n">FlappyRand</span><span class="p">(</span><span class="n">game</span><span class="p">)</span> <span class="o">%</span> <span class="mi">16</span><span class="p">;</span>
-   <span class="n">x</span> <span class="o">+=</span> <span class="n">FlappyRand</span><span class="p">(</span><span class="n">game</span><span class="p">)</span> <span class="o">%</span> <span class="mi">16</span><span class="p">;</span>
-   <span class="n">ParticlePush</span><span class="p">(</span><span class="n">game</span><span class="p">,</span> <span class="n">fairy</span><span class="o">-&gt;</span><span class="n">particle</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
-<span class="p">}</span>
-</code></pre></div><p>A linked list is used to keep track of every particle. A particle expires once it finishes playing its animation.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cm">/* a snippet from FlappyNavi/src/player.c */</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* spawn particles */</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">game</span><span class="o">-&gt;</span><span class="n">ticks</span> <span class="o">-</span> <span class="n">fairy</span><span class="o">-&gt;</span><span class="n">particleTime</span> <span class="o">&gt;=</span> <span class="n">PLAYER_PARTFREQ</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">   <span class="n">fairy</span><span class="o">-&gt;</span><span class="n">particleTime</span> <span class="o">=</span> <span class="n">game</span><span class="o">-&gt;</span><span class="n">ticks</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">   <span class="n">y</span> <span class="o">+=</span> <span class="n">FlappyRand</span><span class="p">(</span><span class="n">game</span><span class="p">)</span> <span class="o">%</span> <span class="mi">16</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="n">x</span> <span class="o">+=</span> <span class="n">FlappyRand</span><span class="p">(</span><span class="n">game</span><span class="p">)</span> <span class="o">%</span> <span class="mi">16</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="n">ParticlePush</span><span class="p">(</span><span class="n">game</span><span class="p">,</span> <span class="n">fairy</span><span class="o">-&gt;</span><span class="n">particle</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>A linked list is used to keep track of every particle. A particle expires once it finishes playing its animation.</p>
 <h2 id="player-ghosts">Player &ldquo;ghosts&rdquo;</h2>
 <p><img src="/images/developing-flappy-navi-friends64.gif" alt="image"></p>
 <p>I thought it would be cute if Navi had some friends. This feature takes advantage of the fact that player movement is accomplished by chaining quadratic equations together. Deriving earlier player positions is as simple as keeping an array of recently-used equations and querying it.</p>
@@ -307,47 +283,47 @@
 <h2 id="the-virtual-filesystem">The virtual filesystem</h2>
 <p>There&rsquo;s nothing quite like distributing a piece of software as a tiny self-contained executable. Because all the asset loading is routed through a single function, this goal seemed feasible, so I decided to give it a try.</p>
 <p>When the compiler flag <code>-DFLAPPY_STATIC_BUILD</code> is specified, a rudimentary virtual filesystem is embedded into the application like so:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cm">/* a snippet from FlappyNavi/src/file.c */</span>
-
-<span class="cp">#include</span> <span class="cpf">&#34;incbin.h&#34;</span><span class="cp">
-</span><span class="cp"></span>
-<span class="k">struct</span> <span class="n">VirtualFile</span>
-<span class="p">{</span>
-   <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">fn</span><span class="p">;</span>
-   <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">;</span>
-   <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="o">*</span><span class="n">sz</span><span class="p">;</span>
-<span class="p">};</span>
-
-<span class="cp">#define VirtualFileDecl(NAME, FN) { \
-</span><span class="cp">  FN \
-</span><span class="cp">  , INCBIN_CONCATENATE( \
-</span><span class="cp">            INCBIN_CONCATENATE(INCBIN_PREFIX, NAME), \
-</span><span class="cp">            INCBIN_STYLE_IDENT(DATA)) \
-</span><span class="cp">  , &amp;INCBIN_CONCATENATE( \
-</span><span class="cp">            INCBIN_CONCATENATE(INCBIN_PREFIX, NAME), \
-</span><span class="cp">            INCBIN_STYLE_IDENT(SIZE)) \
-</span><span class="cp">}
-</span><span class="cp"></span>
-<span class="cm">/* produce symbols for each */</span>
-<span class="n">INCBIN</span><span class="p">(</span><span class="n">Backgrounds</span><span class="p">,</span> <span class="s">&#34;gfx/backgrounds.png&#34;</span><span class="p">);</span>
-<span class="n">INCBIN</span><span class="p">(</span><span class="n">Obstacles</span><span class="p">,</span> <span class="s">&#34;gfx/obstacles.png&#34;</span><span class="p">);</span>
-<span class="n">INCBIN</span><span class="p">(</span><span class="n">Particles</span><span class="p">,</span> <span class="s">&#34;gfx/particles.png&#34;</span><span class="p">);</span>
-<span class="n">INCBIN</span><span class="p">(</span><span class="n">Sprites</span><span class="p">,</span> <span class="s">&#34;gfx/sprites.png&#34;</span><span class="p">);</span>
-<span class="n">INCBIN</span><span class="p">(</span><span class="n">Jabu</span><span class="p">,</span> <span class="s">&#34;gfx/jabu.png&#34;</span><span class="p">);</span>
-<span class="n">INCBIN</span><span class="p">(</span><span class="n">Icon</span><span class="p">,</span> <span class="s">&#34;gfx/icon.png&#34;</span><span class="p">);</span>
-<span class="n">INCBIN</span><span class="p">(</span><span class="n">Ui</span><span class="p">,</span> <span class="s">&#34;gfx/ui.png&#34;</span><span class="p">);</span>
-
-<span class="cm">/* now reference those symbols in an array for easy lookup */</span>
-<span class="k">static</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">VirtualFile</span> <span class="n">Filesystem</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
-   <span class="n">VirtualFileDecl</span><span class="p">(</span><span class="n">Backgrounds</span><span class="p">,</span> <span class="s">&#34;gfx/backgrounds.png&#34;</span><span class="p">)</span>
-   <span class="p">,</span> <span class="n">VirtualFileDecl</span><span class="p">(</span><span class="n">Obstacles</span><span class="p">,</span> <span class="s">&#34;gfx/obstacles.png&#34;</span><span class="p">)</span>
-   <span class="p">,</span> <span class="n">VirtualFileDecl</span><span class="p">(</span><span class="n">Particles</span><span class="p">,</span> <span class="s">&#34;gfx/particles.png&#34;</span><span class="p">)</span>
-   <span class="p">,</span> <span class="n">VirtualFileDecl</span><span class="p">(</span><span class="n">Sprites</span><span class="p">,</span> <span class="s">&#34;gfx/sprites.png&#34;</span><span class="p">)</span>
-   <span class="p">,</span> <span class="n">VirtualFileDecl</span><span class="p">(</span><span class="n">Jabu</span><span class="p">,</span> <span class="s">&#34;gfx/jabu.png&#34;</span><span class="p">)</span>
-   <span class="p">,</span> <span class="n">VirtualFileDecl</span><span class="p">(</span><span class="n">Icon</span><span class="p">,</span> <span class="s">&#34;gfx/icon.png&#34;</span><span class="p">)</span>
-   <span class="p">,</span> <span class="n">VirtualFileDecl</span><span class="p">(</span><span class="n">Ui</span><span class="p">,</span> <span class="s">&#34;gfx/ui.png&#34;</span><span class="p">)</span>
-<span class="p">};</span>
-</code></pre></div><p>Lastly, I wrote a new function that locates a virtual file by name and returns a copy of its data.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cm">/* a snippet from FlappyNavi/src/file.c */</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;incbin.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">VirtualFile</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">   <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">fn</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="o">*</span><span class="n">sz</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#define VirtualFileDecl(NAME, FN) { \
+</span></span></span><span class="line"><span class="cl"><span class="cp">  FN \
+</span></span></span><span class="line"><span class="cl"><span class="cp">  , INCBIN_CONCATENATE( \
+</span></span></span><span class="line"><span class="cl"><span class="cp">            INCBIN_CONCATENATE(INCBIN_PREFIX, NAME), \
+</span></span></span><span class="line"><span class="cl"><span class="cp">            INCBIN_STYLE_IDENT(DATA)) \
+</span></span></span><span class="line"><span class="cl"><span class="cp">  , &amp;INCBIN_CONCATENATE( \
+</span></span></span><span class="line"><span class="cl"><span class="cp">            INCBIN_CONCATENATE(INCBIN_PREFIX, NAME), \
+</span></span></span><span class="line"><span class="cl"><span class="cp">            INCBIN_STYLE_IDENT(SIZE)) \
+</span></span></span><span class="line"><span class="cl"><span class="cp">}
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cm">/* produce symbols for each */</span>
+</span></span><span class="line"><span class="cl"><span class="n">INCBIN</span><span class="p">(</span><span class="n">Backgrounds</span><span class="p">,</span> <span class="s">&#34;gfx/backgrounds.png&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">INCBIN</span><span class="p">(</span><span class="n">Obstacles</span><span class="p">,</span> <span class="s">&#34;gfx/obstacles.png&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">INCBIN</span><span class="p">(</span><span class="n">Particles</span><span class="p">,</span> <span class="s">&#34;gfx/particles.png&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">INCBIN</span><span class="p">(</span><span class="n">Sprites</span><span class="p">,</span> <span class="s">&#34;gfx/sprites.png&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">INCBIN</span><span class="p">(</span><span class="n">Jabu</span><span class="p">,</span> <span class="s">&#34;gfx/jabu.png&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">INCBIN</span><span class="p">(</span><span class="n">Icon</span><span class="p">,</span> <span class="s">&#34;gfx/icon.png&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">INCBIN</span><span class="p">(</span><span class="n">Ui</span><span class="p">,</span> <span class="s">&#34;gfx/ui.png&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* now reference those symbols in an array for easy lookup */</span>
+</span></span><span class="line"><span class="cl"><span class="k">static</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">VirtualFile</span> <span class="n">Filesystem</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">   <span class="n">VirtualFileDecl</span><span class="p">(</span><span class="n">Backgrounds</span><span class="p">,</span> <span class="s">&#34;gfx/backgrounds.png&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="p">,</span> <span class="n">VirtualFileDecl</span><span class="p">(</span><span class="n">Obstacles</span><span class="p">,</span> <span class="s">&#34;gfx/obstacles.png&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="p">,</span> <span class="n">VirtualFileDecl</span><span class="p">(</span><span class="n">Particles</span><span class="p">,</span> <span class="s">&#34;gfx/particles.png&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="p">,</span> <span class="n">VirtualFileDecl</span><span class="p">(</span><span class="n">Sprites</span><span class="p">,</span> <span class="s">&#34;gfx/sprites.png&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="p">,</span> <span class="n">VirtualFileDecl</span><span class="p">(</span><span class="n">Jabu</span><span class="p">,</span> <span class="s">&#34;gfx/jabu.png&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="p">,</span> <span class="n">VirtualFileDecl</span><span class="p">(</span><span class="n">Icon</span><span class="p">,</span> <span class="s">&#34;gfx/icon.png&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="p">,</span> <span class="n">VirtualFileDecl</span><span class="p">(</span><span class="n">Ui</span><span class="p">,</span> <span class="s">&#34;gfx/ui.png&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></div><p>Lastly, I wrote a new function that locates a virtual file by name and returns a copy of its data.</p>
 <p>This feature is completely optional, and no changes outside the source file <code>FlappyNavi/src/file.c</code> were necessary.</p>
 <h2 id="thanks-for-reading">Thanks for reading</h2>
 <p><img src="/images/developing-flappy-navi-title64.gif" alt="image"></p>
@@ -381,14 +357,8 @@
         <ul class="footer__list">
             <li class="footer__item">&copy;
                 
-                    2018 - 2021
+                    2018 - 2022
                 
-            </li>
-            
-            <li class="footer__item">
-                <a href="https://old.z64.me/"  target="_blank" rel="noopener noreferrer"  title="">
-                    old site
-                </a>
             </li>
             
             <li class="footer__item">
@@ -402,8 +372,8 @@
 </footer>
 
 <script type="text/javascript"
-        src="/js/medium-zoom.min.83cb1dd5fea8d42d87d1e601a07faa73089ad0ef9ccfe5daf6041289ebcc4e46.js"
-        integrity="sha256-g8sd1f6o1C2H0eYBoH&#43;qcwia0O&#43;cz&#43;Xa9gQSievMTkY="
+        src="/js/medium-zoom.min.51d7548d5d0e5d4ff7991252239ce6abf1fd527a0eabad7ce6b49aa21f6e08da.js"
+        integrity="sha256-UddUjV0OXU/3mRJSI5zmq/H9UnoOq6185rSaoh9uCNo="
         crossorigin="anonymous"></script></body>
 
 </html>
