@@ -1,18 +1,40 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on MD Holland</title>
-    <link>https://holland.vg/post/</link>
-    <description>Recent content in Posts on MD Holland</description>
+    <title>Posts on Michael Holland</title>
+    <link>https://holland.sh/post/</link>
+    <description>Recent content in Posts on Michael Holland</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 23 Sep 2022 22:43:38 -0400</lastBuildDate><atom:link href="https://holland.vg/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 12 May 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://holland.sh/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Setting up a Python Discord bot service using systemd (and securing your VPS!)</title>
+      <link>https://holland.sh/post/vps-bot-setup/</link>
+      <pubDate>Sun, 12 May 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://holland.sh/post/vps-bot-setup/</guid>
+      
+        <description>&lt;p&gt;A friend of mine recently created a chatbot for his Discord server, and he asked if I could host it for him. He didn&amp;rsquo;t want to leave his PC running 24/7, and he knows I enjoy tinkering with Linux servers. Join me as I set up a cozy little home for the Discord bot I adopted.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Giving back to Raivo OTP</title>
+      <link>https://holland.sh/post/giving-back-to-raivo/</link>
+      <pubDate>Sat, 15 Apr 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://holland.sh/post/giving-back-to-raivo/</guid>
+      
+        <description>&lt;p&gt;I use a lot of free and open-source software—like MarkText, which I&amp;rsquo;m using to write this article—and I deeply appreciate the effort developers put into these passion projects. Most of the programs I use already do everything I need, so I haven&amp;rsquo;t had a chance to contribute code back to any of them. But that changed recently when I found the perfect feature to add to Raivo OTP!&lt;/p&gt;</description>
+      
+    </item>
+    
     <item>
       <title>Rendering and simulating digital CBCT scans</title>
-      <link>https://holland.vg/post/digital-cbct-scans/</link>
+      <link>https://holland.sh/post/digital-cbct-scans/</link>
       <pubDate>Fri, 23 Sep 2022 22:43:38 -0400</pubDate>
       
-      <guid>https://holland.vg/post/digital-cbct-scans/</guid>
+      <guid>https://holland.sh/post/digital-cbct-scans/</guid>
       
         <description>&lt;p&gt;I began orthodontic treatment recently, and having a digital CBCT scan was part of the consultation process. As a former radiography student with an interest in data processing, I really wanted to get my hands on a copy of the scan so I could conduct some experiments. Let&amp;rsquo;s see what I was able to do with it!&lt;/p&gt;</description>
       
@@ -20,21 +42,21 @@
     
     <item>
       <title>EzSpriteSheet: a free and open source sprite sheet creator</title>
-      <link>https://holland.vg/post/ezspritesheet/</link>
+      <link>https://holland.sh/post/ezspritesheet/</link>
       <pubDate>Sat, 15 Jan 2022 22:43:38 -0400</pubDate>
       
-      <guid>https://holland.vg/post/ezspritesheet/</guid>
+      <guid>https://holland.sh/post/ezspritesheet/</guid>
       
-        <description>&lt;p&gt;Creating sprite sheets has never been easier: toss a folder at my new program and watch magic happen! This article details both why and how I engineered new software to address a common concern among game developers. This project was a month-long commitment.&lt;/p&gt;</description>
+        <description>&lt;p&gt;Making sprite sheets has never been easier: toss a folder at my new program and watch magic happen! This blogpost details both why and how I created a new tool to solve a common obstacle in low-level game development. EzSpriteSheet was a month-long commitment.&lt;/p&gt;</description>
       
     </item>
     
     <item>
       <title>Crafting simple hardware drivers with libusb</title>
-      <link>https://holland.vg/post/crafting-drivers-libusb/</link>
+      <link>https://holland.sh/post/crafting-drivers-libusb/</link>
       <pubDate>Mon, 01 Nov 2021 14:20:56 -0400</pubDate>
       
-      <guid>https://holland.vg/post/crafting-drivers-libusb/</guid>
+      <guid>https://holland.sh/post/crafting-drivers-libusb/</guid>
       
         <description>&lt;p&gt;I recently upgraded my computer mouse. Windows drivers are available through the vendor&amp;rsquo;s website, but what&amp;rsquo;s a daily Linux user like me to do? Reverse engineer it, of course!&lt;/p&gt;</description>
       
@@ -42,10 +64,10 @@
     
     <item>
       <title>Developing a video game in C: Flappy Navi</title>
-      <link>https://holland.vg/post/developing-flappy-navi/</link>
+      <link>https://holland.sh/post/developing-flappy-navi/</link>
       <pubDate>Mon, 16 Aug 2021 00:22:57 -0400</pubDate>
       
-      <guid>https://holland.vg/post/developing-flappy-navi/</guid>
+      <guid>https://holland.sh/post/developing-flappy-navi/</guid>
       
         <description>&lt;p&gt;I write a lot of software, and last week I decided to spice up my repertoire with something fun: why not a video game? I spent only three days on this one, and I&amp;rsquo;m very happy with how it turned out. In this article, I describe the steps I took to complete a small game development project: from start to finish.&lt;/p&gt;</description>
       
@@ -53,10 +75,10 @@
     
     <item>
       <title>Data mining the F-Zero X overdump</title>
-      <link>https://holland.vg/post/data-mining-the-overdump/</link>
+      <link>https://holland.sh/post/data-mining-the-overdump/</link>
       <pubDate>Mon, 09 Aug 2021 19:29:00 -0400</pubDate>
       
-      <guid>https://holland.vg/post/data-mining-the-overdump/</guid>
+      <guid>https://holland.sh/post/data-mining-the-overdump/</guid>
       
         <description>&lt;p&gt;Ever go on a treasure hunt? Think of that, except the entire adventure takes place inside a blob of data no one has ever laid eyes on. We data miners are digital archaeologists, and we struck a goldmine. Today, I will tell the tale of the F-Zero X overdump expedition.&lt;/p&gt;</description>
       
@@ -64,10 +86,10 @@
     
     <item>
       <title>Writing a tiny MIPS assembler and disassembler in C</title>
-      <link>https://holland.vg/post/writing-minimips64/</link>
+      <link>https://holland.sh/post/writing-minimips64/</link>
       <pubDate>Fri, 30 Jul 2021 17:57:17 -0400</pubDate>
       
-      <guid>https://holland.vg/post/writing-minimips64/</guid>
+      <guid>https://holland.sh/post/writing-minimips64/</guid>
       
         <description>&lt;p&gt;We are able to do most of our Nintendo 64 development in C nowadays. But things weren&amp;rsquo;t always like that! Long ago, legendary hackers did it all in handwritten assembly. Join me as I write a minimalistic MIPS assembler/disassembler and show you how to compile a rudimentary hack using it.&lt;/p&gt;</description>
       
@@ -75,10 +97,10 @@
     
     <item>
       <title>wild berries</title>
-      <link>https://holland.vg/post/wild-berries/</link>
+      <link>https://holland.sh/post/wild-berries/</link>
       <pubDate>Fri, 25 Jun 2021 17:53:17 -0400</pubDate>
       
-      <guid>https://holland.vg/post/wild-berries/</guid>
+      <guid>https://holland.sh/post/wild-berries/</guid>
       
         <description>&lt;p&gt;These wild berries are growing in my backyard. What can I say? I really like berries. 🍓&lt;/p&gt;</description>
       

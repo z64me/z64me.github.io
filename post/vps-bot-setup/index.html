@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html  dir="ltr" lang="en" data-theme="light"><head>
+    <title> Michael Holland | Setting up a Python Discord bot service using systemd (and securing your VPS!) </title>
+
+    
+    <meta charset="utf-8"><meta name="generator" content="Hugo 0.116.1"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="description" content="Software, Data, Linux">
+    
+    
+    
+    <link rel="stylesheet"
+        href="/css/main.min.353f34287745e2a43cf5668c1f7e293bf10104dd3a62f119f982d97f24a18562.css"
+        integrity="sha256-NT80KHdF4qQ89WaMH34pO/EBBN06YvEZ&#43;YLZfyShhWI="
+        crossorigin="anonymous"
+        type="text/css">
+    
+    
+    <link rel="stylesheet"
+        href="/css/markupHighlight.min.bc108ac4d429f5e06afa75cfccb6585578f5198a03d669c1bd24b26e4a2895b7.css"
+        integrity="sha256-vBCKxNQp9eBq&#43;nXPzLZYVXj1GYoD1mnBvSSybkoolbc="
+        crossorigin="anonymous"
+        type="text/css">
+    
+    <link rel="stylesheet" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" 
+    integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" 
+    crossorigin="anonymous" />
+    
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="256x256" href="/favicon-256x256.png">
+    <link rel="icon" type="image/png" sizes="144x144" href="/favicon-144x144.png">
+    <link rel="icon" type="image/png" sizes="128x128" href="/favicon-128x128.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon-64x64.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="24x24" href="/favicon-24x24.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+    <link rel="canonical" href="/post/vps-bot-setup/">
+
+    
+    
+    
+    
+    <script type="text/javascript"
+            src="/js/anatole-header.min.d0408165d31a17f17bba83038bf54e86121f85021bdf936382e636f0f77a952f.js"
+            integrity="sha256-0ECBZdMaF/F7uoMDi/VOhhIfhQIb35NjguY28Pd6lS8="
+            crossorigin="anonymous"></script>
+
+
+    
+    <meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://holland.sh/images/site-feature-image.png"/>
+
+<meta name="twitter:title" content="Setting up a Python Discord bot service using systemd (and securing your VPS!)"/>
+<meta name="twitter:description" content="A friend of mine recently created a chatbot for his Discord server, and he asked if I could host it for him. He didn&rsquo;t want to leave his PC running 24/7, and he knows I enjoy tinkering with Linux servers. Join me as I set up a cozy little home for the Discord bot I adopted."/>
+
+
+    
+
+</head>
+<body>
+<header><div class="page-top  . ">
+    <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+    </a>
+    <nav>
+        <ul class="nav__list" id="navMenu">
+            <div class="nav__links">
+                
+                
+                    
+                    <li><a 
+                        href="/"
+                                
+                        title="">Home</a></li>
+                
+                
+            </div>
+            <li>
+                
+            </li>
+        </ul>
+    </nav>
+</div>
+</header>
+<div class="wrapper">
+    <aside><div class="sidebar . ">
+    <div class="sidebar__content">
+        <div class="logo-title">
+            <div class="title">
+                <img src="/images/profile.jpg" alt="profile picture">
+                <h3 title=""><a href="/">Michael Holland</a></h3>
+                <div class="description">
+                    <p>Software, Data, Linux</p>
+                </div>
+            </div>
+        </div>
+        <ul class="social-links">
+            
+                <li>
+                    <a href="https://github.com/z64me" rel="me" aria-label="GitHub">
+                        <i class="fab fa-github fa-2x" aria-hidden="true"></i>
+                    </a>
+                </li>
+            
+        </ul>
+    </div><footer class="footer footer--sidebar">        
+    <div class="by_farbox">
+        <ul class="footer__list">
+            <li class="footer__item">&copy;
+                
+                    2018 - 2024
+                
+            </li>
+            
+            <li class="footer__item">
+                <a href="/post/"  title="">
+                    archives
+                </a>
+            </li>
+            
+            <li class="footer__item">
+                <a href="/post/index.xml"  title="">
+                    rss
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</footer>
+
+<script type="text/javascript"
+        src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
+        integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
+        crossorigin="anonymous"></script></div>
+</aside>
+    <main>
+        <div class="autopagerize_page_element">
+            <div class="content">
+    <div class="post  . ">
+        <div class="post-content">
+            
+            <img class="post-thumbnail" src="/thumbnails/vps-bot-setup.png" alt="Thumbnail image">
+            
+            <div class="post-title">
+                <h1>Setting up a Python Discord bot service using systemd (and securing your VPS!)</h1>
+                
+                    <div class="info">
+                        <em class="fas fa-calendar-day"></em>
+                        <span class="date"> 
+                                                Sun, May 12, 2024
+                                           </span>
+                        <em class="fas fa-stopwatch"></em>
+                        <span class="reading-time">9-minute read</span>
+                    </div>
+                
+            </div>
+
+            <p>A friend of mine recently created a chatbot for his Discord server, and he asked if I could host it for him. He didn&rsquo;t want to leave his PC running 24/7, and he knows I enjoy tinkering with Linux servers. Join me as I set up a cozy little home for the Discord bot I adopted.</p>
+<h2 id="welcome-to-server-admin-101">Welcome to server admin 101</h2>
+<p>If you&rsquo;re planning on following along, please know I won&rsquo;t be getting into the Discord side of things because there are already plenty of guides out there explaining that part. This blogpost focuses more on teaching newbies a little bit about Linux server administration, things that might be overlooked by those guides that teach how to get a bot up and running as quickly as possible. Now let&rsquo;s dive in.</p>
+<h2 id="you-need-a-vps">You need a VPS</h2>
+<p>Well, you actually don&rsquo;t, but having a <a href="https://en.wikipedia.org/wiki/Virtual_private_server">virtual private server</a> (VPS) is great for projects like this one. Very reliable uptime provided by a data center with all their safeguards? Sign me up.</p>
+<p>I haven&rsquo;t set up a Linux server in a hot minute. I usually use Debian for servers, but I wanted to try something new, so I went with an AlmaLinux VPS provided by <a href="https://www.racknerd.com/">RackNerd</a>. Not an affiliate link, and I wasn&rsquo;t sponsored to say this. I just like them.</p>
+<p>If you purchase a VPS, you should be able to find its credentials (IP address and root password) somewhere in your user dashboard.</p>
+<p>You can then log into it by running the <strong>ssh</strong> command in your favorite terminal (Linux/macOS), or Windows PowerShell:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">ssh root@12.345.678.90 <span class="o">(</span>substitute the IP address of your VPS<span class="o">)</span>
+</span></span></code></pre></div><p>Once you&rsquo;ve logged in, all commands you type into that terminal window will be executed on your VPS, not on your local machine.</p>
+<h2 id="initial-setup">Initial setup</h2>
+<p>I didn&rsquo;t want the root (admin) user to be running the Discord bot, because running everything with elevated privileges has security implications. So the first thing I did was add a new user named <strong>bots</strong> and set the password:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">useradd bots
+</span></span><span class="line"><span class="cl">passwd bots
+</span></span></code></pre></div><p>The bot my friend sent me was written in Python. As of this writing, <a href="https://pypi.org/project/discord.py/">Discord&rsquo;s Python API</a> is compatible with Python versions 3.8, 3.9, and 3.10, so I went ahead and installed version 3.9, switched to my new non-root user, and installed the Discord package.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">dnf install python39 python39-pip
+</span></span><span class="line"><span class="cl">su bots
+</span></span><span class="line"><span class="cl">python3.9 -m pip install -U discord.py
+</span></span></code></pre></div><p>At this point, you can run your Discord bot and expect it to work, assuming you&rsquo;ve uploaded it to your VPS:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">python3.9 /path/to/your/bot.py
+</span></span></code></pre></div><p>I highly recommend <a href="https://winscp.net/">WinSCP</a> to any Windows users looking for a nice easy way to manage files on their VPS. Authentication works very similarly to the <strong>ssh</strong> command described earlier, where you provide the name of the user you want to log in as, the IP address, and the password. It also lets you directly edit files on your VPS in your preferred code editor.</p>
+<p>If you&rsquo;re a Linux user, the default file manager in most desktop environments has similar functionality builtin, so there&rsquo;s no need to install a separate program for this.</p>
+<h2 id="adding-a-systemd-service">Adding a systemd service</h2>
+<p>Occasionally, your VPS might get restarted without your knowledge, such as during data center maintenance, so manually logging in and restarting the bot every time this happens is impractical, especially for a bot that manages mission-critical actions such as user registrations in a popular Discord server.</p>
+<p>For this reason, <strong>you want the bot to auto-start on bootup</strong>, minimizing downtime. We&rsquo;ll set that up now. Switch back to the root user and navigate to the directory:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">su root
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /etc/systemd/system
+</span></span><span class="line"><span class="cl">nano welcome-bot.service
+</span></span></code></pre></div><p>And then paste this template in there (adjust your paths if they&rsquo;re different from mine!):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">[</span>Unit<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Description</span><span class="o">=</span>WelcomeBot Discord bot service
+</span></span><span class="line"><span class="cl"><span class="nv">After</span><span class="o">=</span>network.target
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Service<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">ExecStart</span><span class="o">=</span>/usr/bin/python3.9 bot.py <span class="c1"># the command to run the bot</span>
+</span></span><span class="line"><span class="cl"><span class="nv">WorkingDirectory</span><span class="o">=</span>/home/bots/welcome-bot <span class="c1"># the directory where the bot lives</span>
+</span></span><span class="line"><span class="cl"><span class="nv">StandardOutput</span><span class="o">=</span>inherit
+</span></span><span class="line"><span class="cl"><span class="nv">StandardError</span><span class="o">=</span>inherit
+</span></span><span class="line"><span class="cl"><span class="nv">Restart</span><span class="o">=</span>always
+</span></span><span class="line"><span class="cl"><span class="nv">User</span><span class="o">=</span>bots <span class="c1"># the non-root user that will run the bot</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Install<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
+</span></span></code></pre></div><p>Make sure you save the file as you exit nano. Then run these commands to enable the service and reboot the server. You will have to <strong>ssh</strong> back in after the reboot.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">systemctl <span class="nb">enable</span> welcome-bot
+</span></span><span class="line"><span class="cl">reboot
+</span></span></code></pre></div><p>At any time while the service is running, you can peek at the current status and any errors it may have thrown by using this command:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">systemctl status welcome-bot
+</span></span></code></pre></div><p>And when you want to restart the bot after modifying its code, you can do so by running the following command:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">systemctl restart welcome-bot
+</span></span></code></pre></div><p>You can do this for any services you want to run, not just chat bots, and not just in Python. Any program you write, and in any language!</p>
+<h2 id="automatic-updates">Automatic updates</h2>
+<p>While we&rsquo;re automating things, I also recommend setting up automatic updates. Completely optional, but a nice time-saver. Especially if you&rsquo;re maintaining multiple servers.</p>
+<p>I&rsquo;m only very briefly touching on this topic because the way you do it depends on what distro you&rsquo;re running and what package manager it uses.</p>
+<p>Here are some useful resources:</p>
+<ul>
+<li>
+<p><a href="https://dev.to/bearlike/why-and-how-to-use-unattended-upgrades-on-a-ubuntu-server-4hoc">Why and How to Use Unattended-Upgrades on a Ubuntu server? - DEV Community</a></p>
+</li>
+<li>
+<p><a href="https://linuxiac.com/how-to-set-up-automatic-updates-on-rocky-linux-almalinux/">How to Set up Automatic Updates on Rocky Linux / AlmaLinux</a></p>
+</li>
+</ul>
+<p>If you take a moment to skim those articles, you might notice that these are managed using the <strong>systemctl</strong> command. Indeed, they are systemd services just like our Discord bot!</p>
+<h2 id="mitigating-brute-force-attacks">Mitigating brute-force attacks</h2>
+<p>I wasn&rsquo;t too concerned about this during the initial setup (was feeling lazy), but when I logged into my VPS a couple of months later, I was greeted with the following message:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Last failed login: Mon Apr 29 00:31:28 EDT 2024 from 213.109.202.127 on ssh:notty
+</span></span><span class="line"><span class="cl">There were 177514 failed login attempts since the last successful login.
+</span></span><span class="line"><span class="cl">Last login: Tue Apr  2 07:51:43 2024
+</span></span></code></pre></div><p>Over 150,000 failed login attempts? What was going on? Out of curiosity, I traced the IP address:</p>
+<p><img src="/images/vps-bot-setup/trace.png" alt=""></p>
+<p>This was a <a href="https://en.wikipedia.org/wiki/Brute-force_attack">brute-force attack</a>, unsurprisingly originating from Russia. And this sort of thing is super common. I was tempted to ignore it and leave the server unsecured so that, in the event that they did manage to get into it, all they would find is a Discord bot. That would have been a funny way to waste their time, but it&rsquo;s better to be safe than sorry. I also want to use the VPS for more projects in the future, so let&rsquo;s lock it down!</p>
+<p>The easiest way to do this is with an <a href="https://wiki.archlinux.org/title/SSH_keys">SSH key</a>. It is a key in the most literal sense, like the key to any door or lock. So keep it safe, and don&rsquo;t lose it!</p>
+<p>In Windows PowerShell (note: we&rsquo;re doing this part locally, not on our VPS!), generate a key with the <strong>ssh-keygen</strong> command by simply running:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">ssh-keygen
+</span></span></code></pre></div><p>Follow the prompts. Assuming you haven&rsquo;t done this before, you can press the enter key on each prompt to use the defaults. Protecting your SSH key with a password is not necessary, but the option is provided. <strong>A password adds an extra layer of security in case someone manages to steal the key, because then they still need the password in order to use it.</strong> If you don&rsquo;t want a password, press the enter key without typing one, when prompted.</p>
+<p>And then tell the server to recognize your new key by running this command (on Linux or macOS):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">ssh-copy-id root@12.345.678.90 <span class="o">(</span>substitute the IP address of your VPS<span class="o">)</span>
+</span></span></code></pre></div><p><strong>Note</strong>: at the time of this writing, <strong>Windows PowerShell doesn&rsquo;t have the <code>ssh-copy-id</code> command</strong>, but you can work around it like so (tweaked this snippet from Christopher Hart&rsquo;s blog, read more here: <a href="https://chrisjhart.com/Windows-10-ssh-copy-id/">Windows 10 OpenSSH Equivalent of ssh-copy-id</a>):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nb">type</span> <span class="nv">$env</span>:USERPROFILE<span class="se">\.</span>ssh<span class="se">\i</span>d_rsa.pub <span class="p">|</span> ssh root@12.345.678.90 <span class="s2">&#34;mkdir -p -m 700 ~/.ssh &amp;&amp; cat &gt;&gt; ~/.ssh/authorized_keys&#34;</span>
+</span></span></code></pre></div><p>And if that doesn&rsquo;t work, you could try copying it over using the <strong>scp</strong> (secure copy) command:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">scp <span class="nv">$env</span>:USERPROFILE<span class="se">\.</span>ssh<span class="se">\i</span>d_rsa.pub root@12.345.678.90:/
+</span></span><span class="line"><span class="cl">ssh root@12.345.678.90
+</span></span><span class="line"><span class="cl">mkdir -m <span class="m">700</span> ~/.ssh
+</span></span><span class="line"><span class="cl">cat /id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys
+</span></span><span class="line"><span class="cl">chmod <span class="m">644</span> -f ~/.ssh/authorized_keys
+</span></span><span class="line"><span class="cl">rm -f /id_rsa.pub
+</span></span></code></pre></div><p>See? There are always workarounds if you have to get creative!</p>
+<p>Also worth noting is that SSH authentication can be very picky about file permissions, so if you&rsquo;re still having trouble, <a href="https://gist.github.com/denisgolius/d846af3ad5ce661dbca0335ec35e3d39?permalink_comment_id=4630830#gistcomment-4630830">try the solution from this gist</a>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">chmod <span class="m">700</span> ~/.ssh <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>chmod <span class="m">600</span> ~/.ssh/* <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>chmod <span class="m">644</span> -f ~/.ssh/*.pub ~/.ssh/authorized_keys ~/.ssh/known_hosts ~/.ssh/config
+</span></span></code></pre></div><p>At this point, you should be able to <strong>ssh</strong> into your server without being prompted for a password: very cool!</p>
+<p>We&rsquo;re almost there. <strong>Next, we need to disable password authentication altogether so that the only way to log in is with the key.</strong> Log into your server if you haven&rsquo;t already done so, and run this command:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">nano /etc/ssh/sshd_config
+</span></span></code></pre></div><p>Then edit each of the following attributes to be set to <strong>no</strong>, like so:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">PasswordAuthentication no
+</span></span><span class="line"><span class="cl">ChallengeResponseAuthentication no
+</span></span></code></pre></div><p><strong>Note</strong>: also make sure those two attributes aren&rsquo;t commented out (aka if there&rsquo;s a <code>#</code> sign to the left of one of them, delete the <code>#</code> sign). For any attributes that don&rsquo;t exist, add them somewhere (at the end of the file is fine). Remember to save your changes as you exit nano.</p>
+<p>Lastly, <strong>reload the SSH daemon</strong> with the following command and you should be good to go. Make sure you test it on a device that doesn&rsquo;t have the SSH key!</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">systemctl reload sshd
+</span></span></code></pre></div><p><strong>Now those big bad hackers wouldn&rsquo;t be able to get in even if they knew the password!</strong></p>
+<p>But that doesn&rsquo;t mean the server is totally bulletproof. For example: <strong>there was a recent exploit discovered that was trying to steal SSH keys</strong>, which you can read more about below. Stay vigilant!</p>
+<ul>
+<li>
+<p><a href="https://arstechnica.com/security/2024/04/what-we-know-about-the-xz-utils-backdoor-that-almost-infected-the-world/">What we know about the xz Utils backdoor that almost infected the world | Ars Technica</a></p>
+</li>
+<li>
+<p><a href="https://www.akamai.com/blog/security-research/critical-linux-backdoor-xz-utils-discovered-what-to-know">XZ Utils Backdoor — Everything You Need to Know, and What You Can Do | Akamai</a></p>
+</li>
+</ul>
+<h2 id="using-your-ssh-key-with-winscp">Using your SSH key with WinSCP</h2>
+<p>With password authentication turned off, you won&rsquo;t be able to connect over WinSCP using the old method from before, so let&rsquo;s fix that. Relevant parts of the screenshot below have been highlighted in pink.</p>
+<p><img src="/images/vps-bot-setup/winscp-with-key.png" alt=""></p>
+<p>Yep, it&rsquo;s that simple! You&rsquo;ll still need to enter the IP address (where it asks for hostname) and username. And you can click the <strong>Save</strong> button to remember the key/IP/username so you don&rsquo;t have to enter them each time you connect.</p>
+<h2 id="thats-everything">That&rsquo;s everything!</h2>
+<p>As much as I would like to write, &ldquo;and the Discord bot lived happily ever after&rdquo;, projects involving web servers require maintenance, which continues ad infinitum. Anything that happens to break over time will need fixing, and I&rsquo;ll probably have to switch to a newer version of Python eventually. It&rsquo;s a living, breathing, ever-evolving system, and there&rsquo;s some beauty in that.</p>
+<h2 id="exercises-for-the-reader">Exercises for the reader</h2>
+<p>I wanted to include more sections in this blogpost, but it&rsquo;s already a bit of an infodump, so I&rsquo;ve attached everything else below as exercises for the reader (assuming anyone out there decides to follow along). Have fun!</p>
+<ol>
+<li>
+<p><strong>[Beginner]</strong> Find out how to copy your SSH key to other devices, such as a second computer or a virtual machine, and log into your VPS from those devices.</p>
+</li>
+<li>
+<p><strong>[Intermediate]</strong> Create an additional bot service for prototyping new features before merging them into the main (stable) bot.</p>
+</li>
+<li>
+<p><strong>[Advanced]</strong> Use continuous delivery to update and restart your main bot automatically as code is merged into its GitHub repo. <a href="https://github.blog/2022-02-02-build-ci-cd-pipeline-github-actions-four-steps/">How to build a CI/CD pipeline with GitHub Actions in four simple steps - The GitHub Blog</a></p>
+</li>
+</ol></div>
+        <div class="post-footer">
+            <div class="info">
+                
+                <span class="separator"><a class="tag" href="/tags/fun/">fun</a><a class="tag" href="/tags/programming/">programming</a><a class="tag" href="/tags/articles/">articles</a><a class="tag" href="/tags/linux/">linux</a><a class="tag" href="/tags/server/">server</a></span>
+            </div>
+        </div>
+
+        
+    </div>
+
+
+            </div>
+        </div>
+    </main>
+</div><footer class="footer footer--base">        
+    <div class="by_farbox">
+        <ul class="footer__list">
+            <li class="footer__item">&copy;
+                
+                    2018 - 2024
+                
+            </li>
+            
+            <li class="footer__item">
+                <a href="/post/"  title="">
+                    archives
+                </a>
+            </li>
+            
+            <li class="footer__item">
+                <a href="/post/index.xml"  title="">
+                    rss
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</footer>
+
+<script type="text/javascript"
+        src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
+        integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
+        crossorigin="anonymous"></script></body>
+
+</html>

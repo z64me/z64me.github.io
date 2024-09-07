@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html  dir="ltr" lang="en" data-theme="light"><head>
-    <title> MD Holland | Rendering and simulating digital CBCT scans </title>
+    <title> Michael Holland | Rendering and simulating digital CBCT scans </title>
 
     
-    <meta charset="utf-8"><meta name="generator" content="Hugo 0.101.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-    <meta name="description" content="Software Developer">
+    <meta charset="utf-8"><meta name="generator" content="Hugo 0.116.1"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="description" content="Software, Data, Linux">
     
     
     
     <link rel="stylesheet"
-        href="/css/main.min.d7d091492c200520b33b845275b425f60a913a013a133ee523d569ee7d465fdd.css"
-        integrity="sha256-19CRSSwgBSCzO4RSdbQl9gqROgE6Ez7lI9Vp7n1GX90="
+        href="/css/main.min.353f34287745e2a43cf5668c1f7e293bf10104dd3a62f119f982d97f24a18562.css"
+        integrity="sha256-NT80KHdF4qQ89WaMH34pO/EBBN06YvEZ&#43;YLZfyShhWI="
         crossorigin="anonymous"
         type="text/css">
     
@@ -28,7 +28,14 @@
     
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="256x256" href="/favicon-256x256.png">
+    <link rel="icon" type="image/png" sizes="144x144" href="/favicon-144x144.png">
+    <link rel="icon" type="image/png" sizes="128x128" href="/favicon-128x128.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon-64x64.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="24x24" href="/favicon-24x24.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 
     <link rel="canonical" href="/post/digital-cbct-scans/">
@@ -45,7 +52,7 @@
 
     
     <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://holland.vg/images/site-feature-image.png"/>
+<meta name="twitter:image" content="https://holland.sh/images/site-feature-image.png"/>
 
 <meta name="twitter:title" content="Rendering and simulating digital CBCT scans"/>
 <meta name="twitter:description" content="I began orthodontic treatment recently, and having a digital CBCT scan was part of the consultation process. As a former radiography student with an interest in data processing, I really wanted to get my hands on a copy of the scan so I could conduct some experiments. Let&rsquo;s see what I was able to do with it!"/>
@@ -73,16 +80,6 @@
                         title="">Home</a></li>
                 
                 
-                    
-                        <li><a href="/"
-                            title=""></a>
-                        </li>
-                    
-                        <li><a href="/ar/"
-                            title=""></a>
-                        </li>
-                    
-                
             </div>
             <li>
                 
@@ -97,9 +94,9 @@
         <div class="logo-title">
             <div class="title">
                 <img src="/images/profile.jpg" alt="profile picture">
-                <h3 title=""><a href="/">MD Holland</a></h3>
+                <h3 title=""><a href="/">Michael Holland</a></h3>
                 <div class="description">
-                    <p>Software Developer</p>
+                    <p>Software, Data, Linux</p>
                 </div>
             </div>
         </div>
@@ -117,8 +114,14 @@
         <ul class="footer__list">
             <li class="footer__item">&copy;
                 
-                    2018 - 2022
+                    2018 - 2024
                 
+            </li>
+            
+            <li class="footer__item">
+                <a href="/post/"  title="">
+                    archives
+                </a>
             </li>
             
             <li class="footer__item">
@@ -132,8 +135,8 @@
 </footer>
 
 <script type="text/javascript"
-        src="/js/medium-zoom.min.51d7548d5d0e5d4ff7991252239ce6abf1fd527a0eabad7ce6b49aa21f6e08da.js"
-        integrity="sha256-UddUjV0OXU/3mRJSI5zmq/H9UnoOq6185rSaoh9uCNo="
+        src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
+        integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
         crossorigin="anonymous"></script></div>
 </aside>
     <main>
@@ -150,7 +153,7 @@
                     <div class="info">
                         <em class="fas fa-calendar-day"></em>
                         <span class="date"> 
-                                                23/9/2022
+                                                Fri, Sep 23, 2022
                                            </span>
                         <em class="fas fa-stopwatch"></em>
                         <span class="reading-time">9-minute read</span>
@@ -173,7 +176,7 @@
 <p>Now that I confirmed this file contained the data I was interested in, I went to work. The XML portion contained metadata describing the hardware that was used to produce the scan, its creation date, my name: things like that.</p>
 <p>More notably, it contained a large binary blob. This, I suspected, is where the CT images live. I isolated it and began looking for patterns.</p>
 <p>The most obvious pattern was a recurring watermark which read: <code>Creator: JasPer Version 1.701.0</code>. There happened to be 63 occurrences of this watermark throughout the file. Coincidentally, near the beginning of the file, a 32-bit value equivalent to 63 can be found. Shortly following that is a block of 63 similar values describing the size of each image file. The image files themselves are packed in immediately afterwards.</p>
-<p>It&rsquo;s by way of syllogisms like this, plus some trial and error, that I was able to work out the data structure with no prior knowledge of this file format. It isn&rsquo;t an exact science, but knowing what design patterns are routinely employed by programmers helps tremendously.</p>
+<p>Syllogisms like that, plus some trial and error, helped me work out the data structure despite having no prior knowledge of this file format. It isn&rsquo;t an exact science, but being familiar with common design patterns helps tremendously.</p>
 <p>To illustrate this structure to the reader, here&rsquo;s how it looks if I color-code each section. The pink region stores the number of images, the green region stores the filesize of each image, and the orange region contains the images themselves:</p>
 <p><img src="/images/digital-cbct-scans/datamap.png" alt=""></p>
 <p>For curious programmers, that&rsquo;s <a href="https://en.wikipedia.org/wiki/010_Editor">010 Editor</a>, a hex editor that supports binary templates. The binary template I wrote for the color coding looks like this:</p>
@@ -188,7 +191,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="cp">#define cYellow 0xccffff
 </span></span></span><span class="line"><span class="cl"><span class="cp">#define cAqua   0xffffcc
 </span></span></span><span class="line"><span class="cl"><span class="cp"></span>
-</span></span><span class="line"><span class="cl"><span class="n">LittleEndian</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="nf">LittleEndian</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">sInvFileBlob</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
@@ -243,9 +246,9 @@
 </li>
 </ul>
 <p>These findings informed my thinking as I worked towards my goal. I carefully noted them.</p>
-<p>I was able to successfully view one of the images by first converting it to raw pixel data using the following command:</p>
+<p>I was able to successfully view one of the images by first converting it to raw pixel data using the following <a href="https://en.wikipedia.org/wiki/ImageMagick">ImageMagick</a> command:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">convert test.jpc -depth 16 gray:test-16bit-gray.raw
-</span></span></code></pre></div><p>I then loaded that pixel data into <a href="https://en.wikipedia.org/wiki/ImageJ">ImageJ</a>, an image processing program developed and maintained by the <a href="https://imagej.nih.gov/ij/index.html">NIH</a>. It worked!</p>
+</span></span></code></pre></div><p>Then I loaded the resulting pixel data in <a href="https://en.wikipedia.org/wiki/ImageJ">ImageJ</a>, an image processing program developed and maintained by the <a href="https://imagej.nih.gov/ij/index.html">NIH</a>. It worked!</p>
 <p><img src="/images/digital-cbct-scans/imagej.png" alt=""></p>
 <h2 id="displaying-ct-images-using-code">Displaying CT images using code</h2>
 <p>In the previous two sections, I worked out the data structure of the binary blob, and I applied my findings to extract and display a single image from it. My next goal was to translate these steps into code the computer could understand.</p>
@@ -254,7 +257,7 @@
 </span></span><span class="line"><span class="cl">   for each channel:
 </span></span><span class="line"><span class="cl">      for each pixel:
 </span></span><span class="line"><span class="cl">         write pixel
-</span></span></code></pre></div><p>It may have been a gross oversimplification of the problem I was trying to solve, but pseudo code doesn&rsquo;t have to be highly involved. I like to use it as a checklist. If the program can do each of these steps, then it works.</p>
+</span></span></code></pre></div><p>It may be a gross oversimplification of the problem I was trying to solve, but pseudo code doesn&rsquo;t have to be highly involved. I like to use it as a checklist. If the program can do each of these steps, then it works.</p>
 <p>I proceeded to write a program capable of extracting and displaying all the images in rapid succession. This is when things started to get interesting. As you&rsquo;ll see in the sections that follow, many meaningful things would soon be accomplished using this data.</p>
 <p><img src="/images/digital-cbct-scans/cbct-series.gif" alt=""></p>
 <p><em>CT &ldquo;video&rdquo; displayed by my program.</em></p>
@@ -360,8 +363,14 @@
         <ul class="footer__list">
             <li class="footer__item">&copy;
                 
-                    2018 - 2022
+                    2018 - 2024
                 
+            </li>
+            
+            <li class="footer__item">
+                <a href="/post/"  title="">
+                    archives
+                </a>
             </li>
             
             <li class="footer__item">
@@ -375,8 +384,8 @@
 </footer>
 
 <script type="text/javascript"
-        src="/js/medium-zoom.min.51d7548d5d0e5d4ff7991252239ce6abf1fd527a0eabad7ce6b49aa21f6e08da.js"
-        integrity="sha256-UddUjV0OXU/3mRJSI5zmq/H9UnoOq6185rSaoh9uCNo="
+        src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
+        integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
         crossorigin="anonymous"></script></body>
 
 </html>

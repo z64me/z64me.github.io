@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html  dir="ltr" lang="en" data-theme="light"><head>
-    <title> MD Holland | EzSpriteSheet: a free and open source sprite sheet creator </title>
+    <title> Michael Holland | EzSpriteSheet: a free and open source sprite sheet creator </title>
 
     
-    <meta charset="utf-8"><meta name="generator" content="Hugo 0.101.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-    <meta name="description" content="Software Developer">
+    <meta charset="utf-8"><meta name="generator" content="Hugo 0.116.1"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="description" content="Software, Data, Linux">
     
     
     
     <link rel="stylesheet"
-        href="/css/main.min.d7d091492c200520b33b845275b425f60a913a013a133ee523d569ee7d465fdd.css"
-        integrity="sha256-19CRSSwgBSCzO4RSdbQl9gqROgE6Ez7lI9Vp7n1GX90="
+        href="/css/main.min.353f34287745e2a43cf5668c1f7e293bf10104dd3a62f119f982d97f24a18562.css"
+        integrity="sha256-NT80KHdF4qQ89WaMH34pO/EBBN06YvEZ&#43;YLZfyShhWI="
         crossorigin="anonymous"
         type="text/css">
     
@@ -28,7 +28,14 @@
     
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="256x256" href="/favicon-256x256.png">
+    <link rel="icon" type="image/png" sizes="144x144" href="/favicon-144x144.png">
+    <link rel="icon" type="image/png" sizes="128x128" href="/favicon-128x128.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon-64x64.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="24x24" href="/favicon-24x24.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 
     <link rel="canonical" href="/post/ezspritesheet/">
@@ -45,10 +52,10 @@
 
     
     <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://holland.vg/images/site-feature-image.png"/>
+<meta name="twitter:image" content="https://holland.sh/images/site-feature-image.png"/>
 
 <meta name="twitter:title" content="EzSpriteSheet: a free and open source sprite sheet creator"/>
-<meta name="twitter:description" content="Creating sprite sheets has never been easier: toss a folder at my new program and watch magic happen! This article details both why and how I engineered new software to address a common concern among game developers. This project was a month-long commitment."/>
+<meta name="twitter:description" content="Making sprite sheets has never been easier: toss a folder at my new program and watch magic happen! This blogpost details both why and how I created a new tool to solve a common obstacle in low-level game development. EzSpriteSheet was a month-long commitment."/>
 
 
     
@@ -73,16 +80,6 @@
                         title="">Home</a></li>
                 
                 
-                    
-                        <li><a href="/"
-                            title=""></a>
-                        </li>
-                    
-                        <li><a href="/ar/"
-                            title=""></a>
-                        </li>
-                    
-                
             </div>
             <li>
                 
@@ -97,9 +94,9 @@
         <div class="logo-title">
             <div class="title">
                 <img src="/images/profile.jpg" alt="profile picture">
-                <h3 title=""><a href="/">MD Holland</a></h3>
+                <h3 title=""><a href="/">Michael Holland</a></h3>
                 <div class="description">
-                    <p>Software Developer</p>
+                    <p>Software, Data, Linux</p>
                 </div>
             </div>
         </div>
@@ -117,8 +114,14 @@
         <ul class="footer__list">
             <li class="footer__item">&copy;
                 
-                    2018 - 2022
+                    2018 - 2024
                 
+            </li>
+            
+            <li class="footer__item">
+                <a href="/post/"  title="">
+                    archives
+                </a>
             </li>
             
             <li class="footer__item">
@@ -132,8 +135,8 @@
 </footer>
 
 <script type="text/javascript"
-        src="/js/medium-zoom.min.51d7548d5d0e5d4ff7991252239ce6abf1fd527a0eabad7ce6b49aa21f6e08da.js"
-        integrity="sha256-UddUjV0OXU/3mRJSI5zmq/H9UnoOq6185rSaoh9uCNo="
+        src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
+        integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
         crossorigin="anonymous"></script></div>
 </aside>
     <main>
@@ -150,41 +153,96 @@
                     <div class="info">
                         <em class="fas fa-calendar-day"></em>
                         <span class="date"> 
-                                                15/1/2022
+                                                Sat, Jan 15, 2022
                                            </span>
                         <em class="fas fa-stopwatch"></em>
-                        <span class="reading-time">4-minute read</span>
+                        <span class="reading-time">6-minute read</span>
                     </div>
                 
             </div>
 
-            <p>Creating sprite sheets has never been easier: toss a folder at my new program and watch magic happen! This article details both why and how I engineered new software to address a common concern among game developers. This project was a month-long commitment.</p>
+            <p>Making sprite sheets has never been easier: toss a folder at my new program and watch magic happen! This blogpost details both why and how I created a new tool to solve a common obstacle in low-level game development. EzSpriteSheet was a month-long commitment.</p>
 <p><img src="/images/ezspritesheet.png" alt="image"></p>
 <h2 id="motivation">Motivation</h2>
-<p>When developing games from scratch, I believe a neatly-organized folder of animated GIF&rsquo;s/WEBP&rsquo;s to be the best way to manage sprites. Anything more than that and you add needless complexity. I wanted a program that would convert such a folder (and its subfolders) into an optimized collection of sprite sheets. All existing software was lacking in this department, so I decided to roll my own solution.</p>
+<p>I enjoy developing games from scratch. Managing sprite assets is usually a nightmare, though. The common approach involves &ldquo;squashing&rdquo; all the sprite animations into individual sprite strips, but this is unideal to me because information like frame timing is lost in the process. Additionally, duplicate animation frames are not able to be optimized away, there may be a lot of wasted padding pixels around each sprite, and you still have to worry about pivot points.</p>
+<p>To me, the ideal structure for organizing sprites is a directory of nested folders containing animated GIF&rsquo;s/WEBP&rsquo;s, with the desired timing and pivot information already baked into each one. This way, assets delivered by the artists can easily be dropped in and used immediately. All the other sprite sheet software I tried was lacking in these departments, so I decided to create my own.</p>
 <p><img src="/images/ezspritesheet-gallery.gif" alt="image"></p>
-<h2 id="maintaining-multiple-user-interfaces">Maintaining multiple user interfaces</h2>
-<p>First and foremost, I wanted to ensure all features would be available through a simple command line interface. Writing software this way makes it easier to integrate into existing development pipelines.</p>
-<p>I also wanted to provide a graphical user interface (GUI) for those who prefer a visual, point-and-click experience.</p>
-<p>Dividing code into modules simplifies this challenge. It also reduces redundancy and improves readability:</p>
+<h2 id="multiple-user-interfaces">Multiple user interfaces</h2>
+<p>I enjoy using the command line. One of its biggest strengths is in automating processes. Once I decide on the parameters I want for generating a sprite sheet, I can add that command to my game&rsquo;s build script and have it rebuild the sprite sheets automatically anytime the directory contents change. You don&rsquo;t get that kind of flexibility with a GUI application! And retrofitting a GUI onto a CLI application is easier than vice versa, so I wanted to program the CLI first.</p>
+<p>As the word implies, an <strong>interface</strong> gives the user a method of <strong>interfacing</strong> with the program. The same core functionality is exposed to the user by both interfaces. It&rsquo;s only the way the user experiences the program that&rsquo;s different. Think of it like this:</p>
 <p><img src="/images/ezspritesheet-layout.png" alt="image"></p>
-<p>Did I mention QtCreator has a really nice WYSIWYG editor for creating GUI&rsquo;s? I used it to design the main window, pictured below:</p>
+<p>My command line interface looks like this. If you run the program without providing any arguments, it tells you how to use it:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">/*********************************
+</span></span><span class="line"><span class="cl"> * EzSpriteSheet v1.0.0 &lt;z64.me&gt; *
+</span></span><span class="line"><span class="cl"> *********************************/
+</span></span><span class="line"><span class="cl">--Necessary Arguments--------------------------------------------------
+</span></span><span class="line"><span class="cl">  -i, --input     specify input directory where assets are organized
+</span></span><span class="line"><span class="cl">  -o, --output    specify output image database file
+</span></span><span class="line"><span class="cl">  -s, --scheme    select which export scheme to use
+</span></span><span class="line"><span class="cl">                    supported export schemes:
+</span></span><span class="line"><span class="cl">                      xml
+</span></span><span class="line"><span class="cl">                      json
+</span></span><span class="line"><span class="cl">                      c99
+</span></span><span class="line"><span class="cl">  -m, --method    select packing method
+</span></span><span class="line"><span class="cl">                    supported packing methods:
+</span></span><span class="line"><span class="cl">                      guillotine  (fastest, worst)
+</span></span><span class="line"><span class="cl">                      maxrects    (slowest, best)
+</span></span><span class="line"><span class="cl">  -a, --area      specify area of generated sprite sheet
+</span></span><span class="line"><span class="cl">                  width by height, e.g. --area 1024x1024
+</span></span><span class="line"><span class="cl">--Optional Arguments----------------------------------------------------
+</span></span><span class="line"><span class="cl">  -h, --help      prints this usage information
+</span></span><span class="line"><span class="cl">  -e, --exhaust   exhaustive packing (doesn&#39;t consider a sprite
+</span></span><span class="line"><span class="cl">                  sheet ready until it has tried fitting every
+</span></span><span class="line"><span class="cl">                  remaining unpacked sprite into it)
+</span></span><span class="line"><span class="cl">  -r, --rotate    rotate sprites when doing so saves space
+</span></span><span class="line"><span class="cl">  -t, --trim      trim excess pixels from around sprites
+</span></span><span class="line"><span class="cl">  -d, --doubles   detect and omit duplicate sprites (doubles)
+</span></span><span class="line"><span class="cl">  -b, --border    add padding around each packed sprite
+</span></span><span class="line"><span class="cl">                  e.g. --border 8 (for 8 pixels)
+</span></span><span class="line"><span class="cl">  -c, --color     treat pixels matching hex color as animation pivots
+</span></span><span class="line"><span class="cl">                  e.g. --color 00ff00
+</span></span><span class="line"><span class="cl">                  (complains if multiple possible matches are found)
+</span></span><span class="line"><span class="cl">  -f, --formats   include only images of formats in comma-delimited
+</span></span><span class="line"><span class="cl">                  list, e.g. --formats &#34;gif,webp,png&#34;
+</span></span><span class="line"><span class="cl">  -p, --prefix    append a prefix to each sprite&#39;s name when exporting
+</span></span><span class="line"><span class="cl">                  e.g. --prefix &#34;extras/&#34;
+</span></span><span class="line"><span class="cl">  -z, --long      use each sprite&#39;s long name during export
+</span></span><span class="line"><span class="cl">                  e.g. write &#39;player/walk.gif&#39; instead of &#39;player/walk&#39;
+</span></span><span class="line"><span class="cl">  -x, --regex     include only images with a file path matching
+</span></span><span class="line"><span class="cl">                  an optional POSIX regular expression
+</span></span><span class="line"><span class="cl">  -n, --negate    include only images with a file path NOT matching
+</span></span><span class="line"><span class="cl">                  the provided --regex pattern
+</span></span><span class="line"><span class="cl">  -v, --visual    visualize sprite boundaries (debug feature)
+</span></span><span class="line"><span class="cl">                  (makes each sprite&#39;s background a random color)
+</span></span><span class="line"><span class="cl">  -l, --log       specify log file (stderr is used otherwise)
+</span></span><span class="line"><span class="cl">  -w, --warnings  log only errors and warnings
+</span></span><span class="line"><span class="cl">  -q, --quiet     don&#39;t log anything
+</span></span></code></pre></div><p>As for the GUI, I used Qt. The packaged <a href="https://en.wikipedia.org/wiki/Qt_Creator">Qt Creator</a> has a really nice WYSIWYG editor for creating GUI&rsquo;s. I used it to design the main window, pictured below:</p>
 <p><img src="/images/ezspritesheet-qtcreator.png" alt="image"></p>
-<h2 id="reusing-code-where-it-counts">Reusing code where it counts</h2>
-<p>When developing a new piece of software, you should constantly reassess your goals and look for opportunities to lighten your workload: not by cutting corners, but by leveraging existing libraries where possible. I saved a lot of time by reusing boilerplate code from Google&rsquo;s libwebp for processing WEBP&rsquo;s and GIF&rsquo;s.</p>
-<h2 id="providing-reference-implementations">Providing reference implementations</h2>
-<p>If you want people to adopt your software, make it easy for them by providing reference implementations. I wrote two: one in C using SDL2 for rendering, and another in JavaScript using an HTML5 canvas. Both display animated sprites on the screen, and demonstrate how to use EzSpriteSheet&rsquo;s output in a meaningful way.</p>
+<h2 id="external-libraries-are-a-life-saver">External libraries are a life saver</h2>
+<p>When I program something, I want to make the thing that I&rsquo;m making, not the components necessary to make the thing that I&rsquo;m making. And that&rsquo;s where external libraries come into the picture. They already exist, the work has already been done, and they are already battle-tested. Use them! The developers want you to!</p>
+<p>For example, Google&rsquo;s <a href="https://developers.google.com/speed/webp/download">libwebp</a> includes a helper function for loading both animated GIF&rsquo;s (using <a href="https://sourceforge.net/projects/giflib/">giflib</a>) and animated WEBP&rsquo;s. Copying that into my project saved me a lot of time.</p>
+<p>I also used the public domain <a href="https://github.com/juj/RectangleBinPack">RectangleBinPack</a> for the rectangle packing. A full list of libraries I used can be found in the <strong>Attribution</strong> section of this blogpost.</p>
+<h2 id="reference-implementations">Reference implementations</h2>
+<p>I wanted to make it easy for people to adopt EzSpriteSheet, so I provided reference implementations. I have written two so far: one in C using SDL2 for rendering, and another in JavaScript using an HTML5 canvas. Both display animated sprites on the screen, and demonstrate how to use EzSpriteSheet&rsquo;s output in a meaningful way.</p>
 <p>Try the JavaScript demo live in your web browser: <a href="https://z64.me/bin/ezspritesheet.js">https://z64.me/bin/ezspritesheet.js</a></p>
 <p><img src="/images/ezspritesheet-demo.gif" alt="image"></p>
-<h2 id="the-most-important-step">The most important step</h2>
-<p>You don&rsquo;t want all that hard work to amount to a program with a reputation for instability, do you? Before delivering a product to the masses, you should make sure it&rsquo;s free of defects. In other words, it&rsquo;s time for some quality assurance.</p>
-<p>My favorite software for the job is Valgrind. Run a program through it and it will tell you if it detects any of the following:</p>
+<h2 id="quality-assurance">Quality assurance</h2>
+<p>It&rsquo;s important that programs work consistently and reliably. It should never crash. And the same input should always produce the same output. Undefined behavior should never occur, and if it does, don&rsquo;t take it lightly.</p>
+<p>For example: even one variable/allocation left uninitialized can make or break a program for some users but not others, because different CPUs handle stack variable initialization differently. Some will zero-initialize them while advancing the stack pointer, some will not. Then you get unexpected values, hence undefined behavior.</p>
+<p>The process will vary across programming languages and across operating systems, but my favorite software for this when writing C/C++ code on Linux—which is the case for this project—is Valgrind. It helps avoid surprises like the scenario described above by checking for all of the following:</p>
 <ul>
 <li>Uninitialized variable/memory usage</li>
 <li>Invalid memory access</li>
 <li>Memory leaks</li>
 </ul>
-<p>Those things compromise stability, and your software may behave differently on different machines. For example: some CPU&rsquo;s set uninitialized variables to zero when advancing the stack pointer, whereas others leave them set to seemingly random values. <strong>Valgrind helps you avoid surprises like this.</strong></p>
+<p>Running Valgrind on Linux is easy once you have it installed: you run the same command you always run when testing your program, with the same arguments etc, but you prefix it with <strong>valgrind</strong>, like so:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">echo &#34;Hello, world!&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">becomes
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">valgrind echo &#34;Hello, world!&#34;
+</span></span></code></pre></div><p>When I run it on my program:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">==993667== 
 </span></span><span class="line"><span class="cl">==993667== HEAP SUMMARY:
 </span></span><span class="line"><span class="cl">==993667==     in use at exit: 0 bytes in 0 blocks
@@ -196,8 +254,8 @@
 </span></span><span class="line"><span class="cl">==993667== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 </span></span></code></pre></div><p>This is what you want: Valgrind is happy! Publish that code with confidence!</p>
 <h2 id="its-already-being-used-in-a-production-environment">It&rsquo;s already being used in a production environment</h2>
-<p>This racing game uses EzSpriteSheet to produce a texture atlas for its HUD elements:</p>
-<p><img src="/images/ezspritesheet-production.jpg" alt="image"></p>
+<p>This racing game (<a href="https://store.steampowered.com/app/764420/Rogue_Racer/">Rogue Racer on Steam</a>) uses EzSpriteSheet to produce a texture atlas for its HUD elements:</p>
+<p><img src="/images/ezspritesheet-production.png" alt="image"></p>
 <h2 id="features">Features</h2>
 <p>As of this writing, EzSpriteSheet is more feature-rich than its competition:</p>
 <table>
@@ -293,8 +351,14 @@
         <ul class="footer__list">
             <li class="footer__item">&copy;
                 
-                    2018 - 2022
+                    2018 - 2024
                 
+            </li>
+            
+            <li class="footer__item">
+                <a href="/post/"  title="">
+                    archives
+                </a>
             </li>
             
             <li class="footer__item">
@@ -308,8 +372,8 @@
 </footer>
 
 <script type="text/javascript"
-        src="/js/medium-zoom.min.51d7548d5d0e5d4ff7991252239ce6abf1fd527a0eabad7ce6b49aa21f6e08da.js"
-        integrity="sha256-UddUjV0OXU/3mRJSI5zmq/H9UnoOq6185rSaoh9uCNo="
+        src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
+        integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
         crossorigin="anonymous"></script></body>
 
 </html>

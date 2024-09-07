@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html  dir="ltr" lang="en" data-theme="light"><head>
-    <title> MD Holland | Data mining the F-Zero X overdump </title>
+    <title> Michael Holland | Data mining the F-Zero X overdump </title>
 
     
-    <meta charset="utf-8"><meta name="generator" content="Hugo 0.101.0" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-    <meta name="description" content="Software Developer">
+    <meta charset="utf-8"><meta name="generator" content="Hugo 0.116.1"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="description" content="Software, Data, Linux">
     
     
     
     <link rel="stylesheet"
-        href="/css/main.min.d7d091492c200520b33b845275b425f60a913a013a133ee523d569ee7d465fdd.css"
-        integrity="sha256-19CRSSwgBSCzO4RSdbQl9gqROgE6Ez7lI9Vp7n1GX90="
+        href="/css/main.min.353f34287745e2a43cf5668c1f7e293bf10104dd3a62f119f982d97f24a18562.css"
+        integrity="sha256-NT80KHdF4qQ89WaMH34pO/EBBN06YvEZ&#43;YLZfyShhWI="
         crossorigin="anonymous"
         type="text/css">
     
@@ -28,7 +28,14 @@
     
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="256x256" href="/favicon-256x256.png">
+    <link rel="icon" type="image/png" sizes="144x144" href="/favicon-144x144.png">
+    <link rel="icon" type="image/png" sizes="128x128" href="/favicon-128x128.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon-64x64.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="24x24" href="/favicon-24x24.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 
     <link rel="canonical" href="/post/data-mining-the-overdump/">
@@ -45,7 +52,7 @@
 
     
     <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://holland.vg/images/site-feature-image.png"/>
+<meta name="twitter:image" content="https://holland.sh/images/site-feature-image.png"/>
 
 <meta name="twitter:title" content="Data mining the F-Zero X overdump"/>
 <meta name="twitter:description" content="Ever go on a treasure hunt? Think of that, except the entire adventure takes place inside a blob of data no one has ever laid eyes on. We data miners are digital archaeologists, and we struck a goldmine. Today, I will tell the tale of the F-Zero X overdump expedition."/>
@@ -73,16 +80,6 @@
                         title="">Home</a></li>
                 
                 
-                    
-                        <li><a href="/"
-                            title=""></a>
-                        </li>
-                    
-                        <li><a href="/ar/"
-                            title=""></a>
-                        </li>
-                    
-                
             </div>
             <li>
                 
@@ -97,9 +94,9 @@
         <div class="logo-title">
             <div class="title">
                 <img src="/images/profile.jpg" alt="profile picture">
-                <h3 title=""><a href="/">MD Holland</a></h3>
+                <h3 title=""><a href="/">Michael Holland</a></h3>
                 <div class="description">
-                    <p>Software Developer</p>
+                    <p>Software, Data, Linux</p>
                 </div>
             </div>
         </div>
@@ -117,8 +114,14 @@
         <ul class="footer__list">
             <li class="footer__item">&copy;
                 
-                    2018 - 2022
+                    2018 - 2024
                 
+            </li>
+            
+            <li class="footer__item">
+                <a href="/post/"  title="">
+                    archives
+                </a>
             </li>
             
             <li class="footer__item">
@@ -132,8 +135,8 @@
 </footer>
 
 <script type="text/javascript"
-        src="/js/medium-zoom.min.51d7548d5d0e5d4ff7991252239ce6abf1fd527a0eabad7ce6b49aa21f6e08da.js"
-        integrity="sha256-UddUjV0OXU/3mRJSI5zmq/H9UnoOq6185rSaoh9uCNo="
+        src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
+        integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
         crossorigin="anonymous"></script></div>
 </aside>
     <main>
@@ -150,7 +153,7 @@
                     <div class="info">
                         <em class="fas fa-calendar-day"></em>
                         <span class="date"> 
-                                                9/8/2021
+                                                Mon, Aug 9, 2021
                                            </span>
                         <em class="fas fa-stopwatch"></em>
                         <span class="reading-time">10-minute read</span>
@@ -221,7 +224,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="cm"> * returns 0 on failure
 </span></span></span><span class="line"><span class="cl"><span class="cm"> * returns pointer to loaded file on success
 </span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
-</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="o">*</span><span class="nf">loadfile</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">fn</span><span class="p">,</span> <span class="n">size_t</span> <span class="o">*</span><span class="n">sz</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="o">*</span><span class="nf">loadfile</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">fn</span><span class="p">,</span> <span class="kt">size_t</span> <span class="o">*</span><span class="n">sz</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">   <span class="n">FILE</span> <span class="o">*</span><span class="n">fp</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">   <span class="kt">void</span> <span class="o">*</span><span class="n">dat</span><span class="p">;</span>
@@ -230,13 +233,13 @@
 </span></span><span class="line"><span class="cl">   <span class="k">if</span> <span class="p">(</span>
 </span></span><span class="line"><span class="cl">      <span class="o">!</span><span class="n">fn</span>
 </span></span><span class="line"><span class="cl">      <span class="o">||</span> <span class="o">!</span><span class="n">sz</span>
-</span></span><span class="line"><span class="cl">      <span class="o">||</span> <span class="o">!</span><span class="p">(</span><span class="n">fp</span> <span class="o">=</span> <span class="n">fopen</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s">&#34;rb&#34;</span><span class="p">))</span>
-</span></span><span class="line"><span class="cl">      <span class="o">||</span> <span class="n">fseek</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">SEEK_END</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">      <span class="o">||</span> <span class="o">!</span><span class="p">(</span><span class="o">*</span><span class="n">sz</span> <span class="o">=</span> <span class="n">ftell</span><span class="p">(</span><span class="n">fp</span><span class="p">))</span>
-</span></span><span class="line"><span class="cl">      <span class="o">||</span> <span class="n">fseek</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">SEEK_SET</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">      <span class="o">||</span> <span class="o">!</span><span class="p">(</span><span class="n">dat</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="o">*</span><span class="n">sz</span><span class="p">))</span>
-</span></span><span class="line"><span class="cl">      <span class="o">||</span> <span class="n">fread</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">sz</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span> <span class="o">!=</span> <span class="o">*</span><span class="n">sz</span>
-</span></span><span class="line"><span class="cl">      <span class="o">||</span> <span class="n">fclose</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="o">||</span> <span class="o">!</span><span class="p">(</span><span class="n">fp</span> <span class="o">=</span> <span class="nf">fopen</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s">&#34;rb&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">      <span class="o">||</span> <span class="nf">fseek</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">SEEK_END</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="o">||</span> <span class="o">!</span><span class="p">(</span><span class="o">*</span><span class="n">sz</span> <span class="o">=</span> <span class="nf">ftell</span><span class="p">(</span><span class="n">fp</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">      <span class="o">||</span> <span class="nf">fseek</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">SEEK_SET</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="o">||</span> <span class="o">!</span><span class="p">(</span><span class="n">dat</span> <span class="o">=</span> <span class="nf">malloc</span><span class="p">(</span><span class="o">*</span><span class="n">sz</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">      <span class="o">||</span> <span class="nf">fread</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">sz</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span> <span class="o">!=</span> <span class="o">*</span><span class="n">sz</span>
+</span></span><span class="line"><span class="cl">      <span class="o">||</span> <span class="nf">fclose</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">   <span class="p">)</span>
 </span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">   
@@ -256,7 +259,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
 </span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="o">*</span><span class="nf">scenesegment</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">datBegin</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">datEnd</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">scene</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">ptr</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">   <span class="kt">uint32_t</span> <span class="n">addr</span> <span class="o">=</span> <span class="n">rbeu32</span><span class="p">(</span><span class="n">ptr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">uint32_t</span> <span class="n">addr</span> <span class="o">=</span> <span class="nf">rbeu32</span><span class="p">(</span><span class="n">ptr</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">   <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">dat</span> <span class="o">=</span> <span class="n">scene</span> <span class="o">+</span> <span class="p">(</span><span class="n">addr</span> <span class="o">&amp;</span> <span class="mh">0xffffff</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">   
 </span></span><span class="line"><span class="cl">   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">ptr</span><span class="p">)</span>
@@ -274,7 +277,7 @@
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="cm">/* searches for scene header pattern and prints findings */</span>
-</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">findheaders</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">datBegin</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">datSz</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">findheaders</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">datBegin</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">datSz</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">   <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">dat</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">   <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">datEnd</span> <span class="o">=</span> <span class="n">datBegin</span> <span class="o">+</span> <span class="n">datSz</span><span class="p">;</span>
@@ -285,7 +288,7 @@
 </span></span><span class="line"><span class="cl">   <span class="k">for</span> <span class="p">(</span><span class="n">dat</span> <span class="o">=</span> <span class="n">datBegin</span> <span class="p">;</span> <span class="n">dat</span> <span class="o">&lt;</span> <span class="n">datEnd</span><span class="p">;</span> <span class="n">dat</span> <span class="o">+=</span> <span class="n">STRIDE</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">   <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="cm">/* potential scene header end marker match */</span>
-</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">memcmp</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="n">endmarker</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">endmarker</span><span class="p">)))</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nf">memcmp</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="n">endmarker</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">endmarker</span><span class="p">)))</span>
 </span></span><span class="line"><span class="cl">      <span class="p">{</span>
 </span></span><span class="line"><span class="cl">         <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">bounds</span> <span class="o">=</span> <span class="n">dat</span> <span class="o">-</span> <span class="mi">32</span> <span class="o">*</span> <span class="n">STRIDE</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">         <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">roomlist</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -335,18 +338,18 @@
 </span></span><span class="line"><span class="cl">            <span class="k">continue</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">         
 </span></span><span class="line"><span class="cl">         <span class="cm">/* invalid room list pointer */</span>
-</span></span><span class="line"><span class="cl">         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">roomlist</span> <span class="o">=</span> <span class="n">scenesegment</span><span class="p">(</span><span class="n">datBegin</span><span class="p">,</span> <span class="n">datEnd</span><span class="p">,</span> <span class="n">scene</span><span class="p">,</span> <span class="n">roomlist</span><span class="p">)))</span>
+</span></span><span class="line"><span class="cl">         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">roomlist</span> <span class="o">=</span> <span class="nf">scenesegment</span><span class="p">(</span><span class="n">datBegin</span><span class="p">,</span> <span class="n">datEnd</span><span class="p">,</span> <span class="n">scene</span><span class="p">,</span> <span class="n">roomlist</span><span class="p">)))</span>
 </span></span><span class="line"><span class="cl">            <span class="k">continue</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">         
 </span></span><span class="line"><span class="cl">         <span class="cm">/* print file address of potential scene header */</span>
-</span></span><span class="line"><span class="cl">         <span class="n">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s">&#34;%08X</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">datAddr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">         <span class="nf">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s">&#34;%08X</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">datAddr</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">         
 </span></span><span class="line"><span class="cl">         <span class="cm">/* walk room list */</span>
 </span></span><span class="line"><span class="cl">         <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">roomnum</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">         <span class="p">{</span>
 </span></span><span class="line"><span class="cl">            <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">this</span> <span class="o">=</span> <span class="n">roomlist</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="kt">uint32_t</span> <span class="n">begin</span> <span class="o">=</span> <span class="n">rbeu32</span><span class="p">(</span><span class="n">this</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">            <span class="kt">uint32_t</span> <span class="n">end</span> <span class="o">=</span> <span class="n">rbeu32</span><span class="p">(</span><span class="n">this</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">uint32_t</span> <span class="n">begin</span> <span class="o">=</span> <span class="nf">rbeu32</span><span class="p">(</span><span class="n">this</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">uint32_t</span> <span class="n">end</span> <span class="o">=</span> <span class="nf">rbeu32</span><span class="p">(</span><span class="n">this</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">));</span>
 </span></span><span class="line"><span class="cl">            
 </span></span><span class="line"><span class="cl">            <span class="cm">/* invalid room address conditions */</span>
 </span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">begin</span> <span class="o">&gt;</span> <span class="n">end</span>
@@ -354,15 +357,15 @@
 </span></span><span class="line"><span class="cl">               <span class="o">||</span> <span class="n">end</span> <span class="o">&gt;=</span> <span class="n">datSz</span>
 </span></span><span class="line"><span class="cl">            <span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="p">{</span>
-</span></span><span class="line"><span class="cl">               <span class="n">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s">&#34; -&gt; ERROR</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">               <span class="nf">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s">&#34; -&gt; ERROR</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">               <span class="k">break</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">            <span class="p">}</span>
 </span></span><span class="line"><span class="cl">            
 </span></span><span class="line"><span class="cl">            <span class="cm">/* list start address of each room referenced by scene */</span>
-</span></span><span class="line"><span class="cl">            <span class="n">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s">&#34; -&gt; %08X</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">begin</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s">&#34; -&gt; %08X</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">begin</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">            
 </span></span><span class="line"><span class="cl">            <span class="cm">/* zero each room file&#39;s contents so its header is ignored */</span>
-</span></span><span class="line"><span class="cl">            <span class="n">memset</span><span class="p">(</span><span class="n">datBegin</span> <span class="o">+</span> <span class="n">begin</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">end</span> <span class="o">-</span> <span class="n">begin</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">memset</span><span class="p">(</span><span class="n">datBegin</span> <span class="o">+</span> <span class="n">begin</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">end</span> <span class="o">-</span> <span class="n">begin</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">            
 </span></span><span class="line"><span class="cl">            <span class="cm">/* files are packed such that the end of the scene
 </span></span></span><span class="line"><span class="cl"><span class="cm">             * happens to be the same address as the beginning
@@ -377,7 +380,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="cm">          * file&#39;s contents in case it contains alternate headers
 </span></span></span><span class="line"><span class="cl"><span class="cm">          */</span>
 </span></span><span class="line"><span class="cl">         <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="n">roomnum</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">            <span class="n">memset</span><span class="p">(</span><span class="n">scene</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sceneEnd</span> <span class="o">-</span> <span class="n">scene</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">memset</span><span class="p">(</span><span class="n">scene</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sceneEnd</span> <span class="o">-</span> <span class="n">scene</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">      <span class="p">}</span>
 </span></span><span class="line"><span class="cl">   <span class="p">}</span>
 </span></span><span class="line"><span class="cl">   
@@ -387,19 +390,19 @@
 </span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">   <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">dat</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">   <span class="n">size_t</span> <span class="n">datSz</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">size_t</span> <span class="n">datSz</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">   <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">fn</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
 </span></span><span class="line"><span class="cl">   
 </span></span><span class="line"><span class="cl">   <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">!=</span> <span class="mi">2</span> <span class="o">||</span> <span class="o">!</span><span class="n">fn</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">      <span class="n">die</span><span class="p">(</span><span class="s">&#34;arguments: find-scenes file.bin&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">die</span><span class="p">(</span><span class="s">&#34;arguments: find-scenes file.bin&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">   
-</span></span><span class="line"><span class="cl">   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">dat</span> <span class="o">=</span> <span class="n">loadfile</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">datSz</span><span class="p">)))</span>
-</span></span><span class="line"><span class="cl">      <span class="n">die</span><span class="p">(</span><span class="s">&#34;failed to load input file&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">dat</span> <span class="o">=</span> <span class="nf">loadfile</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">datSz</span><span class="p">)))</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">die</span><span class="p">(</span><span class="s">&#34;failed to load input file&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">   
-</span></span><span class="line"><span class="cl">   <span class="n">findheaders</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="n">datSz</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">   <span class="nf">findheaders</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="n">datSz</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">   
 </span></span><span class="line"><span class="cl">   <span class="cm">/* cleanup */</span>
-</span></span><span class="line"><span class="cl">   <span class="n">free</span><span class="p">(</span><span class="n">dat</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">   <span class="nf">free</span><span class="p">(</span><span class="n">dat</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><h2 id="bringing-the-geometry-back-to-life">Bringing the geometry back to life</h2>
@@ -532,8 +535,14 @@
         <ul class="footer__list">
             <li class="footer__item">&copy;
                 
-                    2018 - 2022
+                    2018 - 2024
                 
+            </li>
+            
+            <li class="footer__item">
+                <a href="/post/"  title="">
+                    archives
+                </a>
             </li>
             
             <li class="footer__item">
@@ -547,8 +556,8 @@
 </footer>
 
 <script type="text/javascript"
-        src="/js/medium-zoom.min.51d7548d5d0e5d4ff7991252239ce6abf1fd527a0eabad7ce6b49aa21f6e08da.js"
-        integrity="sha256-UddUjV0OXU/3mRJSI5zmq/H9UnoOq6185rSaoh9uCNo="
+        src="/js/medium-zoom.min.44288fd315b6cda68c1f4743caad56535c0f81a5b5a672f385e82b3896575c1d.js"
+        integrity="sha256-RCiP0xW2zaaMH0dDyq1WU1wPgaW1pnLzhegrOJZXXB0="
         crossorigin="anonymous"></script></body>
 
 </html>
